@@ -1,17 +1,26 @@
-import defaultBackground from "@razzia/web/assets/background.png"
-import { getBranding, imageFallback } from "@razzia/web/branding"
+import { getBranding } from "@razzia/web/branding"
 
 const GameBackground = () => {
-  const background = getBranding()?.background ?? defaultBackground
+  const background = getBranding()?.background
 
   return (
-    <div className="fixed top-0 left-0 h-full w-full">
-      <img
-        className="pointer-events-none h-full w-full object-cover select-none"
-        src={background}
-        onError={imageFallback(defaultBackground)}
-        alt="background"
-      />
+    <div
+      aria-hidden="true"
+      className="as-event-backdrop pointer-events-none fixed inset-0"
+    >
+      {background && (
+        <img
+          className="absolute inset-0 h-full w-full object-cover opacity-40"
+          src={background}
+          alt=""
+          onError={(event) => {
+            event.currentTarget.style.display = "none"
+          }}
+        />
+      )}
+      <div className="as-event-beam as-event-beam-left" />
+      <div className="as-event-beam as-event-beam-right" />
+      <div className="as-event-stage" />
     </div>
   )
 }

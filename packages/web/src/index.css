@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #ff9900;
-  --color-secondary: #1a140b;
-  --color-answer-1: #e69f00;
-  --color-answer-2: #56b4e9;
-  --color-answer-3: #3dbfa0;
-  --color-answer-4: #cc79a7;
+  --color-primary: #896641;
+  --color-brand: #b3986e;
+  --color-secondary: #0c0c10;
+  --color-answer-1: #9a5c16;
+  --color-answer-2: #185e90;
+  --color-answer-3: #126951;
+  --color-answer-4: #7e3977;
 
   --color-background: var(--color-white);
 
@@ -179,5 +180,72 @@ button:not(:disabled),
   }
   100% {
     transform: scale(1);
+  }
+}
+
+/* AS Event stage: decorative layers never intercept the game controls. */
+.as-event-backdrop {
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%, #b3986e24 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 80%, #5c426526 0%, transparent 45%),
+    linear-gradient(160deg, #141317, #08090d 70%);
+}
+
+.as-event-beam {
+  position: absolute;
+  top: -15%;
+  width: 38%;
+  height: 140%;
+  transform-origin: top center;
+  background: linear-gradient(180deg, #b3986e28, #b3986e08 55%, transparent);
+  clip-path: polygon(47% 0%, 53% 0%, 100% 100%, 0% 100%);
+  filter: blur(12px);
+}
+
+.as-event-beam-left {
+  left: 0;
+  transform: rotate(-24deg);
+}
+.as-event-beam-right {
+  right: 0;
+  transform: rotate(24deg);
+}
+
+.as-event-stage {
+  position: absolute;
+  inset: auto -30% -30%;
+  height: 60%;
+  border-radius: 50%;
+  border: 1px solid #b3986e30;
+  box-shadow: 0 -15px 100px #b3986e0d;
+  background: repeating-radial-gradient(
+    ellipse at center,
+    transparent 0 70px,
+    #b3986e0a 71px 72px
+  );
+}
+
+.as-event-logo {
+  filter: drop-shadow(0 0 30px #b3986e20);
+}
+.as-event-wordmark {
+  color: #ddc9a9;
+}
+
+.as-event-entry input:focus-visible,
+.as-event-entry button:focus-visible,
+.as-event-entry a:focus-visible {
+  outline: 3px solid #ddc9a9;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-show,
+  .anim-timer,
+  .anim-quizz,
+  .anim-balanced,
+  .spotlight {
+    animation: none;
   }
 }

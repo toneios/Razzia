@@ -12,6 +12,12 @@ Cette branche part de Razzia **3.1.0**. Elle ajoute un écran public indépendan
 - La projection ne compte pas comme un joueur. Elle peut être fermée, rouverte ou reconnectée sans remplacer la régie. Le lien est public à toute personne qui le possède : aucun mot de passe animateur n'y est transmis.
 - Les parties restent en mémoire : une mise à jour/redémarrage interrompt la partie. Le serveur conserve les règles de reconnexion/expiration de Razzia ; une déconnexion de la régie avant le début ferme la salle.
 
+## Identité AS Event
+
+Le thème par défaut utilise le logo AS Event fourni, une palette noir/beige doré et un fond de scène en CSS. Le logo apparaît sur l'accueil, la régie, les téléphones et la projection. Les réponses conservent quatre couleurs distinctes, avec des teintes plus sombres pour le contraste du texte blanc. Aucun téléchargement de police ou d'image externe n'est nécessaire pour ce thème.
+
+Ce thème fait partie du code : `update` suffit pour l'installer. Un éventuel `/opt/razzia-config/branding/theme.json` reste prioritaire pour les champs renseignés (logo, nom, couleurs, fond) ; il n'est pas écrasé. Voir [branding.md](branding.md) pour personnaliser une soirée particulière.
+
 ## Préparer le conteneur Proxmox
 
 Exécuter dans **le conteneur Razzia**, pas dans l'hôte PVE. L'installation Community Scripts existante et son reverse proxy nginx sont conservés. Le chemin exact de la racine web doit être relevé sur cette installation :

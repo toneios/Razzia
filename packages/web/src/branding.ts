@@ -1,3 +1,4 @@
+import asEventLogo from "@razzia/web/assets/as-event-logo.png"
 import type { ReactEventHandler } from "react"
 import { z } from "zod"
 
@@ -13,7 +14,13 @@ const brandingSchema = z.object({
 
 export type BrandingTheme = z.infer<typeof brandingSchema>
 
-let current: BrandingTheme | null = null
+const defaultBranding: BrandingTheme = {
+  appName: "AS Event · Quiz Live",
+  logo: asEventLogo,
+  favicon: asEventLogo,
+}
+
+let current: BrandingTheme = defaultBranding
 
 export const getBranding = (): BrandingTheme | null => current
 
@@ -25,15 +32,17 @@ export const loadBranding = async (): Promise<BrandingTheme | null> => {
     })
 
     if (!response.ok) {
-      return null
+      return current
     }
 
     const parsed = brandingSchema.safeParse(await response.json())
-    current = parsed.success ? parsed.data : null
+    current = parsed.success
+      ? { ...defaultBranding, ...parsed.data }
+      : defaultBranding
 
     return current
   } catch {
-    return null
+    return current
   }
 }
 
