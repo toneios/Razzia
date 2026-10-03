@@ -102,7 +102,7 @@ const ManagerGamePage = () => {
 
   return (
     <GameViewContext.Provider value={{ role: "control", sound }}>
-      <div className="flex flex-wrap items-center gap-3 bg-slate-950 px-4 py-3 text-white">
+      <div className="relative z-20 flex flex-wrap items-center gap-3 bg-slate-950 px-4 py-3 text-white">
         <strong>{t("game:controlDesk")}</strong>
         <a
           className="rounded-lg bg-white px-4 py-2 font-bold text-black"
