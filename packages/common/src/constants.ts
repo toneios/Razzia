@@ -12,6 +12,12 @@ export const EVENTS = {
     PLAYER_ANSWER: "game:playerAnswer",
     CREATE: "game:create",
   },
+  PROJECTION: {
+    JOIN: "projection:join",
+    LEAVE: "projection:leave",
+    SNAPSHOT: "projection:snapshot",
+    PLAYERS: "projection:players",
+  },
   PLAYER: {
     SUCCESS_RECONNECT: "player:successReconnect",
     UPDATE_LEADERBOARD: "player:updateLeaderboard",
@@ -40,6 +46,7 @@ export const EVENTS = {
     ABORT_QUIZ: "manager:abortQuiz",
     NEXT_QUESTION: "manager:nextQuestion",
     SHOW_LEADERBOARD: "manager:showLeaderboard",
+    REVEAL: "manager:reveal",
     GET_CONFIG: "manager:getConfig",
     LOGOUT: "manager:logout",
     UNAUTHORIZED: "manager:unauthorized",

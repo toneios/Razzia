@@ -11,6 +11,7 @@ export const STATUS = {
   SHOW_PREPARED: "SHOW_PREPARED",
   SHOW_QUESTION: "SHOW_QUESTION",
   SELECT_ANSWER: "SELECT_ANSWER",
+  AWAITING_REVEAL: "AWAITING_REVEAL",
   SHOW_RESULT: "SHOW_RESULT",
   SHOW_RESPONSES: "SHOW_RESPONSES",
   SHOW_LEADERBOARD: "SHOW_LEADERBOARD",
@@ -45,6 +46,7 @@ export interface CommonStatusDataMap {
     rank: number
     aheadOfMe: string | null
   }
+  AWAITING_REVEAL: { text: string }
   WAIT: { text: string }
   FINISHED: { subject: string; top: Player[]; rank?: number }
 }

@@ -1,3 +1,5 @@
+> **AS Event** — Three separate views (player, public projection, host controls), manual answer reveal and Proxmox deployment: [setup and update guide](docs/as-event-proxmox.md).
+
 <p align="center">
   <img width="450" height="120" align="center" src=".github/logo.svg">
   <br>

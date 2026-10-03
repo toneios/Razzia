@@ -28,7 +28,18 @@ export interface MessageGameId {
   gameId?: string
 }
 
+export interface ProjectionSnapshot {
+  inviteCode: string
+  status: { name: Status; data: StatusDataMap[Status] }
+  currentQuestion: GameUpdateQuestion | null
+  players: string[]
+  remaining: number | null
+  answers: number
+}
+
 export interface ServerToClientEvents {
+  [EVENTS.PROJECTION.SNAPSHOT]: (_data: ProjectionSnapshot) => void
+  [EVENTS.PROJECTION.PLAYERS]: (_players: string[]) => void
   connect: () => void
 
   // Game events
@@ -92,6 +103,9 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
+  [EVENTS.PROJECTION.JOIN]: (_message: { gameId: string }) => void
+  [EVENTS.PROJECTION.LEAVE]: () => void
+  [EVENTS.MANAGER.REVEAL]: (_message: MessageGameId) => void
   // Manager actions
   [EVENTS.GAME.CREATE]: (_quizzId: string) => void
   [EVENTS.MANAGER.AUTH]: (_password: string) => void

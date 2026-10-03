@@ -4,15 +4,21 @@ import { useEvent } from "@razzia/web/features/game/contexts/socket-context"
 import { SFX } from "@razzia/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useState } from "react"
-import useSound from "use-sound"
+import {
+  useGameView,
+  useGameSound as useSound,
+} from "@razzia/web/features/game/contexts/view-context"
 
 interface Props {
   data: CommonStatusDataMap["SHOW_START"]
 }
 
 const Start = ({ data: { time, subject } }: Props) => {
-  const [showTitle, setShowTitle] = useState(true)
-  const [cooldown, setCooldown] = useState(time)
+  const view = useGameView()
+  const [showTitle, setShowTitle] = useState(
+    view.remaining === null || view.remaining === undefined,
+  )
+  const [cooldown, setCooldown] = useState(view.remaining ?? time)
 
   const [sfxBoump] = useSound(SFX.BOUMP_SOUND, {
     volume: 0.2,

@@ -11,6 +11,43 @@ import { getClientId } from "@razzia/socket/utils/socket"
 export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
   const registry = Registry.getInstance()
   const clientId = getClientId(socket)
+  let projectionGameId: string | null = null
+
+  const leaveProjection = () => {
+    if (!projectionGameId) {
+      return
+    }
+
+    socket.leave(projectionGameId)
+    socket.leave(`projection:${projectionGameId}`)
+    projectionGameId = null
+  }
+
+  socket.on(EVENTS.PROJECTION.JOIN, ({ gameId }) => {
+    if (
+      registry.getGameByManagerSocketId(socket.id) ||
+      registry.getGameByPlayerSocketId(socket.id)
+    ) {
+      return
+    }
+
+    leaveProjection()
+    const game =
+      typeof gameId === "string" ? registry.getGameById(gameId) : undefined
+
+    if (!game) {
+      socket.emit(EVENTS.GAME.RESET, "errors:game.notFound")
+
+      return
+    }
+
+    projectionGameId = gameId
+    game.joinProjection(socket)
+  })
+  socket.on(EVENTS.PROJECTION.LEAVE, leaveProjection)
+  socket.on(EVENTS.MANAGER.REVEAL, ({ gameId }) =>
+    withGame(gameId, socket, (game) => game.reveal(socket)),
+  )
 
   const handleManagerLeave = (game: Game) => {
     game.setManagerDisconnected()

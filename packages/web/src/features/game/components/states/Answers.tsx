@@ -11,7 +11,10 @@ import { SFX } from "@razzia/web/features/game/utils/constants"
 import { QUESTION_REGISTRY } from "@razzia/web/features/questions"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import useSound from "use-sound"
+import {
+  useGameView,
+  useGameSound as useSound,
+} from "@razzia/web/features/game/contexts/view-context"
 
 interface Props {
   data: CommonStatusDataMap["SELECT_ANSWER"]
@@ -23,8 +26,9 @@ const Answers = ({
   const { socket } = useSocket()
   const { player, gameId } = usePlayerStore()
 
-  const [cooldown, setCooldown] = useState(time)
-  const [totalAnswer, setTotalAnswer] = useState(0)
+  const view = useGameView()
+  const [cooldown, setCooldown] = useState(view.remaining ?? time)
+  const [totalAnswer, setTotalAnswer] = useState(view.answers ?? 0)
   const { t } = useTranslation()
 
   const [sfxPop] = useSound(SFX.ANSWERS.SOUND, {
@@ -38,7 +42,7 @@ const Answers = ({
   })
 
   const handleSubmit = (answerKeys: number[]) => {
-    if (!player || !gameId) {
+    if (view.role !== "player" || !player || !gameId) {
       return
     }
 
@@ -114,7 +118,7 @@ const Answers = ({
           answers={answers}
           options={options}
           onSubmit={handleSubmit}
-          readOnly={!player}
+          readOnly={view.role !== "player" || !player}
         />
       </div>
     </div>

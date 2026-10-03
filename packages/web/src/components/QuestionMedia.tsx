@@ -1,12 +1,16 @@
 import { MEDIA_TYPES } from "@razzia/common/constants"
 import type { QuestionMedia as QuestionMediaType } from "@razzia/common/types/game"
 
+import { useGameView } from "@razzia/web/features/game/contexts/view-context"
+
 interface Props {
   media?: QuestionMediaType
   alt?: string
 }
 
 const QuestionMedia = ({ media, alt = "" }: Props) => {
+  const view = useGameView()
+
   if (media?.type === MEDIA_TYPES.IMAGE) {
     return (
       <img
@@ -23,7 +27,8 @@ const QuestionMedia = ({ media, alt = "" }: Props) => {
         className="m-4 mb-2 aspect-video max-h-60 w-auto rounded-md px-4 sm:max-h-100"
         src={media.url}
         autoPlay
-        controls
+        muted={!view.sound}
+        controls={view.role !== "projection"}
       />
     )
   }
@@ -34,7 +39,8 @@ const QuestionMedia = ({ media, alt = "" }: Props) => {
         className="m-4 mb-2 w-auto rounded-md"
         src={media.url}
         autoPlay
-        controls
+        muted={!view.sound}
+        controls={view.role !== "projection"}
       />
     )
   }

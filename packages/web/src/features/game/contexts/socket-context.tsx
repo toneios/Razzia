@@ -40,7 +40,9 @@ const getClientId = (): string => {
   }
 }
 
-const clientId = getClientId()
+const clientId = window.location.pathname.startsWith("/projection/")
+  ? uuid()
+  : getClientId()
 
 export const socketClient: TypedSocket = io("/", {
   path: "/ws",

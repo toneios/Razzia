@@ -4,7 +4,7 @@ import useScreenSize from "@razzia/web/hooks/useScreenSize"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import ReactConfetti from "react-confetti"
-import useSound from "use-sound"
+import { useGameSound as useSound } from "@razzia/web/features/game/contexts/view-context"
 
 interface Props {
   data: ManagerStatusDataMap["FINISHED"]

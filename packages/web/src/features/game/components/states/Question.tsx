@@ -2,7 +2,7 @@ import { MEDIA_TYPES } from "@razzia/common/constants"
 import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
 import { SFX } from "@razzia/web/features/game/utils/constants"
 import { useEffect } from "react"
-import useSound from "use-sound"
+import { useGameSound as useSound } from "@razzia/web/features/game/contexts/view-context"
 
 interface Props {
   data: CommonStatusDataMap["SHOW_QUESTION"]

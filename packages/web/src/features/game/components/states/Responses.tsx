@@ -8,7 +8,7 @@ import {
 import { calculatePercentages } from "@razzia/web/features/game/utils/score"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
-import useSound from "use-sound"
+import { useGameSound as useSound } from "@razzia/web/features/game/contexts/view-context"
 
 interface Props {
   data: ManagerStatusDataMap["SHOW_RESPONSES"]

@@ -26,5 +26,14 @@
   "waitingForAnswers": "Waiting for the players to answer",
   "waitingForPlayers": "Waiting for players",
   "wrong": "Too bad",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "awaitingReveal": "Answers locked… Time for the reveal!",
+  "revealAnswers": "Reveal answers",
+  "controlDesk": "Host control desk",
+  "openProjection": "Open projection",
+  "copyProjection": "Copy projection link",
+  "projectionCopied": "Projection link copied",
+  "copyProjectionManually": "Open the projection and copy its address from the browser.",
+  "controlSound": "Sound on control desk",
+  "beginProjection": "Enable projection and sound"
 }

@@ -47,6 +47,18 @@ export interface RoundManagerOptions {
 export class RoundManager {
   private readonly opts: RoundManagerOptions
   private started = false
+  private phase:
+    | "lobby"
+    | "preparing"
+    | "answering"
+    | "reveal"
+    | "results"
+    | "leaderboard"
+    | "finished" = "lobby"
+
+  getAnswerCount() {
+    return this.playersAnswers.length
+  }
   private currentQuestion = 0
   private playersAnswers: Answer[] = []
   private startTime = 0
@@ -74,7 +86,7 @@ export class RoundManager {
       return
     }
 
-    if (this.started) {
+    if (this.phase !== "lobby") {
       return
     }
 
@@ -85,6 +97,7 @@ export class RoundManager {
     }
 
     this.started = true
+    this.phase = "preparing"
 
     this.opts.broadcast(STATUS.SHOW_START, {
       time: 3,
@@ -105,6 +118,7 @@ export class RoundManager {
     }
 
     const question = this.opts.quizz.questions[this.currentQuestion]
+    this.phase = "preparing"
 
     this.opts.onNewQuestion()
 
@@ -140,6 +154,7 @@ export class RoundManager {
     }
 
     this.startTime = Date.now()
+    this.phase = "answering"
 
     this.opts.broadcast(STATUS.SELECT_ANSWER, {
       question: question.question,
@@ -157,7 +172,17 @@ export class RoundManager {
       return
     }
 
-    this.showResults(question)
+    this.phase = "reveal"
+    this.opts.broadcast(STATUS.AWAITING_REVEAL, { text: "game:awaitingReveal" })
+  }
+
+  reveal(socket: Socket): void {
+    if (socket.id !== this.opts.getManagerId() || this.phase !== "reveal") {
+      return
+    }
+
+    this.phase = "results"
+    this.showResults(this.opts.quizz.questions[this.currentQuestion])
   }
 
   private showResults(question: Question): void {
@@ -250,7 +275,18 @@ export class RoundManager {
     const player = this.opts.players.findById(socket.id)
     const question = this.opts.quizz.questions[this.currentQuestion]
 
-    if (!player) {
+    if (
+      !player ||
+      this.phase !== "answering" ||
+      !Array.isArray(answerIds) ||
+      answerIds.length === 0 ||
+      new Set(answerIds).size !== answerIds.length ||
+      answerIds.some(
+        (id) =>
+          !Number.isInteger(id) || id < 0 || id >= question.answers.length,
+      ) ||
+      (question.type === "single" && answerIds.length !== 1)
+    ) {
       return
     }
 
@@ -291,7 +327,7 @@ export class RoundManager {
   }
 
   nextQuestion(socket: Socket): void {
-    if (!this.started) {
+    if (!this.started || this.phase !== "leaderboard") {
       return
     }
 
@@ -308,7 +344,7 @@ export class RoundManager {
   }
 
   abortQuestion(socket: Socket): void {
-    if (!this.started) {
+    if (!this.started || this.phase !== "answering") {
       return
     }
 
@@ -320,15 +356,17 @@ export class RoundManager {
   }
 
   showLeaderboard(socket: Socket): void {
-    if (socket.id !== this.opts.getManagerId()) {
+    if (socket.id !== this.opts.getManagerId() || this.phase !== "results") {
       return
     }
 
+    this.phase = "leaderboard"
     const isLastRound =
       this.currentQuestion + 1 === this.opts.quizz.questions.length
 
     if (isLastRound) {
       this.started = false
+      this.phase = "finished"
 
       const top = this.leaderboard.slice(0, 3)
 

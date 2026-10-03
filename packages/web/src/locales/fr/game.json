@@ -26,5 +26,14 @@
   "waitingForAnswers": "En attente des réponses des joueurs",
   "waitingForPlayers": "En attente des joueurs",
   "wrong": "Dommage",
-  "confirm": "Valider"
+  "confirm": "Valider",
+  "awaitingReveal": "Réponses enregistrées… Place au suspense !",
+  "revealAnswers": "Révéler les réponses",
+  "controlDesk": "Régie animateur",
+  "openProjection": "Ouvrir la projection",
+  "copyProjection": "Copier le lien projection",
+  "projectionCopied": "Lien de projection copié",
+  "copyProjectionManually": "Ouvre la projection et copie son adresse dans le navigateur.",
+  "controlSound": "Son sur la régie",
+  "beginProjection": "Activer la projection et le son"
 }

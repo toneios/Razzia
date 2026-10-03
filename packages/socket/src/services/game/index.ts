@@ -108,6 +108,7 @@ class Game {
   private broadcastStatus<T extends Status>(status: T, data: StatusDataMap[T]) {
     const statusData = { name: status, data }
     this.lastBroadcastStatus = statusData
+    this.managerStatus = null
     this.io.to(this.gameId).emit(EVENTS.GAME.STATUS, statusData)
   }
 
@@ -120,11 +121,44 @@ class Game {
 
     if (this._manager.id === target) {
       this.managerStatus = statusData
+      this.io
+        .to(`projection:${this.gameId}`)
+        .emit(EVENTS.GAME.STATUS, this.projectionStatus())
     } else {
       this.playerStatus.set(target, statusData)
     }
 
     this.io.to(target).emit(EVENTS.GAME.STATUS, statusData)
+  }
+
+  private projectionStatus() {
+    const status = this.managerStatus ??
+      this.lastBroadcastStatus ?? {
+        name: STATUS.SHOW_ROOM,
+        data: { text: "game:waitingForPlayers", inviteCode: this.inviteCode },
+      }
+
+    // Player client IDs are reconnection credentials. Never publish them.
+    return JSON.parse(
+      JSON.stringify(status, (key: string, value: unknown) =>
+        key === "clientId" ? undefined : value,
+      ),
+    ) as typeof status
+  }
+
+  joinProjection(socket: Socket) {
+    socket.join(this.gameId)
+    socket.join(`projection:${this.gameId}`)
+    socket.emit(EVENTS.PROJECTION.SNAPSHOT, {
+      inviteCode: this.inviteCode,
+      status: this.projectionStatus(),
+      currentQuestion: this.lastBroadcastStatus
+        ? this.round.getReconnectInfo()
+        : null,
+      players: this.players.map((p) => p.username),
+      remaining: this.cooldown.getRemaining(),
+      answers: this.round.getAnswerCount(),
+    })
   }
 
   // Player actions
@@ -166,8 +200,8 @@ class Game {
 
     const status = this.managerStatus ??
       this.lastBroadcastStatus ?? {
-        name: STATUS.WAIT,
-        data: { text: "game:waitingForPlayers" },
+        name: STATUS.SHOW_ROOM,
+        data: { text: "game:waitingForPlayers", inviteCode: this.inviteCode },
       }
 
     socket.emit(EVENTS.MANAGER.SUCCESS_RECONNECT, {
@@ -270,6 +304,10 @@ class Game {
 
   abortRound(socket: Socket) {
     this.round.abortQuestion(socket)
+  }
+
+  reveal(socket: Socket) {
+    this.round.reveal(socket)
   }
 
   showLeaderboard(socket: Socket) {
