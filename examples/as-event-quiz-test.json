@@ -1,0 +1,146 @@
+{
+  "id": "as-event-quiz-test-v1",
+  "subject": "AS Event — Quiz de test : musique & soirée",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Quel groupe chante « Dancing Queen » ?",
+      "answers": [
+        "Queen",
+        "ABBA",
+        "Indochine",
+        "Téléphone"
+      ],
+      "solutions": [
+        1
+      ],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel artiste chante « Les Lacs du Connemara » ?",
+      "answers": [
+        "Michel Sardou",
+        "Jean-Jacques Goldman",
+        "Johnny Hallyday",
+        "Claude François"
+      ],
+      "solutions": [
+        0
+      ],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Que signifie BPM en musique ?",
+      "answers": [
+        "Basses par morceau",
+        "Boucles par minute",
+        "Battements par minute",
+        "Balance principale musicale"
+      ],
+      "solutions": [
+        2
+      ],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel groupe a sorti « Bohemian Rhapsody » ?",
+      "answers": [
+        "AC/DC",
+        "The Beatles",
+        "The Rolling Stones",
+        "Queen"
+      ],
+      "solutions": [
+        3
+      ],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "De quel pays est originaire le duo Daft Punk ?",
+      "answers": [
+        "Royaume-Uni",
+        "France",
+        "Allemagne",
+        "États-Unis"
+      ],
+      "solutions": [
+        1
+      ],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "multi",
+      "question": "Quels instruments sont des instruments à cordes ? Sélectionne les deux réponses.",
+      "answers": [
+        "Guitare",
+        "Trompette",
+        "Violon",
+        "Flûte"
+      ],
+      "solutions": [
+        0,
+        2
+      ],
+      "options": {
+        "scoringMode": "strict"
+      },
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Qui interprète « Freed from Desire » ?",
+      "answers": [
+        "Gala",
+        "Madonna",
+        "Cher",
+        "Kylie Minogue"
+      ],
+      "solutions": [
+        0
+      ],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Finale sans chrono : quel instrument possède des touches noires et blanches ?",
+      "answers": [
+        "Batterie",
+        "Saxophone",
+        "Piano",
+        "Trompette"
+      ],
+      "solutions": [
+        2
+      ],
+      "cooldown": 3,
+      "time": -1,
+      "maxPoints": 1000,
+      "penalty": 0
+    }
+  ]
+}
