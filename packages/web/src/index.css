@@ -262,3 +262,28 @@ button:not(:disabled),
     animation: none;
   }
 }
+
+/* A scoped dark workspace keeps the quiz editor calm and readable. */
+.quiz-editor {
+  color-scheme: dark;
+  --color-background: #141c29;
+  --color-muted: #0c121d;
+  --color-muted-foreground: #9ba9bb;
+  --color-accent: #303d50;
+  --color-accent-foreground: #cbd5e1;
+  --color-foreground: #edf2f7;
+  color: var(--color-foreground);
+}
+.quiz-editor input:not([type="range"]):not([type="checkbox"]),
+.quiz-editor select,
+.quiz-editor textarea {
+  background-color: #0c121d;
+  color: #edf2f7;
+}
+.quiz-editor button:disabled {
+  opacity: 0.4;
+}
+.quiz-editor audio {
+  color-scheme: dark;
+  width: min(100%, 32rem);
+}

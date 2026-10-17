@@ -67,5 +67,14 @@
     "useMedia": "Utiliser pour cette question",
     "mediaError": "Import impossible. Vérifie le fichier et son format : MP3 (100 Mo), image PNG/JPG/WebP (20 Mo), vidéo MP4/WebM (200 Mo).",
     "volume": "Volume de l’extrait"
+  },
+  "mediaPanel": {
+    "title": "Média de la question",
+    "source": "Source du média",
+    "library": "Mes dossiers",
+    "upload": "Importer un MP3",
+    "link": "Lien direct",
+    "replace": "Changer le média",
+    "advanced": "Points et règles avancées"
   }
 }

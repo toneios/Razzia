@@ -55,7 +55,7 @@ const BlindTestUpload = () => {
   }, [busy, t])
 
   return (
-    <label className="w-full max-w-xl rounded-xl bg-white p-3 text-sm text-black">
+    <label className="w-full text-sm text-slate-200">
       <span className="font-bold">{t("quizz:blindTest.import")}</span>
       <input
         className="mt-2 block w-full"
@@ -97,9 +97,7 @@ const BlindTestUpload = () => {
           reader.readAsDataURL(file)
         }}
       />
-      <p className="mt-2">
-        {t(busy ? "quizz:blindTest.sending" : "quizz:blindTest.help")}
-      </p>
+      {busy && <p className="mt-2">{t("quizz:blindTest.sending")}</p>}
     </label>
   )
 }

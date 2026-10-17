@@ -67,5 +67,14 @@
     "useMedia": "Use for this question",
     "mediaError": "Import failed. Check the file and format: MP3 (100 MB), PNG/JPG/WebP image (20 MB), MP4/WebM video (200 MB).",
     "volume": "Clip volume"
+  },
+  "mediaPanel": {
+    "title": "Question media",
+    "source": "Media source",
+    "library": "My folders",
+    "upload": "Upload MP3",
+    "link": "Direct link",
+    "replace": "Change media",
+    "advanced": "Points and advanced rules"
   }
 }

@@ -81,7 +81,7 @@ pnpm install --frozen-lockfile
 pnpm build
 pnpm exec tsc --noEmit -p packages/socket/tsconfig.json
 pnpm exec tsc --noEmit -p packages/web/tsconfig.app.json
-node --test tests/projection.test.mjs tests/branding.test.mjs
+node --test tests/projection.test.mjs tests/branding.test.mjs tests/media-playback.test.mjs
 bash -n scripts/razzia-update.sh
 ```
 
@@ -108,3 +108,9 @@ La liste est réservée au manager et ignore les sous-dossiers et liens symboliq
 Les dossiers `image` (PNG/JPG/WebP, 20 Mo max) et `video` (MP4/WebM, 200 Mo max) sont à la racine, à côté de `music`. Dans l’éditeur de question, choisir le type sous **Médias · dossiers music / image / video**, actualiser, sélectionner et cliquer **Utiliser pour cette question**, puis enregistrer le quiz. Les fichiers sont copiés dans `config/branding` et restent accessibles aux autres appareils. Les sources locales sont exclues de Git. Les chemins peuvent être remplacés par `IMAGE_PATH` et `VIDEO_PATH` dans l’environnement du serveur.
 
 La musique d’ambiance est désactivée pour toute la question dès qu’elle contient un média, y compris pendant l’affichage de l’énoncé avant les réponses. Les extraits audio/vidéo démarrent dès l’énoncé, continuent sans redémarrer à l’apparition des choix et s’arrêtent à la révélation. Le volume de chaque extrait se règle de 0 à 100 % dans l’éditeur et est conservé dans le quiz. Les photos s’affichent dès l’énoncé.
+
+## Éditeur et lecture des extraits
+
+L’éditeur de quiz utilise un thème sombre. Le panneau média affiche une seule source à la fois : **Mes dossiers**, **Importer un MP3** ou **Lien direct**. Une fois le média choisi, son aperçu, le début et le volume restent accessibles ; **Changer le média** déplie le sélecteur. Les points et pénalités sont regroupés sous **Points et règles avancées**.
+
+La lecture est relancée explicitement lors du remontage du lecteur, notamment en mode développement React. Si le navigateur bloque le démarrage, le bouton **Lire l’extrait** permet de l’autoriser. Un fichier absent ou non pris en charge affiche une erreur au lieu de rester silencieux. Sur la projection, cliquer d’abord **Activer la projection et le son** ; la régie reste muette tant que sa case son est désactivée.

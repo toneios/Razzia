@@ -1,4 +1,3 @@
-import GameBackground from "@razzia/web/components/GameBackground"
 import QuestionEditorAnswers from "@razzia/web/features/quizz/components/QuestionEditor/QuestionEditorAnswers"
 import QuestionEditorConfig from "@razzia/web/features/quizz/components/QuestionEditor/QuestionEditorConfig"
 import QuestionEditorMedia from "@razzia/web/features/quizz/components/QuestionEditor/QuestionEditorMedia"
@@ -10,8 +9,6 @@ const QuestionEditor = () => (
       <QuestionEditorTitle />
       <QuestionEditorMedia />
       <QuestionEditorAnswers />
-
-      <GameBackground />
     </main>
     <QuestionEditorConfig />
   </div>

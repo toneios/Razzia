@@ -43,5 +43,7 @@
   "projectionInvalidForm": "Saisis le mot de passe et un PIN de 6 chiffres.",
   "projectionStorageError": "Le navigateur bloque le stockage de session. Autorise-le pour ouvrir la projection.",
   "projectionTimeout": "Le serveur ne répond pas. Réessaie.",
-  "leaderboardIn": "Classement dans {{count}} s"
+  "leaderboardIn": "Classement dans {{count}} s",
+  "playMedia": "Lire l’extrait",
+  "mediaError": "Impossible de lire ce fichier. Vérifie son format ou réimporte-le dans le quiz."
 }

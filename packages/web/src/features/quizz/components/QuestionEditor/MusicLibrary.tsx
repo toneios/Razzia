@@ -74,15 +74,11 @@ const MusicLibrary = () => {
   }, [busy, t])
 
   return (
-    <div className="w-full max-w-xl rounded-xl bg-white p-3 text-sm text-black">
-      <label className="block font-bold" htmlFor="music-library">
-        {t("quizz:blindTest.libraryTitle")}
-      </label>
-      <p className="my-2">{t("quizz:blindTest.libraryHelp")}</p>
+    <div className="w-full text-sm text-slate-100">
       <label className="mb-2 block">
         {t("quizz:blindTest.mediaType")}
         <select
-          className="ml-2 rounded border p-2"
+          className="ml-2 rounded-lg border border-slate-700 bg-slate-950 p-2"
           value={kind}
           disabled={busy}
           onChange={(event) => {
@@ -102,8 +98,9 @@ const MusicLibrary = () => {
         </select>
       </label>
       <select
+        aria-label={t("quizz:blindTest.choose")}
         id="music-library"
-        className="w-full rounded border p-2"
+        className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2"
         value={selected}
         disabled={busy || !isConnected}
         onChange={(event) => setSelected(event.target.value)}
@@ -121,7 +118,7 @@ const MusicLibrary = () => {
       <div className="mt-2 flex flex-wrap gap-2">
         <button
           type="button"
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 disabled:opacity-40"
           disabled={busy || !isConnected}
           onClick={() => socket.emit(EVENTS.MEDIA_LIBRARY.LIST, kind)}
         >
@@ -129,7 +126,7 @@ const MusicLibrary = () => {
         </button>
         <button
           type="button"
-          className="bg-primary rounded px-3 py-2 text-white"
+          className="rounded-lg bg-amber-200 px-3 py-2 font-semibold text-slate-950 disabled:opacity-40"
           disabled={busy || !isConnected || !selected}
           onClick={() => {
             target.current = currentQuestion.id
