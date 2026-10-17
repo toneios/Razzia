@@ -1,4 +1,14 @@
 export const EVENTS = {
+  APPEARANCE: {
+    GET: "appearance:get",
+    DATA: "appearance:data",
+    SAVE: "appearance:save",
+    SAVED: "appearance:saved",
+    UPLOAD: "appearance:upload",
+    UPLOADED: "appearance:uploaded",
+    ERROR: "appearance:error",
+    CHANGED: "appearance:changed",
+  },
   GAME: {
     STATUS: "game:status",
     SUCCESS_ROOM: "game:successRoom",

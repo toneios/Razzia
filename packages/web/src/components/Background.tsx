@@ -1,13 +1,13 @@
 import defaultLogo from "@razzia/web/assets/as-event-logo.png"
-import { getBranding, imageFallback } from "@razzia/web/branding"
+import { useBranding, imageFallback } from "@razzia/web/branding"
 import GameBackground from "@razzia/web/components/GameBackground"
 import GithubIcon from "@razzia/web/components/GithubIcon"
 import type { PropsWithChildren } from "react"
 
 const Background = ({ children }: PropsWithChildren) => {
-  const branding = getBranding()
-  const logo = branding?.logo ?? defaultLogo
-  const appName = branding?.appName ?? "AS Event · Quiz Live"
+  const branding = useBranding()
+  const logo = branding.logo ?? defaultLogo
+  const appName = branding.appName ?? "AS Event · Quiz Live"
 
   return (
     <section className="relative flex min-h-dvh flex-col items-center justify-center">

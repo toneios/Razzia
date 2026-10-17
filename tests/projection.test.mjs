@@ -2,7 +2,14 @@
 /* oxlint-disable typescript/no-unsafe-assignment, typescript/no-unsafe-call, typescript/no-unsafe-member-access, typescript/no-unsafe-return, typescript/no-unsafe-argument, typescript/restrict-plus-operands */
 import assert from "node:assert/strict"
 import { spawn } from "node:child_process"
-import { mkdtemp, mkdir, writeFile, readdir, rm } from "node:fs/promises"
+import {
+  mkdtemp,
+  mkdir,
+  writeFile,
+  readFile,
+  readdir,
+  rm,
+} from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join, resolve as resolvePath } from "node:path"
 import { createRequire } from "node:module"
@@ -34,8 +41,8 @@ const status = (socket, name) =>
   event(socket, "game:status", (data) => data.name === name)
 
 test(
-  "independent projection, manual reveal, reconnect and read-only controls",
-  { timeout: 60000 },
+  "appearance permissions, automatic reveal, ten-second hold and manual next question",
+  { timeout: 90000 },
   async () => {
     const dir = await mkdtemp(join(tmpdir(), "razzia-projection-test-"))
     const portServer = createServer()
@@ -71,7 +78,7 @@ test(
             answers: ["A", "B", "C"],
             solutions: [0, 2],
             cooldown: 3,
-            time: -1,
+            time: 2,
             options: { scoringMode: "strict" },
           },
         ],
@@ -123,6 +130,57 @@ test(
       const config = event(manager, "manager:config")
       manager.emit("manager:auth", "test-only-password")
       await config
+      await mkdir(join(dir, "branding"))
+      await writeFile(
+        join(dir, "branding/theme.json"),
+        JSON.stringify({ logo: "/branding/my-logo.png" }),
+      )
+      const appearanceData = event(manager, "appearance:data")
+      manager.emit("appearance:get")
+      const appearance = await appearanceData
+      appearance.colors.brand = "#663399"
+      appearance.music.volume = 0.45
+      let saved = event(manager, "appearance:saved")
+      const changed = event(manager, "appearance:changed")
+      manager.emit("appearance:save", appearance)
+      await saved
+      await changed
+      let stored = JSON.parse(
+        await readFile(join(dir, "branding/theme.json"), "utf8"),
+      )
+      assert.equal(stored.logo, "/branding/my-logo.png")
+      assert.equal(stored.colors.brand, "#663399")
+      assert.equal(stored.music.volume, 0.45)
+      let rejected = event(manager, "appearance:error")
+      manager.emit("appearance:save", {
+        ...appearance,
+        colors: { brand: "invalid" },
+      })
+      await rejected
+      rejected = event(manager, "appearance:error")
+      manager.emit("appearance:upload", {
+        kind: "background",
+        base64: Buffer.from("this is not an image").toString("base64"),
+      })
+      await rejected
+      const png =
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII="
+      const uploaded = event(manager, "appearance:uploaded")
+      manager.emit("appearance:upload", { kind: "background", base64: png })
+      const asset = await uploaded
+      assert.match(asset.url, /^\/branding\/background-[a-f0-9-]+\.png$/u)
+      assert.equal(
+        (await readFile(join(dir, asset.url.slice(1)))).toString("base64"),
+        png,
+      )
+      appearance.background = asset.url
+      saved = event(manager, "appearance:saved")
+      manager.emit("appearance:save", appearance)
+      await saved
+      stored = JSON.parse(
+        await readFile(join(dir, "branding/theme.json"), "utf8"),
+      )
+      assert.equal(stored.background, asset.url)
       const created = event(manager, "manager:gameCreated")
       manager.emit("game:create", "test")
       const { gameId, inviteCode } = await created
@@ -176,6 +234,17 @@ test(
       const unauthorized = event(display, "manager:unauthorized")
       display.emit("manager:getConfig")
       await unauthorized
+      for (const action of [
+        "appearance:get",
+        "appearance:save",
+        "appearance:upload",
+      ]) {
+        const blocked = event(display, "manager:unauthorized")
+        display.emit(action, appearance)
+        // Each unauthorized mutation must be checked before proceeding.
+        // oxlint-disable-next-line no-await-in-loop
+        await blocked
+      }
       display.emit("manager:startGame", { gameId })
       const player = await connect("secret-player-id")
       const names = event(display, "projection:players")
@@ -198,28 +267,38 @@ test(
       assert.equal(active.status.name, "SELECT_ANSWER")
       assert.ok(active.remaining < 10 && active.remaining > 0)
       secondDisplay.disconnect()
-      const locked = status(display, "AWAITING_REVEAL")
+      const reveal = status(display, "SHOW_RESPONSES")
+      const playerReveal = status(player, "SHOW_RESPONSES")
+      const result = status(player, "SHOW_RESULT")
+      const board = status(display, "SHOW_LEADERBOARD")
       player.emit("player:selectedAnswer", {
         gameId,
         data: { answerKeys: [0] },
       })
-      await locked
-      display.emit("manager:reveal", { gameId })
-      await delay(100)
-      assert.equal(publicMessages.at(-1).data.name, "AWAITING_REVEAL")
-      // Late answers cannot change the recorded answer after the lock.
+      const revealed = await reveal
+      const revealTime = Date.now()
+      assert.deepEqual(revealed.data.solutions, [0])
+      assert.deepEqual((await playerReveal).data.solutions, [0])
+      assert.ok(revealed.data.revealEndsAt - revealTime > 9500)
+      // Late answers and early controls cannot alter or skip the ten-second reveal.
       player.emit("player:selectedAnswer", {
         gameId,
         data: { answerKeys: [1] },
       })
-      const result = status(player, "SHOW_RESULT")
-      const reveal = status(display, "SHOW_RESPONSES")
-      manager.emit("manager:reveal", { gameId })
-      assert.equal((await result).data.correct, true)
-      assert.deepEqual((await reveal).data.solutions, [0])
-      const board = status(display, "SHOW_LEADERBOARD")
+      display.emit("manager:reveal", { gameId })
       manager.emit("manager:showLeaderboard", { gameId })
+      manager.emit("manager:nextQuestion", { gameId })
+      await delay(200)
+      assert.equal(
+        publicMessages
+          .filter((message) => message.name === "game:status")
+          .at(-1).data.name,
+        "SHOW_RESPONSES",
+      )
+      assert.equal((await result).data.correct, true)
       await board
+      assert.ok(Date.now() - revealTime >= 9800)
+      await delay(300)
       snapshot = event(display, "projection:snapshot")
       display.emit("projection:join", { gameId, token })
       assert.equal((await snapshot).status.name, "SHOW_LEADERBOARD")
@@ -227,19 +306,15 @@ test(
       manager.emit("manager:nextQuestion", { gameId })
       const second = await answers
       assert.equal(second.data.questionType, "multi")
-      assert.equal(second.data.time, -1)
-      const lockTwo = status(display, "AWAITING_REVEAL")
-      player.emit("player:selectedAnswer", {
-        gameId,
-        data: { answerKeys: [0, 2] },
-      })
-      await lockTwo
+      assert.equal(second.data.time, 2)
+      // No answer on this round: the timer must trigger the same automatic sequence.
       const revealTwo = status(display, "SHOW_RESPONSES")
-      manager.emit("manager:reveal", { gameId })
-      await revealTwo
       const finished = status(display, "FINISHED")
-      manager.emit("manager:showLeaderboard", { gameId })
+      const timedReveal = await revealTwo
+      assert.deepEqual(timedReveal.data.responses, {})
+      const secondRevealTime = Date.now()
       assert.equal((await finished).data.top[0].username, "Alice")
+      assert.ok(Date.now() - secondRevealTime >= 9800)
       manager.emit("manager:showLeaderboard", { gameId })
       await delay(100)
       assert.equal((await readdir(join(dir, "results"))).length, 1)

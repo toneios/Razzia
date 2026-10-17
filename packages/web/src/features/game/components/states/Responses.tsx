@@ -7,6 +7,8 @@ import {
 } from "@razzia/web/features/game/utils/constants"
 import { calculatePercentages } from "@razzia/web/features/game/utils/score"
 import clsx from "clsx"
+import { useTranslation } from "react-i18next"
+import { useBackgroundMusic } from "@razzia/web/features/game/utils/useBackgroundMusic"
 import { useEffect, useState } from "react"
 import { useGameSound as useSound } from "@razzia/web/features/game/contexts/view-context"
 
@@ -15,41 +17,29 @@ interface Props {
 }
 
 const Responses = ({
-  data: { question, answers, responses, solutions },
+  data: { question, answers, responses, solutions, revealEndsAt },
 }: Props) => {
   const [percentages, setPercentages] = useState<Record<string, string>>({})
-  const [isMusicPlaying, setIsMusicPlaying] = useState(false)
-
-  const [sfxResults] = useSound(SFX.RESULTS_SOUND, {
-    volume: 0.2,
-  })
-
-  const [playMusic, { stop: stopMusic }] = useSound(SFX.ANSWERS.MUSIC, {
-    volume: 0.2,
-    onplay: () => {
-      setIsMusicPlaying(true)
-    },
-    onend: () => {
-      setIsMusicPlaying(false)
-    },
-  })
+  const { t } = useTranslation()
+  const [remaining, setRemaining] = useState(() =>
+    Math.max(0, Math.ceil((revealEndsAt - Date.now()) / 1000)),
+  )
+  const [sfxResults] = useSound(SFX.RESULTS_SOUND, { volume: 0.2 })
+  useBackgroundMusic()
 
   useEffect(() => {
-    stopMusic()
     sfxResults()
-
     setPercentages(calculatePercentages(responses))
-  }, [responses, playMusic, stopMusic, sfxResults])
+  }, [responses, sfxResults])
 
   useEffect(() => {
-    if (!isMusicPlaying) {
-      playMusic()
-    }
-  }, [isMusicPlaying, playMusic])
+    const update = () =>
+      setRemaining(Math.max(0, Math.ceil((revealEndsAt - Date.now()) / 1000)))
+    update()
+    const interval = window.setInterval(update, 250)
 
-  useEffect(() => {
-    stopMusic()
-  }, [playMusic, stopMusic])
+    return () => window.clearInterval(interval)
+  }, [revealEndsAt])
 
   return (
     <div className="flex h-full flex-1 flex-col justify-between">
@@ -58,6 +48,9 @@ const Responses = ({
           {question}
         </h2>
 
+        <p className="rounded-full bg-black/40 px-5 py-2 text-lg font-bold text-white">
+          {t("game:leaderboardIn", { count: remaining })}
+        </p>
         <div
           className={`mt-8 grid h-40 w-full max-w-3xl gap-4 px-2`}
           style={{ gridTemplateColumns: `repeat(${answers.length}, 1fr)` }}

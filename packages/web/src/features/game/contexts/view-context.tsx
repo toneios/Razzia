@@ -13,5 +13,8 @@ export const useGameView = () => useContext(GameViewContext)
 export const useGameSound: typeof useSound = (src, options) => {
   const { sound } = useGameView()
 
-  return useSound(src, { ...options, soundEnabled: sound })
+  return useSound(src, {
+    ...options,
+    soundEnabled: sound && (options?.soundEnabled ?? true),
+  })
 }

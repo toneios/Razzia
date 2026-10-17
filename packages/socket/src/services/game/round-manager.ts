@@ -59,6 +59,11 @@ export class RoundManager {
   getAnswerCount() {
     return this.playersAnswers.length
   }
+  private revealEndsAt = 0
+  private pendingResults: Array<{
+    clientId: string
+    data: StatusDataMap["SHOW_RESULT"]
+  }> = []
   private currentQuestion = 0
   private playersAnswers: Answer[] = []
   private startTime = 0
@@ -172,8 +177,11 @@ export class RoundManager {
       return
     }
 
-    this.phase = "reveal"
-    this.opts.broadcast(STATUS.AWAITING_REVEAL, { text: "game:awaitingReveal" })
+    this.phase = "results"
+    this.revealEndsAt = Date.now() + 10000
+    this.showResults(question)
+    await sleep(10)
+    this.advanceLeaderboard()
   }
 
   reveal(socket: Socket): void {
@@ -237,23 +245,33 @@ export class RoundManager {
 
     this.opts.players.replace(sortedPlayers)
 
+    this.pendingResults = []
     sortedPlayers.forEach((player, index) => {
       const rank = index + 1
       const aheadPlayer = sortedPlayers[index - 1]
 
-      this.opts.send(player.id, STATUS.SHOW_RESULT, {
-        correct: player.lastCorrect,
-        message: player.lastCorrect ? "game:correct" : "game:wrong",
-        points: player.lastPoints,
-        myPoints: player.points,
-        rank,
-        aheadOfMe: aheadPlayer ? aheadPlayer.username : null,
+      this.pendingResults.push({
+        clientId: player.clientId,
+        data: {
+          correct: player.lastCorrect,
+          message: player.lastCorrect ? "game:correct" : "game:wrong",
+          points: player.lastPoints,
+          myPoints: player.points,
+          rank,
+          aheadOfMe: aheadPlayer ? aheadPlayer.username : null,
+        },
+      })
+      this.opts.send(player.id, STATUS.SHOW_RESPONSES, {
+        ...question,
+        responses: answerCounts,
+        revealEndsAt: this.revealEndsAt,
       })
     })
 
     this.opts.send(this.opts.getManagerId(), STATUS.SHOW_RESPONSES, {
       ...question,
       responses: answerCounts,
+      revealEndsAt: this.revealEndsAt,
     })
 
     this.questionsHistory.push({
@@ -360,7 +378,31 @@ export class RoundManager {
       return
     }
 
+    if (Date.now() < this.revealEndsAt) {
+      return
+    }
+
+    this.advanceLeaderboard()
+  }
+
+  private advanceLeaderboard(): void {
+    if (this.phase !== "results") {
+      return
+    }
+
     this.phase = "leaderboard"
+    // Resolve the current socket after a player reconnects during the reveal.
+    const currentPlayers = this.opts.players.getAll()
+    this.pendingResults.forEach((result) => {
+      const player = currentPlayers.find(
+        (candidate) => candidate.clientId === result.clientId,
+      )
+
+      if (player) {
+        this.opts.send(player.id, STATUS.SHOW_RESULT, result.data)
+      }
+    })
+    this.pendingResults = []
     const isLastRound =
       this.currentQuestion + 1 === this.opts.quizz.questions.length
 

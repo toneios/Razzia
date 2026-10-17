@@ -4,6 +4,7 @@ import Card from "@razzia/web/components/Card"
 import LanguageSwitcher from "@razzia/web/components/LanguageSwitcher"
 import { useSocket } from "@razzia/web/features/game/contexts/socket-context"
 import { useManagerStore } from "@razzia/web/features/game/stores/manager"
+import ConfigAppearance from "@razzia/web/features/manager/components/configurations/ConfigAppearance"
 import ConfigManageQuizz from "@razzia/web/features/manager/components/configurations/ConfigManageQuizz"
 import ConfigResults from "@razzia/web/features/manager/components/configurations/ConfigResults"
 import ConfigSelectQuizz from "@razzia/web/features/manager/components/configurations/ConfigSelectQuizz"
@@ -14,6 +15,7 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
 const tabs = [
+  { nameKey: "manager:tabs.appearance", component: ConfigAppearance },
   {
     nameKey: "manager:tabs.play",
     component: ConfigSelectQuizz,
@@ -33,7 +35,7 @@ interface Props {
 }
 
 const Configurations = ({ data }: Props) => {
-  const [selectedTab, setSelectedTab] = useState(0)
+  const [selectedTab, setSelectedTab] = useState(1)
   const { reset } = useManagerStore()
   const { socket } = useSocket()
   const { t } = useTranslation()
@@ -50,7 +52,7 @@ const Configurations = ({ data }: Props) => {
 
   return (
     <ConfigProvider data={data}>
-      <Card className="max-h-[80svh] w-full max-w-md">
+      <Card className="max-h-[80svh] w-full max-w-xl">
         <div className="mb-4 flex items-center justify-between">
           <p className="text-lg font-semibold">
             {t("manager:configurationsTitle")}
@@ -66,7 +68,7 @@ const Configurations = ({ data }: Props) => {
             </button>
           </div>
         </div>
-        <div className="bg-muted flex shrink-0 overflow-hidden rounded-lg">
+        <div className="bg-muted grid shrink-0 grid-cols-2 rounded-lg sm:grid-cols-4">
           {tabs.map((tab, index) => (
             <ConfigTabButton
               key={tab.nameKey}

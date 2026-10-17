@@ -1,5 +1,9 @@
 import asEventLogo from "@razzia/web/assets/as-event-logo.png"
-import type { ReactEventHandler } from "react"
+import { useSyncExternalStore, type ReactEventHandler } from "react"
+import {
+  appearanceSchema,
+  DEFAULT_APPEARANCE,
+} from "@razzia/common/types/appearance"
 import { z } from "zod"
 
 const brandingSchema = z.object({
@@ -10,17 +14,33 @@ const brandingSchema = z.object({
   logo: z.string().optional(),
   favicon: z.string().optional(),
   background: z.string().optional(),
+  music: appearanceSchema.shape.music.optional(),
 })
 
 export type BrandingTheme = z.infer<typeof brandingSchema>
 
 const defaultBranding: BrandingTheme = {
+  ...DEFAULT_APPEARANCE,
   appName: "AS Event · Quiz Live",
   logo: asEventLogo,
   favicon: asEventLogo,
 }
 
 let current: BrandingTheme = defaultBranding
+
+const listeners = new Set<() => void>()
+
+export const useBranding = () =>
+  useSyncExternalStore(
+    (listener) => {
+      listeners.add(listener)
+
+      return () => {
+        listeners.delete(listener)
+      }
+    },
+    () => current,
+  )
 
 export const getBranding = (): BrandingTheme | null => current
 
@@ -39,6 +59,10 @@ export const loadBranding = async (): Promise<BrandingTheme | null> => {
     current = parsed.success
       ? { ...defaultBranding, ...parsed.data }
       : defaultBranding
+
+    listeners.forEach((listener) => {
+      listener()
+    })
 
     return current
   } catch {

@@ -16,7 +16,7 @@ interface GameConfig {
 
 const inContainerPath = process.env.CONFIG_PATH
 
-const getPath = (path = "") =>
+export const getPath = (path = "") =>
   inContainerPath
     ? resolve(inContainerPath, path)
     : resolve(process.cwd(), "../../config", path)

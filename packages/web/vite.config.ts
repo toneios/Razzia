@@ -14,6 +14,8 @@ const brandingDir = fileURLToPath(
 
 const brandingMimeTypes: Record<string, string> = {
   ".json": "application/json",
+  ".mp3": "audio/mpeg",
+  ".wav": "audio/wav",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",

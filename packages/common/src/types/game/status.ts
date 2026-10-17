@@ -54,6 +54,7 @@ export interface CommonStatusDataMap {
 interface ManagerExtraStatus {
   SHOW_ROOM: { text: string; inviteCode?: string }
   SHOW_RESPONSES: {
+    revealEndsAt: number
     question: string
     responses: Record<number, number>
     solutions: number[]

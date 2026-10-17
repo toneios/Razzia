@@ -187,9 +187,17 @@ button:not(:disabled),
 .as-event-backdrop {
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 50% 0%, #b3986e24 0%, transparent 55%),
+    radial-gradient(
+      ellipse at 50% 0%,
+      color-mix(in srgb, var(--color-brand) 14%, transparent) 0%,
+      transparent 55%
+    ),
     radial-gradient(ellipse at 90% 80%, #5c426526 0%, transparent 45%),
-    linear-gradient(160deg, #141317, #08090d 70%);
+    linear-gradient(
+      160deg,
+      var(--color-secondary),
+      color-mix(in srgb, var(--color-secondary) 65%, black) 70%
+    );
 }
 
 .as-event-beam {
@@ -198,7 +206,12 @@ button:not(:disabled),
   width: 38%;
   height: 140%;
   transform-origin: top center;
-  background: linear-gradient(180deg, #b3986e28, #b3986e08 55%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-brand) 16%, transparent),
+    color-mix(in srgb, var(--color-brand) 3%, transparent) 55%,
+    transparent
+  );
   clip-path: polygon(47% 0%, 53% 0%, 100% 100%, 0% 100%);
   filter: blur(12px);
 }
@@ -230,7 +243,7 @@ button:not(:disabled),
   filter: drop-shadow(0 0 30px #b3986e20);
 }
 .as-event-wordmark {
-  color: #ddc9a9;
+  color: var(--color-brand);
 }
 
 .as-event-entry input:focus-visible,

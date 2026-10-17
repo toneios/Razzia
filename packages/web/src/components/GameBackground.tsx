@@ -1,7 +1,7 @@
-import { getBranding } from "@razzia/web/branding"
+import { useBranding } from "@razzia/web/branding"
 
 const GameBackground = () => {
-  const background = getBranding()?.background
+  const { background } = useBranding()
 
   return (
     <div
@@ -10,6 +10,7 @@ const GameBackground = () => {
     >
       {background && (
         <img
+          key={background}
           className="absolute inset-0 h-full w-full object-cover opacity-40"
           src={background}
           alt=""

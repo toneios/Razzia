@@ -1,6 +1,6 @@
 # AS Event : joueurs, projection et régie
 
-Cette branche part de Razzia **3.1.0**. Elle ajoute un écran public indépendant et une révélation manuelle des réponses.
+Cette branche part de Razzia **3.1.0**. Elle ajoute un écran public indépendant et une révélation automatique des réponses pendant dix secondes.
 
 ## Utilisation
 
@@ -8,9 +8,17 @@ Cette branche part de Razzia **3.1.0**. Elle ajoute un écran public indépendan
 - **Régie** : ouvrir `/manager`, choisir le quiz et créer la partie. Le bouton **Ouvrir la projection** ouvre `/projection` dans un nouvel onglet. Cette adresse courte peut aussi être ouverte sur un autre ordinateur : saisir le mot de passe animateur et le PIN de la partie.
 - **Projection** : déplacer cet onglet sur le projecteur, cliquer sur **Activer la projection et le son**. Ce clic demande le plein écran et permet au navigateur d'activer le son. `Échap` quitte le plein écran ; `F11` permet de le remettre sur Windows. Les restrictions de lecture automatique du navigateur peuvent nécessiter une interaction supplémentaire pour les médias.
 - Les commandes de jeu et la suppression des joueurs restent sur la régie. Son coupé par défaut sur la régie pour éviter un doublon ; la case **Son sur la régie** permet de l'activer si nécessaire. Le comportement sonore des téléphones reste celui de Razzia.
-- Après le chrono (ou dès que tous ont répondu), les réponses sont verrouillées. Cliquer **Révéler les réponses**, puis **Suivant** pour le classement/podium, puis **Suivant** pour la question suivante.
+- Après le chrono (ou dès que tous ont répondu), les bonnes réponses sont révélées automatiquement pendant **10 secondes**, avec un compte à rebours. Le classement (ou le podium final) apparaît ensuite automatiquement. Le classement reste affiché jusqu’au clic de la régie sur **Suivant** : la question suivante ne démarre jamais seule.
 - La projection ne compte pas comme un joueur. Elle peut être fermée, rouverte ou reconnectée sans remplacer la régie. La projection exige le mot de passe animateur et le PIN. Le serveur vérifie aussi les liens directs : le PIN ou l’identifiant de partie seuls ne donnent aucun accès. Un jeton limité à cette partie est conservé dans la session de l’onglet pour les actualisations/reconnexions ; le mot de passe n’est pas conservé par l’application. Ce jeton ne donne aucun droit de gestion et cesse de fonctionner quand la partie est supprimée ou le serveur redémarre.
 - Les parties restent en mémoire : une mise à jour/redémarrage interrompt la partie. Le serveur conserve les règles de reconnexion/expiration de Razzia ; une déconnexion de la régie avant le début ferme la salle.
+
+## Apparence depuis la régie
+
+Dans `/manager`, ouvrir **Apparence** pour changer les couleurs principales et les quatre couleurs de réponses, importer un fond (PNG/JPEG/WebP, 4 Mo maximum) et une musique (MP3/WAV, 15 Mo maximum), régler le volume ou couper la musique. Cliquer **Enregistrer** applique les réglages aux écrans connectés. Le logo et les autres champs personnalisés existants sont conservés.
+
+La musique joue dans la salle d’attente, pendant les réponses et leur révélation. Elle reste coupée sur les téléphones, respecte la case son de la régie et s’arrête pendant les questions audio/vidéo. Activer le son sur la projection par son bouton habituel.
+
+Les fichiers et réglages sont enregistrés dans `config/branding` sur le PC (ou le dossier `CONFIG_PATH/branding` du serveur), hors du code Git. Les mises à jour du dépôt les conservent. Les boutons de restauration permettent de retrouver le fond et la musique AS Event par défaut.
 
 ## Identité AS Event
 

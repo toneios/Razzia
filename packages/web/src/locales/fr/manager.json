@@ -40,6 +40,29 @@
   "tabs": {
     "play": "Jouer",
     "quizz": "Quizz",
-    "results": "Résultats"
+    "results": "Résultats",
+    "appearance": "Apparence"
+  },
+  "appearance": {
+    "help": "Personnalise les écrans de cette installation. Enregistre pour appliquer les changements sur les appareils connectés. La musique de fond joue sur la projection, et sur la régie si son son est activé.",
+    "primary": "Boutons",
+    "secondary": "Fond",
+    "brand": "Accent",
+    "answers": "Couleurs des réponses",
+    "background": "Image de fond (PNG, JPG, WebP · 4 Mo max)",
+    "defaultBackground": "Revenir au fond de scène",
+    "musicEnabled": "Activer la musique de fond",
+    "music": "Musique en boucle (MP3, WAV · 15 Mo max)",
+    "volume": "Volume de la musique",
+    "defaultMusic": "Revenir à la musique d’origine",
+    "reset": "Rétablir le thème AS Event",
+    "save": "Enregistrer l’apparence",
+    "saved": "Apparence enregistrée et appliquée.",
+    "uploaded": "Fichier importé. Clique sur Enregistrer pour l’appliquer.",
+    "sending": "Envoi en cours…",
+    "timeout": "Envoi trop long. Vérifie la connexion puis réessaie.",
+    "readError": "Impossible de lire le thème existant.",
+    "saveError": "Enregistrement impossible. Vérifie les valeurs ou les droits du dossier de configuration.",
+    "uploadError": "Import impossible. Vérifie le format et la taille du fichier."
   }
 }

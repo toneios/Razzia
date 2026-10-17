@@ -1,3 +1,5 @@
+import { EVENTS } from "@razzia/common/constants"
+import { loadBranding, applyBranding } from "@razzia/web/branding"
 import type {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -72,13 +74,23 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
-    socketClient.on("connect", () => setIsConnected(true))
+    const refreshBranding = () => {
+      void loadBranding().then(applyBranding)
+    }
+    const onConnect = () => {
+      setIsConnected(true)
+      refreshBranding()
+    }
+    socketClient.on("connect", onConnect)
+    socketClient.on(EVENTS.APPEARANCE.CHANGED, refreshBranding)
     socketClient.on("disconnect", () => setIsConnected(false))
     socketClient.on("connect_error", (err) => {
       console.error("Connection error:", err.message)
     })
 
     return () => {
+      socketClient.off("connect", onConnect)
+      socketClient.off(EVENTS.APPEARANCE.CHANGED, refreshBranding)
       socketClient.disconnect()
     }
   }, [])

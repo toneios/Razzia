@@ -42,5 +42,6 @@
   "projectionChecking": "Vérification…",
   "projectionInvalidForm": "Saisis le mot de passe et un PIN de 6 chiffres.",
   "projectionStorageError": "Le navigateur bloque le stockage de session. Autorise-le pour ouvrir la projection.",
-  "projectionTimeout": "Le serveur ne répond pas. Réessaie."
+  "projectionTimeout": "Le serveur ne répond pas. Réessaie.",
+  "leaderboardIn": "Classement dans {{count}} s"
 }

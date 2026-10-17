@@ -1,5 +1,4 @@
 import { EVENTS, MEDIA_TYPES, NO_TIME_LIMIT } from "@razzia/common/constants"
-import type { QuestionMediaType } from "@razzia/common/types/game"
 import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
 import QuestionMedia from "@razzia/web/components/QuestionMedia"
 import {
@@ -9,7 +8,8 @@ import {
 import { usePlayerStore } from "@razzia/web/features/game/stores/player"
 import { SFX } from "@razzia/web/features/game/utils/constants"
 import { QUESTION_REGISTRY } from "@razzia/web/features/questions"
-import { useEffect, useState } from "react"
+import { useBackgroundMusic } from "@razzia/web/features/game/utils/useBackgroundMusic"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import {
   useGameView,
@@ -35,11 +35,9 @@ const Answers = ({
     volume: 0.1,
   })
 
-  const [playMusic, { stop: stopMusic }] = useSound(SFX.ANSWERS.MUSIC, {
-    volume: 0.2,
-    interrupt: true,
-    loop: true,
-  })
+  useBackgroundMusic(
+    media?.type === MEDIA_TYPES.AUDIO || media?.type === MEDIA_TYPES.VIDEO,
+  )
 
   const handleSubmit = (answerKeys: number[]) => {
     if (view.role !== "player" || !player || !gameId) {
@@ -54,24 +52,6 @@ const Answers = ({
     })
     sfxPop()
   }
-
-  useEffect(() => {
-    const disabledMusicMedia: QuestionMediaType[] = [
-      MEDIA_TYPES.AUDIO,
-      MEDIA_TYPES.VIDEO,
-    ]
-
-    if (disabledMusicMedia.includes(media?.type)) {
-      return
-    }
-
-    playMusic()
-
-    return () => {
-      stopMusic()
-    }
-    // oxlint-disable-next-line
-  }, [playMusic])
 
   useEvent(EVENTS.GAME.COOLDOWN, (sec) => {
     setCooldown(sec)

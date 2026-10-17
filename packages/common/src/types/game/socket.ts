@@ -1,3 +1,4 @@
+import type { Appearance } from "@razzia/common/types/appearance"
 import { EVENTS } from "@razzia/common/constants"
 import type {
   GameResult,
@@ -38,6 +39,14 @@ export interface ProjectionSnapshot {
 }
 
 export interface ServerToClientEvents {
+  [EVENTS.APPEARANCE.DATA]: (_data: Appearance) => void
+  [EVENTS.APPEARANCE.SAVED]: () => void
+  [EVENTS.APPEARANCE.CHANGED]: () => void
+  [EVENTS.APPEARANCE.ERROR]: (_message: string) => void
+  [EVENTS.APPEARANCE.UPLOADED]: (_data: {
+    kind: "background" | "music"
+    url: string
+  }) => void
   [EVENTS.PROJECTION.AUTHORIZED]: (_data: {
     gameId: string
     token: string
@@ -109,6 +118,12 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
+  [EVENTS.APPEARANCE.GET]: () => void
+  [EVENTS.APPEARANCE.SAVE]: (_data: Appearance) => void
+  [EVENTS.APPEARANCE.UPLOAD]: (_data: {
+    kind: "background" | "music"
+    base64: string
+  }) => void
   [EVENTS.PROJECTION.OPEN]: (_message: {
     password: string
     inviteCode: string
