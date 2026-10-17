@@ -1,3 +1,4 @@
+import { useBackgroundMusic } from "@razzia/web/features/game/utils/useBackgroundMusic"
 import { MEDIA_TYPES } from "@razzia/common/constants"
 import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
 import { SFX } from "@razzia/web/features/game/utils/constants"
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const Question = ({ data: { question, media, cooldown } }: Props) => {
+  useBackgroundMusic()
   const [sfxShow] = useSound(SFX.SHOW_SOUND, { volume: 0.5 })
 
   useEffect(() => {

@@ -1,4 +1,3 @@
-import { useBackgroundMusic } from "@razzia/web/features/game/utils/useBackgroundMusic"
 import * as AlertDialog from "@radix-ui/react-alert-dialog"
 import { EVENTS } from "@razzia/common/constants"
 import type { Player } from "@razzia/common/types/game"
@@ -19,7 +18,6 @@ interface Props {
 }
 
 const Room = ({ data: { text, inviteCode } }: Props) => {
-  useBackgroundMusic()
   const { gameId } = useManagerStore()
   const { socket } = useSocket()
   const webUrl = window.location.origin

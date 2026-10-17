@@ -1,4 +1,11 @@
 export const EVENTS = {
+  MUSIC: {
+    LIST: "music:list",
+    FILES: "music:files",
+    IMPORT: "music:import",
+    IMPORTED: "music:imported",
+    ERROR: "music:error",
+  },
   APPEARANCE: {
     GET: "appearance:get",
     DATA: "appearance:data",

@@ -1,0 +1,117 @@
+import { EVENTS } from "@razzia/common/constants"
+import {
+  useEvent,
+  useSocket,
+} from "@razzia/web/features/game/contexts/socket-context"
+import { useQuizzEditor } from "@razzia/web/features/quizz/contexts/quizz-editor-context"
+import { useEffect, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
+import toast from "react-hot-toast"
+
+const MusicLibrary = () => {
+  const { socket, isConnected } = useSocket()
+  const { currentQuestion, questions, updateQuestion } = useQuizzEditor()
+  const { t } = useTranslation()
+  const [files, setFiles] = useState<string[]>([])
+  const [selected, setSelected] = useState("")
+  const [busy, setBusy] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const target = useRef<string | null>(null)
+  useEvent(EVENTS.MUSIC.FILES, (names) => {
+    setFiles(names)
+    setLoaded(true)
+    setSelected((previous) =>
+      names.includes(previous) ? previous : (names[0] ?? ""),
+    )
+  })
+  useEvent(EVENTS.MUSIC.IMPORTED, ({ url }) => {
+    if (!target.current) {
+      return
+    }
+
+    const index = questions.findIndex(
+      (question) => question.id === target.current,
+    )
+
+    if (index >= 0) {
+      updateQuestion(index, { media: { type: "audio", url, startAt: 0 } })
+    }
+
+    target.current = null
+    setBusy(false)
+    toast.success(t("quizz:blindTest.uploaded"))
+  })
+  useEvent(EVENTS.MUSIC.ERROR, (message) => {
+    target.current = null
+    setBusy(false)
+    toast.error(t(message))
+  })
+  useEffect(() => {
+    if (isConnected) {
+      socket.emit(EVENTS.MUSIC.LIST)
+    }
+  }, [socket, isConnected])
+  useEffect(() => {
+    if (!busy) {
+      return
+    }
+
+    const timer = window.setTimeout(() => {
+      target.current = null
+      setBusy(false)
+      toast.error(t("quizz:blindTest.folderError"))
+    }, 45000)
+
+    return () => window.clearTimeout(timer)
+  }, [busy, t])
+
+  return (
+    <div className="w-full max-w-xl rounded-xl bg-white p-3 text-sm text-black">
+      <label className="block font-bold" htmlFor="music-library">
+        {t("quizz:blindTest.folderTitle")}
+      </label>
+      <p className="my-2">{t("quizz:blindTest.folderHelp")}</p>
+      <select
+        id="music-library"
+        className="w-full rounded border p-2"
+        value={selected}
+        disabled={busy || !isConnected}
+        onChange={(event) => setSelected(event.target.value)}
+      >
+        <option value="">{t("quizz:blindTest.choose")}</option>
+        {files.map((file) => (
+          <option key={file} value={file}>
+            {file}
+          </option>
+        ))}
+      </select>
+      {loaded && files.length === 0 && (
+        <p className="my-2">{t("quizz:blindTest.empty")}</p>
+      )}
+      <div className="mt-2 flex flex-wrap gap-2">
+        <button
+          type="button"
+          className="rounded border px-3 py-2"
+          disabled={busy || !isConnected}
+          onClick={() => socket.emit(EVENTS.MUSIC.LIST)}
+        >
+          {t("quizz:blindTest.refresh")}
+        </button>
+        <button
+          type="button"
+          className="bg-primary rounded px-3 py-2 text-white"
+          disabled={busy || !isConnected || !selected}
+          onClick={() => {
+            target.current = currentQuestion.id
+            setBusy(true)
+            socket.emit(EVENTS.MUSIC.IMPORT, selected)
+          }}
+        >
+          {t(busy ? "quizz:blindTest.sending" : "quizz:blindTest.useTrack")}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default MusicLibrary

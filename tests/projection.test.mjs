@@ -88,7 +88,12 @@ test(
       process.execPath,
       [resolvePath("packages/socket/dist/index.cjs")],
       {
-        env: { ...process.env, CONFIG_PATH: dir, SOCKET_PORT: String(port) },
+        env: {
+          ...process.env,
+          CONFIG_PATH: dir,
+          SOCKET_PORT: String(port),
+          MUSIC_PATH: join(dir, "music"),
+        },
         stdio: ["ignore", "pipe", "pipe"],
       },
     )
@@ -181,6 +186,33 @@ test(
         await readFile(join(dir, "branding/theme.json"), "utf8"),
       )
       assert.equal(stored.background, asset.url)
+      await mkdir(join(dir, "music"))
+      const mp3 = Buffer.concat([Buffer.from("ID3"), Buffer.alloc(32)])
+      await writeFile(join(dir, "music/Été 80.MP3"), mp3)
+      await writeFile(join(dir, "music/notes.txt"), "ignored")
+      let library = event(manager, "music:files")
+      manager.emit("music:list")
+      assert.deepEqual(await library, ["Été 80.MP3"])
+      await writeFile(join(dir, "music/Second.mp3"), mp3)
+      library = event(manager, "music:files")
+      manager.emit("music:list")
+      assert.equal((await library).length, 2)
+      const imported = event(manager, "music:imported")
+      manager.emit("music:import", "Été 80.MP3")
+      const track = await imported
+      assert.match(track.url, /^\/branding\/track-[a-f0-9-]+\.mp3$/u)
+      assert.deepEqual(await readFile(join(dir, track.url.slice(1))), mp3)
+      const invalidTrack = event(manager, "music:error")
+      manager.emit("music:import", "../game.json")
+      await invalidTrack
+      // Saving/loading must retain a server-relative audio URL and clip offset.
+      const quiz = JSON.parse(
+        await readFile(join(dir, "quizz/test.json"), "utf8"),
+      )
+      quiz.questions[0].media = { type: "audio", url: track.url, startAt: 42 }
+      const quizSaved = event(manager, "quizz:updateSuccess")
+      manager.emit("quizz:update", { id: "test", ...quiz })
+      await quizSaved
       const created = event(manager, "manager:gameCreated")
       manager.emit("game:create", "test")
       const { gameId, inviteCode } = await created
@@ -256,6 +288,8 @@ test(
       manager.emit("manager:startGame", { gameId })
       const question = await answers
       assert.equal(question.data.question, "First question")
+      assert.equal(question.data.media.startAt, 42)
+      assert.match(question.data.media.url, /^\/branding\/track-/u)
       assert.equal("solutions" in question.data, false)
       assert.equal(question.data.totalPlayer, 1)
       // Refresh/second display restores current phase and a live remaining timer.

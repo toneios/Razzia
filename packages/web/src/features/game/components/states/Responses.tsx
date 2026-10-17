@@ -8,7 +8,6 @@ import {
 import { calculatePercentages } from "@razzia/web/features/game/utils/score"
 import clsx from "clsx"
 import { useTranslation } from "react-i18next"
-import { useBackgroundMusic } from "@razzia/web/features/game/utils/useBackgroundMusic"
 import { useEffect, useState } from "react"
 import { useGameSound as useSound } from "@razzia/web/features/game/contexts/view-context"
 
@@ -25,7 +24,6 @@ const Responses = ({
     Math.max(0, Math.ceil((revealEndsAt - Date.now()) / 1000)),
   )
   const [sfxResults] = useSound(SFX.RESULTS_SOUND, { volume: 0.2 })
-  useBackgroundMusic()
 
   useEffect(() => {
     sfxResults()

@@ -16,7 +16,7 @@ Cette branche part de Razzia **3.1.0**. Elle ajoute un écran public indépendan
 
 Dans `/manager`, ouvrir **Apparence** pour changer les couleurs principales et les quatre couleurs de réponses, importer un fond (PNG/JPEG/WebP, 4 Mo maximum) et une musique (MP3/WAV, 15 Mo maximum), régler le volume ou couper la musique. Cliquer **Enregistrer** applique les réglages aux écrans connectés. Le logo et les autres champs personnalisés existants sont conservés.
 
-La musique joue dans la salle d’attente, pendant les réponses et leur révélation. Elle reste coupée sur les téléphones, respecte la case son de la régie et s’arrête pendant les questions audio/vidéo. Activer le son sur la projection par son bouton habituel.
+La musique d’ambiance joue uniquement pendant l’affichage de la question et le temps de réponse. Elle s’arrête dès la révélation et reste coupée au classement, au podium et dans la salle d’attente. Elle reste coupée sur les téléphones, respecte la case son de la régie et s’arrête pendant les questions audio/vidéo. Activer le son sur la projection par son bouton habituel.
 
 Les fichiers et réglages sont enregistrés dans `config/branding` sur le PC (ou le dossier `CONFIG_PATH/branding` du serveur), hors du code Git. Les mises à jour du dépôt les conservent. Les boutons de restauration permettent de retrouver le fond et la musique AS Event par défaut.
 
@@ -81,7 +81,7 @@ pnpm install --frozen-lockfile
 pnpm build
 pnpm exec tsc --noEmit -p packages/socket/tsconfig.json
 pnpm exec tsc --noEmit -p packages/web/tsconfig.app.json
-node --test tests/projection.test.mjs
+node --test tests/projection.test.mjs tests/branding.test.mjs
 bash -n scripts/razzia-update.sh
 ```
 
@@ -92,3 +92,13 @@ Le test démarre un serveur temporaire sur un port isolé avec des quiz et ident
 Après mise à jour du code, lancer `pnpm dev` depuis `D:\Dev\Razzia`. Sur le Mac, ouvrir `http://IP-DU-PC:3000/projection` (même réseau). Saisir le mot de passe utilisé dans la régie Windows et le PIN de la partie, puis activer la projection et le son. Le téléphone rejoint `/` avec le PIN seulement. Ne pas utiliser `localhost` sur le Mac : cela désignerait le Mac lui-même.
 
 La protection bloque les accès sans authentification, mais HTTP ne chiffre pas le mot de passe sur le réseau ; utiliser HTTPS pour un accès via un réseau non fiable ou Internet.
+
+## Blind test avec le dossier music sur Windows
+
+1. Déposer les MP3 dans `D:\Dev\Razzia\music` (sans sous-dossiers).
+2. Dans la régie, créer/modifier un quiz et ouvrir une question.
+3. Sous **Blind test · dossier music**, cliquer **Actualiser la liste**, choisir le morceau, puis **Utiliser pour cette question**.
+4. Régler **Début de l’extrait** en secondes, le temps de réponse, les choix et la bonne réponse. Enregistrer le quiz.
+5. Activer le son de la projection : l’extrait est lu pendant les réponses, sans musique d’ambiance superposée, puis coupé à la révélation. Les téléphones ne jouent pas l’extrait.
+
+La liste est réservée au manager et ignore les sous-dossiers et liens symboliques. Chaque morceau importé (MP3, 100 Mo max) est copié avec un nom neutre dans `config/branding` : renommer/supprimer le MP3 source ne casse pas le quiz. Un import direct MP3/WAV de 15 Mo maximum est aussi possible depuis l’éditeur. Les MP3 du dossier `music` sont exclus de Git. Pour un autre chemin de bibliothèque, définir `MUSIC_PATH` dans l’environnement du serveur ; lors d’un futur déploiement Proxmox, transférer aussi les fichiers `branding` et définir un chemin persistant pour cette bibliothèque.

@@ -1,4 +1,3 @@
-import { useBackgroundMusic } from "@razzia/web/features/game/utils/useBackgroundMusic"
 import { EVENTS } from "@razzia/common/constants"
 import type { ProjectionSnapshot } from "@razzia/common/types/game/socket"
 import { STATUS } from "@razzia/common/types/game/status"
@@ -22,12 +21,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { QRCodeSVG } from "qrcode.react"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-
-const LobbyMusic = () => {
-  useBackgroundMusic()
-
-  return null
-}
 
 const ProjectionPage = () => {
   const { gameId } = Route.useParams()
@@ -178,7 +171,6 @@ const ProjectionPage = () => {
           </button>
         </div>
       )}
-      {status?.name === STATUS.SHOW_ROOM && <LobbyMusic />}
       <GameWrapper statusName={status?.name} manager>
         {renderContent()}
       </GameWrapper>

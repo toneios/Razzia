@@ -1,3 +1,4 @@
+import { musicSocketHandlers } from "@razzia/socket/handlers/music"
 import type { Server } from "@razzia/common/types/game/socket"
 import { appearanceSocketHandlers } from "@razzia/socket/handlers/appearance"
 import { gameSocketHandlers } from "@razzia/socket/handlers/game"
@@ -23,6 +24,7 @@ io.listen(WS_PORT)
 const socketHandlers: SocketHandler[] = [
   managerSocketHandlers,
   appearanceSocketHandlers,
+  musicSocketHandlers,
   quizzSocketHandlers,
   gameSocketHandlers,
   resultsSocketHandlers,

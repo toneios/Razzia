@@ -44,5 +44,21 @@
     "single": "Single choice",
     "multi": "Multiple choice"
   },
-  "titleQuizzPlaceholder": "Quizz title..."
+  "titleQuizzPlaceholder": "Quizz title...",
+  "blindTest": {
+    "import": "Blind test · upload MP3 / WAV (15 MB max)",
+    "help": "The clip plays on the projection while answering and stops at the reveal. Add choices and mark the correct answer.",
+    "startAt": "Clip start (seconds)",
+    "duration": "The question answer timer sets the maximum playback duration.",
+    "uploaded": "Clip uploaded. Save the quiz to keep it.",
+    "error": "Upload failed. Check the connection, MP3/WAV format and 15 MB limit.",
+    "sending": "Uploading…",
+    "folderTitle": "Blind test · music folder",
+    "folderHelp": "Place MP3 files in the music folder at the Razzia root, then refresh the list.",
+    "choose": "Choose a track…",
+    "empty": "No MP3 files found in the music folder.",
+    "refresh": "Refresh list",
+    "useTrack": "Use for this question",
+    "folderError": "Could not read or import this MP3. Check the music folder and file (100 MB max)."
+  }
 }

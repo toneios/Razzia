@@ -9,7 +9,16 @@ export const questionMediaValidator = z.object({
   type: z
     .enum([MEDIA_TYPES.IMAGE, MEDIA_TYPES.VIDEO, MEDIA_TYPES.AUDIO])
     .optional(),
-  url: z.url("errors:quizz.invalidMediaUrl"),
+  url: z.union([
+    z.url("errors:quizz.invalidMediaUrl"),
+    z
+      .string()
+      .regex(
+        /^\/branding\/[a-zA-Z0-9_-]+\.(?:mp3|wav)$/u,
+        "errors:quizz.invalidMediaUrl",
+      ),
+  ]),
+  startAt: z.number().min(0).max(86400).optional(),
 })
 
 const multiOptionsValidator = z.object({

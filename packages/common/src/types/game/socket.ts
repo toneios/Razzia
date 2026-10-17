@@ -39,6 +39,9 @@ export interface ProjectionSnapshot {
 }
 
 export interface ServerToClientEvents {
+  [EVENTS.MUSIC.FILES]: (_files: string[]) => void
+  [EVENTS.MUSIC.IMPORTED]: (_data: { url: string }) => void
+  [EVENTS.MUSIC.ERROR]: (_message: string) => void
   [EVENTS.APPEARANCE.DATA]: (_data: Appearance) => void
   [EVENTS.APPEARANCE.SAVED]: () => void
   [EVENTS.APPEARANCE.CHANGED]: () => void
@@ -118,6 +121,8 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
+  [EVENTS.MUSIC.LIST]: () => void
+  [EVENTS.MUSIC.IMPORT]: (_name: string) => void
   [EVENTS.APPEARANCE.GET]: () => void
   [EVENTS.APPEARANCE.SAVE]: (_data: Appearance) => void
   [EVENTS.APPEARANCE.UPLOAD]: (_data: {

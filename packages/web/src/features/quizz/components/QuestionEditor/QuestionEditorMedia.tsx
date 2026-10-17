@@ -1,3 +1,5 @@
+import MusicLibrary from "./MusicLibrary"
+import BlindTestUpload from "./BlindTestUpload"
 import type { QuestionMediaType } from "@razzia/common/types/game"
 import { questionMediaValidator } from "@razzia/common/validators/quizz"
 import Button from "@razzia/web/components/Button"
@@ -45,9 +47,39 @@ const QuestionEditorMedia = () => {
   }
 
   return (
-    <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-3 p-4">
-      <QuestionMedia media={currentQuestion.media} alt="Question Media" />
+    <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-3 overflow-y-auto p-4">
+      <QuestionMedia
+        media={currentQuestion.media}
+        alt="Question Media"
+        preview
+      />
+      <MusicLibrary />
+      <BlindTestUpload />
 
+      {questionMedia?.type === "audio" && (
+        <label className="rounded-lg bg-white p-3 text-sm text-black">
+          {t("quizz:blindTest.startAt")}
+          <Input
+            type="number"
+            min="0"
+            max="86400"
+            step="1"
+            value={questionMedia.startAt ?? 0}
+            onChange={(event) =>
+              updateQuestion(currentIndex, {
+                media: {
+                  ...questionMedia,
+                  startAt: Math.max(
+                    0,
+                    Math.min(86400, Number(event.target.value)),
+                  ),
+                },
+              })
+            }
+          />
+          <p className="mt-2">{t("quizz:blindTest.duration")}</p>
+        </label>
+      )}
       {!questionMedia?.type && (
         <Card className="my-auto flex max-h-100 w-full max-w-xl flex-1 flex-col items-center justify-center gap-2">
           <ImageOff className="stroke-accent-foreground size-16" />

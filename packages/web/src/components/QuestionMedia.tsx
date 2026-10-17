@@ -6,9 +6,10 @@ import { useGameView } from "@razzia/web/features/game/contexts/view-context"
 interface Props {
   media?: QuestionMediaType
   alt?: string
+  preview?: boolean
 }
 
-const QuestionMedia = ({ media, alt = "" }: Props) => {
+const QuestionMedia = ({ media, alt = "", preview = false }: Props) => {
   const view = useGameView()
 
   if (media?.type === MEDIA_TYPES.IMAGE) {
@@ -34,13 +35,26 @@ const QuestionMedia = ({ media, alt = "" }: Props) => {
   }
 
   if (media?.type === MEDIA_TYPES.AUDIO) {
+    if (view.role === "player" && !preview) {
+      return null
+    }
+
     return (
       <audio
         className="m-4 mb-2 w-auto rounded-md"
+        key={`${media.url}:${media.startAt ?? 0}`}
         src={media.url}
-        autoPlay
-        muted={!view.sound}
-        controls={view.role !== "projection"}
+        preload="auto"
+        onLoadedMetadata={(event) => {
+          const audio = event.currentTarget
+          audio.currentTime = Math.min(
+            media.startAt ?? 0,
+            Math.max(0, audio.duration - 0.1),
+          )
+        }}
+        autoPlay={!preview}
+        muted={!preview && !view.sound}
+        controls={preview || view.role !== "projection"}
       />
     )
   }
