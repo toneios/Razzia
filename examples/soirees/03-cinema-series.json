@@ -1,0 +1,151 @@
+{
+  "id": "as-event-03-cinema-series-v1",
+  "subject": "AS Event — Cinéma et séries : cultes à partager",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Comment s’appelle le sorcier à la cicatrice en forme d’éclair ?",
+      "answers": [
+        "Drago Malefoy",
+        "Ron Weasley",
+        "Neville Londubat",
+        "Harry Potter"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Dans « Retour vers le futur », quelle voiture sert de machine à voyager dans le temps ?",
+      "answers": [
+        "Une Ferrari",
+        "Une Porsche 911",
+        "Une DeLorean",
+        "Une Mustang"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel personnage de « Star Wars » dit « Je suis ton père » à Luke ?",
+      "answers": ["Obi-Wan Kenobi", "Dark Vador", "Yoda", "Han Solo"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel est le prénom du lion héros du « Roi Lion » ?",
+      "answers": ["Simba", "Mufasa", "Scar", "Timon"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Dans quelle série retrouve-t-on Monica, Rachel, Phoebe, Ross, Joey et Chandler ?",
+      "answers": [
+        "How I Met Your Mother",
+        "The Big Bang Theory",
+        "Modern Family",
+        "Friends"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel acteur joue Jack Dawson dans « Titanic » ?",
+      "answers": [
+        "Brad Pitt",
+        "Matt Damon",
+        "Leonardo DiCaprio",
+        "Johnny Depp"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel héros porte un fouet et un chapeau et exerce le métier d’archéologue ?",
+      "answers": ["James Bond", "Indiana Jones", "Ethan Hunt", "Jason Bourne"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Comment s’appelle le cow-boy dans « Toy Story » ?",
+      "answers": ["Woody", "Buzz", "Rex", "Andy"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quelle famille habite à Springfield dans une célèbre série animée ?",
+      "answers": ["Les Griffin", "Les Pierrafeu", "Les Dalton", "Les Simpson"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quelle série met en scène le monde à l’envers et la ville de Hawkins ?",
+      "answers": ["Wednesday", "Dark", "Stranger Things", "Lost"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Dans « Le Seigneur des anneaux », qui est chargé de porter l’Anneau jusqu’au Mordor ?",
+      "answers": ["Aragorn", "Frodon", "Legolas", "Gimli"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel acteur incarne OSS 117 dans « Le Caire, nid d’espions » ?",
+      "answers": [
+        "Jean Dujardin",
+        "Gilles Lellouche",
+        "Omar Sy",
+        "Franck Dubosc"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    }
+  ]
+}

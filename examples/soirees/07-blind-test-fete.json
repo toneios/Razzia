@@ -1,0 +1,156 @@
+{
+  "id": "as-event-07-blind-test-fete-v1",
+  "subject": "AS Event — Blind test : les tubes de la fête",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Blind test 01 — Qui interprète cet extrait ?",
+      "answers": ["Boney M.", "Bee Gees", "Earth, Wind & Fire", "ABBA"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 02 — Qui interprète cet extrait ?",
+      "answers": ["The Rolling Stones", "The Beatles", "Queen", "Elton John"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 03 — Qui interprète cet extrait ?",
+      "answers": [
+        "Daniel Balavoine",
+        "Jean-Jacques Goldman",
+        "Michel Berger",
+        "Patrick Bruel"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 04 — Qui interprète cet extrait ?",
+      "answers": [
+        "Images",
+        "Gold",
+        "Début de soirée",
+        "Partenaire Particulier"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 05 — Qui interprète cet extrait ?",
+      "answers": ["Corona", "Rozalla", "Whigfield", "Gala"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 06 — Qui interprète cet extrait ?",
+      "answers": [
+        "Ricky Martin",
+        "Enrique Iglesias",
+        "Lou Bega",
+        "Las Ketchup"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 07 — Qui interprète cet extrait ?",
+      "answers": ["LMFAO", "The Black Eyed Peas", "Maroon 5", "OutKast"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 08 — Qui interprète cet extrait ?",
+      "answers": ["Stromae", "Maître Gims", "Soprano", "Orelsan"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 09 — Qui interprète cet extrait ?",
+      "answers": ["Jennifer Lopez", "Beyoncé", "Rihanna", "Shakira"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 10 — Qui interprète cet extrait ?",
+      "answers": [
+        "Earth, Wind & Fire",
+        "Chic",
+        "Kool & the Gang",
+        "Village People"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 11 — Qui interprète cet extrait ?",
+      "answers": [
+        "Jean-Pierre Mader",
+        "Thierry Hazard",
+        "François Feldman",
+        "Patrick Hernandez"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 12 — Qui interprète cet extrait ?",
+      "answers": [
+        "Michel Sardou",
+        "Michel Delpech",
+        "Joe Dassin",
+        "Johnny Hallyday"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    }
+  ]
+}

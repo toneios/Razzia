@@ -1,0 +1,151 @@
+{
+  "id": "as-event-04-annees-80-90-v1",
+  "subject": "AS Event — Années 80–90 : génération souvenirs",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Quel groupe interprète « Nuit de folie » ?",
+      "answers": ["Début de soirée", "Images", "Gold", "Cock Robin"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Qui interprète « Voyage, voyage » ?",
+      "answers": ["Jeanne Mas", "Lio", "Kim Wilde", "Desireless"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel artiste chante « Take on Me » avec son groupe ?",
+      "answers": [
+        "Bono avec U2",
+        "Robert Smith avec The Cure",
+        "Morten Harket avec a-ha",
+        "Simon Le Bon avec Duran Duran"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quelle chanteuse interprète « Ella, elle l’a » ?",
+      "answers": [
+        "Véronique Sanson",
+        "France Gall",
+        "Catherine Ringer",
+        "Céline Dion"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel groupe interprète « Partenaire particulier » ?",
+      "answers": ["Partenaire Particulier", "Indochine", "Téléphone", "Gold"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel groupe interprète « La Tribu de Dana » ?",
+      "answers": ["IAM", "NTM", "Alliance Ethnik", "Manau"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quelle chanteuse interprète « Freed from Desire » ?",
+      "answers": ["Corona", "Haddaway", "Gala", "Rozalla"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel groupe interprète « Wannabe » ?",
+      "answers": ["All Saints", "Spice Girls", "Destiny’s Child", "TLC"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel groupe interprète « Smells Like Teen Spirit » ?",
+      "answers": ["Nirvana", "Pearl Jam", "Oasis", "Blur"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quelle console de Sony a été lancée au Japon en 1994 ?",
+      "answers": [
+        "La PlayStation 2",
+        "La Nintendo 64",
+        "La Dreamcast",
+        "La PlayStation"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel objet était un petit animal virtuel à nourrir et à surveiller ?",
+      "answers": [
+        "Le Rubik’s Cube",
+        "Le Walkman",
+        "Le Tamagotchi",
+        "Le Discman"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quelle série française met en scène Hélène et ses amis étudiants musiciens ?",
+      "answers": [
+        "Premiers Baisers",
+        "Hélène et les Garçons",
+        "Le Miel et les Abeilles",
+        "Les Filles d’à côté"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    }
+  ]
+}

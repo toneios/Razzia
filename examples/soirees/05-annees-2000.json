@@ -1,0 +1,141 @@
+{
+  "id": "as-event-05-annees-2000-v1",
+  "subject": "AS Event — Années 2000 : tubes et nostalgie",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Qui interprète « Femme Like U » ?",
+      "answers": ["Willy Denzey", "K.Maro", "Matt Houston", "Tragédie"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel groupe interprète « Dragostea din tei » ?",
+      "answers": ["O-Zone", "t.A.T.u.", "Aqua", "Eiffel 65"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Qui interprète « Toxic » ?",
+      "answers": [
+        "Christina Aguilera",
+        "Avril Lavigne",
+        "P!nk",
+        "Britney Spears"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel groupe interprète « Hey Ya! » ?",
+      "answers": [
+        "The Black Eyed Peas",
+        "Gnarls Barkley",
+        "OutKast",
+        "N.E.R.D"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quelle chanteuse interprète « Poker Face » ?",
+      "answers": ["Katy Perry", "Lady Gaga", "Rihanna", "Kesha"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel groupe interprète « Seven Nation Army » ?",
+      "answers": ["The White Stripes", "Muse", "The Strokes", "Arctic Monkeys"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Qui interprète « Un monde parfait » ?",
+      "answers": ["Alizée", "Priscilla", "Lorie", "Ilona Mitrecey"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel groupe interprète « In the End » ?",
+      "answers": ["Sum 41", "Green Day", "Linkin Park", "Blink-182"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel duo interprète « Crazy » en 2006 ?",
+      "answers": [
+        "Daft Punk",
+        "Gnarls Barkley",
+        "The Chemical Brothers",
+        "The Ting Tings"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quelle chanteuse interprète « Hips Don’t Lie », avec Wyclef Jean ?",
+      "answers": ["Shakira", "Jennifer Lopez", "Beyoncé", "Christina Aguilera"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel logiciel était connu pour ses conversations et ses « wizz » ?",
+      "answers": ["Skype", "ICQ", "Teams", "MSN Messenger"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel ogre vert devient le héros d’un film d’animation sorti en 2001 ?",
+      "answers": ["Fiona", "Gru", "Shrek", "Sulley"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 20,
+      "maxPoints": 1000,
+      "penalty": 0
+    }
+  ]
+}
