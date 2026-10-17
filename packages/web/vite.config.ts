@@ -16,6 +16,8 @@ const brandingMimeTypes: Record<string, string> = {
   ".json": "application/json",
   ".mp3": "audio/mpeg",
   ".wav": "audio/wav",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",

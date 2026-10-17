@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Question = ({ data: { question, media, cooldown } }: Props) => {
-  useBackgroundMusic()
+  useBackgroundMusic(Boolean(media?.type))
   const [sfxShow] = useSound(SFX.SHOW_SOUND, { volume: 0.5 })
 
   useEffect(() => {

@@ -50,7 +50,7 @@
     "help": "L’extrait joue sur la projection pendant les réponses et s’arrête à la révélation. Ajoute les choix et coche la bonne réponse.",
     "startAt": "Début de l’extrait (en secondes)",
     "duration": "Le temps de réponse de la question fixe la durée maximale de lecture.",
-    "uploaded": "Extrait importé. Enregistre le quiz pour le conserver.",
+    "uploaded": "Média importé. Enregistre le quiz pour le conserver.",
     "error": "Import impossible. Vérifie la connexion, le format MP3/WAV et la limite de 15 Mo.",
     "sending": "Import en cours…",
     "folderTitle": "Blind test · dossier music",
@@ -59,6 +59,12 @@
     "empty": "Aucun MP3 trouvé dans le dossier music.",
     "refresh": "Actualiser la liste",
     "useTrack": "Utiliser pour cette question",
-    "folderError": "Impossible de lire ou importer ce MP3. Vérifie le dossier music et le fichier (100 Mo max)."
+    "folderError": "Impossible de lire ou importer ce MP3. Vérifie le dossier music et le fichier (100 Mo max).",
+    "libraryTitle": "Médias · dossiers music / image / video",
+    "libraryHelp": "Dépose tes fichiers dans les dossiers à la racine de Razzia, choisis le type puis actualise la liste.",
+    "libraryEmpty": "Aucun fichier compatible dans ce dossier.",
+    "mediaType": "Type de média",
+    "useMedia": "Utiliser pour cette question",
+    "mediaError": "Import impossible. Vérifie le fichier et son format : MP3 (100 Mo), image PNG/JPG/WebP (20 Mo), vidéo MP4/WebM (200 Mo)."
   }
 }

@@ -93,6 +93,8 @@ test(
           CONFIG_PATH: dir,
           SOCKET_PORT: String(port),
           MUSIC_PATH: join(dir, "music"),
+          IMAGE_PATH: join(dir, "image"),
+          VIDEO_PATH: join(dir, "video"),
         },
         stdio: ["ignore", "pipe", "pipe"],
       },
@@ -213,6 +215,55 @@ test(
       const quizSaved = event(manager, "quizz:updateSuccess")
       manager.emit("quizz:update", { id: "test", ...quiz })
       await quizSaved
+      await mkdir(join(dir, "image"))
+      await mkdir(join(dir, "video"))
+      const picture = Buffer.from(png, "base64")
+      const movie = Buffer.concat([
+        Buffer.from([0, 0, 0, 24]),
+        Buffer.from("ftypisom"),
+        Buffer.alloc(20),
+      ])
+      await writeFile(join(dir, "image/Photo test.png"), picture)
+      await writeFile(join(dir, "video/Clip test.mp4"), movie)
+      for (const [kind, name, bytes] of [
+        ["image", "Photo test.png", picture],
+        ["video", "Clip test.mp4", movie],
+      ]) {
+        const listed = event(manager, "mediaLibrary:files")
+        manager.emit("mediaLibrary:list", kind)
+        // Each media kind has an independent library.
+        // oxlint-disable-next-line no-await-in-loop
+        assert.deepEqual(await listed, { kind, files: [name] })
+        const added = event(manager, "mediaLibrary:imported")
+        manager.emit("mediaLibrary:import", { kind, name })
+        // oxlint-disable-next-line no-await-in-loop
+        const mediaAsset = await added
+        assert.equal(mediaAsset.kind, kind)
+        // oxlint-disable-next-line no-await-in-loop
+        const importedBytes = await readFile(join(dir, mediaAsset.url.slice(1)))
+        assert.deepEqual(importedBytes, bytes)
+        // Persist and reload each imported media type through quiz validation.
+        const mediaQuiz = event(manager, "quizz:updateSuccess")
+        manager.emit("quizz:update", {
+          ...quiz,
+          id: "test",
+          questions: [
+            {
+              ...quiz.questions[0],
+              media: { type: kind, url: mediaAsset.url },
+            },
+          ],
+        })
+        // oxlint-disable-next-line no-await-in-loop
+        await mediaQuiz
+        const loadedQuiz = event(manager, "quizz:data")
+        manager.emit("quizz:get", "test")
+        // oxlint-disable-next-line no-await-in-loop
+        assert.equal((await loadedQuiz).questions[0].media.url, mediaAsset.url)
+      }
+      const restoredQuiz = event(manager, "quizz:updateSuccess")
+      manager.emit("quizz:update", { id: "test", ...quiz })
+      await restoredQuiz
       const created = event(manager, "manager:gameCreated")
       manager.emit("game:create", "test")
       const { gameId, inviteCode } = await created

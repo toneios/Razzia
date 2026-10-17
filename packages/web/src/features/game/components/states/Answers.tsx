@@ -1,4 +1,4 @@
-import { EVENTS, MEDIA_TYPES, NO_TIME_LIMIT } from "@razzia/common/constants"
+import { EVENTS, NO_TIME_LIMIT } from "@razzia/common/constants"
 import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
 import QuestionMedia from "@razzia/web/components/QuestionMedia"
 import {
@@ -35,9 +35,7 @@ const Answers = ({
     volume: 0.1,
   })
 
-  useBackgroundMusic(
-    media?.type === MEDIA_TYPES.AUDIO || media?.type === MEDIA_TYPES.VIDEO,
-  )
+  useBackgroundMusic(Boolean(media?.type))
 
   const handleSubmit = (answerKeys: number[]) => {
     if (view.role !== "player" || !player || !gameId) {

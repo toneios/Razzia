@@ -27,8 +27,8 @@ const QuestionMedia = ({ media, alt = "", preview = false }: Props) => {
       <video
         className="m-4 mb-2 aspect-video max-h-60 w-auto rounded-md px-4 sm:max-h-100"
         src={media.url}
-        autoPlay
-        muted={!view.sound}
+        autoPlay={!preview}
+        muted={!preview && !view.sound}
         controls={view.role !== "projection"}
       />
     )

@@ -12,19 +12,27 @@ const MusicLibrary = () => {
   const { socket, isConnected } = useSocket()
   const { currentQuestion, questions, updateQuestion } = useQuizzEditor()
   const { t } = useTranslation()
+  const [kind, setKind] = useState<"audio" | "image" | "video">("audio")
   const [files, setFiles] = useState<string[]>([])
   const [selected, setSelected] = useState("")
   const [busy, setBusy] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const target = useRef<string | null>(null)
-  useEvent(EVENTS.MUSIC.FILES, (names) => {
-    setFiles(names)
-    setLoaded(true)
-    setSelected((previous) =>
-      names.includes(previous) ? previous : (names[0] ?? ""),
-    )
-  })
-  useEvent(EVENTS.MUSIC.IMPORTED, ({ url }) => {
+  useEvent(
+    EVENTS.MEDIA_LIBRARY.FILES,
+    ({ kind: receivedKind, files: names }) => {
+      if (receivedKind !== kind) {
+        return
+      }
+
+      setFiles(names)
+      setLoaded(true)
+      setSelected((previous) =>
+        names.includes(previous) ? previous : (names[0] ?? ""),
+      )
+    },
+  )
+  useEvent(EVENTS.MEDIA_LIBRARY.IMPORTED, ({ kind: mediaKind, url }) => {
     if (!target.current) {
       return
     }
@@ -34,23 +42,23 @@ const MusicLibrary = () => {
     )
 
     if (index >= 0) {
-      updateQuestion(index, { media: { type: "audio", url, startAt: 0 } })
+      updateQuestion(index, { media: { type: mediaKind, url, startAt: 0 } })
     }
 
     target.current = null
     setBusy(false)
     toast.success(t("quizz:blindTest.uploaded"))
   })
-  useEvent(EVENTS.MUSIC.ERROR, (message) => {
+  useEvent(EVENTS.MEDIA_LIBRARY.ERROR, (message) => {
     target.current = null
     setBusy(false)
     toast.error(t(message))
   })
   useEffect(() => {
     if (isConnected) {
-      socket.emit(EVENTS.MUSIC.LIST)
+      socket.emit(EVENTS.MEDIA_LIBRARY.LIST, kind)
     }
-  }, [socket, isConnected])
+  }, [socket, isConnected, kind])
   useEffect(() => {
     if (!busy) {
       return
@@ -59,7 +67,7 @@ const MusicLibrary = () => {
     const timer = window.setTimeout(() => {
       target.current = null
       setBusy(false)
-      toast.error(t("quizz:blindTest.folderError"))
+      toast.error(t("quizz:blindTest.mediaError"))
     }, 45000)
 
     return () => window.clearTimeout(timer)
@@ -68,9 +76,31 @@ const MusicLibrary = () => {
   return (
     <div className="w-full max-w-xl rounded-xl bg-white p-3 text-sm text-black">
       <label className="block font-bold" htmlFor="music-library">
-        {t("quizz:blindTest.folderTitle")}
+        {t("quizz:blindTest.libraryTitle")}
       </label>
-      <p className="my-2">{t("quizz:blindTest.folderHelp")}</p>
+      <p className="my-2">{t("quizz:blindTest.libraryHelp")}</p>
+      <label className="mb-2 block">
+        {t("quizz:blindTest.mediaType")}
+        <select
+          className="ml-2 rounded border p-2"
+          value={kind}
+          disabled={busy}
+          onChange={(event) => {
+            const { value } = event.target
+
+            if (value === "audio" || value === "image" || value === "video") {
+              setKind(value)
+              setFiles([])
+              setSelected("")
+              setLoaded(false)
+            }
+          }}
+        >
+          <option value="audio">music · MP3</option>
+          <option value="image">image · PNG / JPG / WebP</option>
+          <option value="video">video · MP4 / WebM</option>
+        </select>
+      </label>
       <select
         id="music-library"
         className="w-full rounded border p-2"
@@ -86,14 +116,14 @@ const MusicLibrary = () => {
         ))}
       </select>
       {loaded && files.length === 0 && (
-        <p className="my-2">{t("quizz:blindTest.empty")}</p>
+        <p className="my-2">{t("quizz:blindTest.libraryEmpty")}</p>
       )}
       <div className="mt-2 flex flex-wrap gap-2">
         <button
           type="button"
           className="rounded border px-3 py-2"
           disabled={busy || !isConnected}
-          onClick={() => socket.emit(EVENTS.MUSIC.LIST)}
+          onClick={() => socket.emit(EVENTS.MEDIA_LIBRARY.LIST, kind)}
         >
           {t("quizz:blindTest.refresh")}
         </button>
@@ -104,10 +134,10 @@ const MusicLibrary = () => {
           onClick={() => {
             target.current = currentQuestion.id
             setBusy(true)
-            socket.emit(EVENTS.MUSIC.IMPORT, selected)
+            socket.emit(EVENTS.MEDIA_LIBRARY.IMPORT, { kind, name: selected })
           }}
         >
-          {t(busy ? "quizz:blindTest.sending" : "quizz:blindTest.useTrack")}
+          {t(busy ? "quizz:blindTest.sending" : "quizz:blindTest.useMedia")}
         </button>
       </div>
     </div>

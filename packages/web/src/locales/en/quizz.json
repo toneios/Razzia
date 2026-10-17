@@ -50,7 +50,7 @@
     "help": "The clip plays on the projection while answering and stops at the reveal. Add choices and mark the correct answer.",
     "startAt": "Clip start (seconds)",
     "duration": "The question answer timer sets the maximum playback duration.",
-    "uploaded": "Clip uploaded. Save the quiz to keep it.",
+    "uploaded": "Media imported. Save the quiz to keep it.",
     "error": "Upload failed. Check the connection, MP3/WAV format and 15 MB limit.",
     "sending": "Uploading…",
     "folderTitle": "Blind test · music folder",
@@ -59,6 +59,12 @@
     "empty": "No MP3 files found in the music folder.",
     "refresh": "Refresh list",
     "useTrack": "Use for this question",
-    "folderError": "Could not read or import this MP3. Check the music folder and file (100 MB max)."
+    "folderError": "Could not read or import this MP3. Check the music folder and file (100 MB max).",
+    "libraryTitle": "Media · music / image / video folders",
+    "libraryHelp": "Place files in the folders at the Razzia root, select a type and refresh the list.",
+    "libraryEmpty": "No supported files found in this folder.",
+    "mediaType": "Media type",
+    "useMedia": "Use for this question",
+    "mediaError": "Import failed. Check the file and format: MP3 (100 MB), PNG/JPG/WebP image (20 MB), MP4/WebM video (200 MB)."
   }
 }

@@ -1,4 +1,11 @@
 export const EVENTS = {
+  MEDIA_LIBRARY: {
+    LIST: "mediaLibrary:list",
+    FILES: "mediaLibrary:files",
+    IMPORT: "mediaLibrary:import",
+    IMPORTED: "mediaLibrary:imported",
+    ERROR: "mediaLibrary:error",
+  },
   MUSIC: {
     LIST: "music:list",
     FILES: "music:files",

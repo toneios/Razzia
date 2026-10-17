@@ -39,6 +39,15 @@ export interface ProjectionSnapshot {
 }
 
 export interface ServerToClientEvents {
+  [EVENTS.MEDIA_LIBRARY.FILES]: (_data: {
+    kind: "audio" | "image" | "video"
+    files: string[]
+  }) => void
+  [EVENTS.MEDIA_LIBRARY.IMPORTED]: (_data: {
+    kind: "audio" | "image" | "video"
+    url: string
+  }) => void
+  [EVENTS.MEDIA_LIBRARY.ERROR]: (_message: string) => void
   [EVENTS.MUSIC.FILES]: (_files: string[]) => void
   [EVENTS.MUSIC.IMPORTED]: (_data: { url: string }) => void
   [EVENTS.MUSIC.ERROR]: (_message: string) => void
@@ -121,6 +130,11 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
+  [EVENTS.MEDIA_LIBRARY.LIST]: (_kind: "audio" | "image" | "video") => void
+  [EVENTS.MEDIA_LIBRARY.IMPORT]: (_data: {
+    kind: "audio" | "image" | "video"
+    name: string
+  }) => void
   [EVENTS.MUSIC.LIST]: () => void
   [EVENTS.MUSIC.IMPORT]: (_name: string) => void
   [EVENTS.APPEARANCE.GET]: () => void

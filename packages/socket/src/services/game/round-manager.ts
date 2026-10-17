@@ -1,5 +1,5 @@
 // oxlint-disable typescript/no-unnecessary-condition
-import { EVENTS, MEDIA_TYPES, NO_TIME_LIMIT } from "@razzia/common/constants"
+import { EVENTS, NO_TIME_LIMIT } from "@razzia/common/constants"
 import type {
   Answer,
   GameResult,
@@ -143,12 +143,9 @@ export class RoundManager {
       return
     }
 
-    const imageMedia =
-      question.media?.type === MEDIA_TYPES.IMAGE ? question.media : undefined
-
     this.opts.broadcast(STATUS.SHOW_QUESTION, {
       question: question.question,
-      media: imageMedia,
+      media: question.media,
       cooldown: question.cooldown,
     })
 

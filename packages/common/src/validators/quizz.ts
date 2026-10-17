@@ -14,7 +14,7 @@ export const questionMediaValidator = z.object({
     z
       .string()
       .regex(
-        /^\/branding\/[a-zA-Z0-9_-]+\.(?:mp3|wav)$/u,
+        /^\/branding\/[a-zA-Z0-9_-]+\.(?:mp3|wav|png|jpg|jpeg|webp|mp4|webm)$/u,
         "errors:quizz.invalidMediaUrl",
       ),
   ]),
