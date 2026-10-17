@@ -133,7 +133,7 @@ test(
         // oxlint-disable-next-line no-await-in-loop
         await delay(20)
       }
-      const manager = await connect("secret-manager-id")
+      let manager = await connect("secret-manager-id")
       const config = event(manager, "manager:config")
       manager.emit("manager:auth", "test-only-password")
       await config
@@ -335,6 +335,8 @@ test(
       }
       display.emit("manager:startGame", { gameId })
       const player = await connect("secret-player-id")
+      const playerMessages = []
+      player.onAny((name, data) => playerMessages.push({ name, data }))
       const names = event(display, "projection:players")
       const joined = event(player, "game:successJoin")
       player.emit("player:login", { gameId, data: { username: "Alice" } })
@@ -360,6 +362,11 @@ test(
       assert.equal(active.status.name, "SELECT_ANSWER")
       assert.ok(active.remaining < 10 && active.remaining > 0)
       secondDisplay.disconnect()
+      const privatePreview = event(
+        manager,
+        "manager:nextQuestionPreview",
+        (data) => data?.question === "Second question",
+      )
       const reveal = status(display, "SHOW_RESPONSES")
       const playerReveal = status(player, "SHOW_RESPONSES")
       const result = status(player, "SHOW_RESULT")
@@ -369,6 +376,10 @@ test(
         data: { answerKeys: [0] },
       })
       const revealed = await reveal
+      const upcoming = await privatePreview
+      assert.equal(upcoming.number, 2)
+      assert.deepEqual(upcoming.answers, ["A", "B", "C"])
+      assert.deepEqual(upcoming.solutions, [0, 2])
       const revealTime = Date.now()
       assert.deepEqual(revealed.data.solutions, [0])
       assert.deepEqual((await playerReveal).data.solutions, [0])
@@ -395,8 +406,47 @@ test(
       snapshot = event(display, "projection:snapshot")
       display.emit("projection:join", { gameId, token })
       assert.equal((await snapshot).status.name, "SHOW_LEADERBOARD")
+      // Future questions and answers are absent from all projection/player traffic.
+      assert.equal(
+        JSON.stringify(publicMessages).includes("Second question"),
+        false,
+      )
+      assert.equal(
+        JSON.stringify(playerMessages).includes("Second question"),
+        false,
+      )
+      assert.equal(
+        publicMessages.some(
+          (message) => message.name === "manager:nextQuestionPreview",
+        ),
+        false,
+      )
+      assert.equal(
+        playerMessages.some(
+          (message) => message.name === "manager:nextQuestionPreview",
+        ),
+        false,
+      )
+      manager.disconnect()
+      await delay(100)
+      manager = await connect("secret-manager-id")
+      const managerRestored = event(manager, "manager:successReconnect")
+      const previewRestored = event(
+        manager,
+        "manager:nextQuestionPreview",
+        (data) => data?.number === 2,
+      )
+      manager.emit("manager:reconnect", { gameId })
+      assert.equal((await managerRestored).status.name, "SHOW_LEADERBOARD")
+      assert.deepEqual((await previewRestored).solutions, [0, 2])
+      const clearedPreview = event(
+        manager,
+        "manager:nextQuestionPreview",
+        (data) => data === null,
+      )
       answers = status(display, "SELECT_ANSWER")
       manager.emit("manager:nextQuestion", { gameId })
+      await clearedPreview
       const second = await answers
       assert.equal(second.data.questionType, "multi")
       assert.equal(second.data.time, 2)

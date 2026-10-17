@@ -45,5 +45,16 @@
   "projectionTimeout": "The server did not respond. Try again.",
   "leaderboardIn": "Leaderboard in {{count}} s",
   "playMedia": "Play clip",
-  "mediaError": "Could not play this file. Check its format or import it again."
+  "mediaError": "Could not play this file. Check its format or import it again.",
+  "nextPreview": {
+    "private": "CONTROL DESK ONLY",
+    "title": "Next · question {{number}} / {{total}}",
+    "audio": "Audio clip",
+    "image": "Image",
+    "video": "Video",
+    "noTimer": "No timer",
+    "time": "{{count}} s to answer",
+    "correct": "Correct answer",
+    "hint": "Prepare your introduction. The projection keeps showing results until you click Next."
+  }
 }

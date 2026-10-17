@@ -1,3 +1,5 @@
+import type { NextQuestionPreview } from "@razzia/common/types/game/socket"
+import NextQuestionCard from "@razzia/web/features/game/components/NextQuestionCard"
 import { EVENTS } from "@razzia/common/constants"
 import { STATUS } from "@razzia/common/types/game/status"
 import GameWrapper from "@razzia/web/features/game/components/GameWrapper"
@@ -27,6 +29,10 @@ const ManagerGamePage = () => {
     useManagerStore()
   const { setQuestionStates } = useQuestionStore()
   const { t } = useTranslation()
+  const [nextQuestion, setNextQuestion] = useState<NextQuestionPreview | null>(
+    null,
+  )
+  useEvent(EVENTS.MANAGER.NEXT_QUESTION_PREVIEW, setNextQuestion)
   const [sound, setSound] = useState(false)
 
   useEvent(EVENTS.GAME.STATUS, ({ name, data }) => {
@@ -142,7 +148,16 @@ const ManagerGamePage = () => {
         onBack={status.name === STATUS.SHOW_ROOM ? handleBack : undefined}
         manager
       >
-        {CurrentComponent && <CurrentComponent data={status.data as never} />}
+        <div className="flex w-full flex-1 flex-col gap-4 xl:flex-row">
+          <div className="flex min-w-0 flex-1 flex-col">
+            {CurrentComponent && (
+              <CurrentComponent data={status.data as never} />
+            )}
+          </div>
+          {(status.name === STATUS.SHOW_RESPONSES ||
+            status.name === STATUS.SHOW_LEADERBOARD) &&
+            nextQuestion && <NextQuestionCard data={nextQuestion} />}
+        </div>
       </GameWrapper>
     </GameViewContext.Provider>
   )

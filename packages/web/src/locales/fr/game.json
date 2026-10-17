@@ -45,5 +45,16 @@
   "projectionTimeout": "Le serveur ne répond pas. Réessaie.",
   "leaderboardIn": "Classement dans {{count}} s",
   "playMedia": "Lire l’extrait",
-  "mediaError": "Impossible de lire ce fichier. Vérifie son format ou réimporte-le dans le quiz."
+  "mediaError": "Impossible de lire ce fichier. Vérifie son format ou réimporte-le dans le quiz.",
+  "nextPreview": {
+    "private": "RÉGIE UNIQUEMENT",
+    "title": "À suivre · question {{number}} / {{total}}",
+    "audio": "Extrait audio",
+    "image": "Photo",
+    "video": "Vidéo",
+    "noTimer": "Sans chrono",
+    "time": "{{count}} s de réponse",
+    "correct": "Bonne réponse",
+    "hint": "Prépare ton annonce. La projection reste sur les résultats ; le bouton Suivant lance la question."
+  }
 }

@@ -5,6 +5,7 @@ import type {
   GameUpdateQuestion,
   Player,
   QuizzWithId,
+  QuestionMediaType,
 } from "@razzia/common/types/game"
 import type { Status, StatusDataMap } from "@razzia/common/types/game/status"
 import type { ManagerConfig } from "@razzia/common/types/manager"
@@ -38,7 +39,20 @@ export interface ProjectionSnapshot {
   answers: number
 }
 
+export interface NextQuestionPreview {
+  number: number
+  total: number
+  question: string
+  answers: string[]
+  solutions: number[]
+  mediaType?: QuestionMediaType
+  time: number
+}
+
 export interface ServerToClientEvents {
+  [EVENTS.MANAGER.NEXT_QUESTION_PREVIEW]: (
+    _preview: NextQuestionPreview | null,
+  ) => void
   [EVENTS.MEDIA_LIBRARY.FILES]: (_data: {
     kind: "audio" | "image" | "video"
     files: string[]

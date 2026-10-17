@@ -8,7 +8,11 @@ import type {
   QuestionResult,
   Quizz,
 } from "@razzia/common/types/game"
-import type { Server, Socket } from "@razzia/common/types/game/socket"
+import type {
+  Server,
+  Socket,
+  NextQuestionPreview,
+} from "@razzia/common/types/game/socket"
 import {
   type Status,
   STATUS,
@@ -77,6 +81,28 @@ export class RoundManager {
 
   isStarted(): boolean {
     return this.started
+  }
+
+  getNextQuestionPreview(): NextQuestionPreview | null {
+    if (this.phase !== "results" && this.phase !== "leaderboard") {
+      return null
+    }
+
+    const next = this.opts.quizz.questions[this.currentQuestion + 1]
+
+    if (!next) {
+      return null
+    }
+
+    return {
+      number: this.currentQuestion + 2,
+      total: this.opts.quizz.questions.length,
+      question: next.question,
+      answers: next.answers,
+      solutions: next.solutions,
+      mediaType: next.media?.type,
+      time: next.time,
+    }
   }
 
   getReconnectInfo() {

@@ -117,7 +117,18 @@ class Game {
 
   // ── Status broadcasting ──────────────────────────────────────────────────
 
+  // Dedicated socket event: future answers must never enter public status data.
+  private sendNextQuestionPreview() {
+    this.io
+      .to(this._manager.id)
+      .emit(
+        EVENTS.MANAGER.NEXT_QUESTION_PREVIEW,
+        this.round.getNextQuestionPreview(),
+      )
+  }
+
   private broadcastStatus<T extends Status>(status: T, data: StatusDataMap[T]) {
+    this.sendNextQuestionPreview()
     const statusData = { name: status, data }
     this.lastBroadcastStatus = statusData
     this.managerStatus = null
@@ -133,6 +144,7 @@ class Game {
 
     if (this._manager.id === target) {
       this.managerStatus = statusData
+      this.sendNextQuestionPreview()
       this.io
         .to(`projection:${this.gameId}`)
         .emit(EVENTS.GAME.STATUS, this.projectionStatus())
@@ -225,6 +237,7 @@ class Game {
     socket.emit(EVENTS.GAME.TOTAL_PLAYERS, this.playerManager.count())
 
     registry.reactivateGame(this.gameId)
+    this.sendNextQuestionPreview()
     console.log(`Manager reconnected to game ${this.inviteCode}`)
   }
 

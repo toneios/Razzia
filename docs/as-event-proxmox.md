@@ -114,3 +114,9 @@ La musique d’ambiance est désactivée pour toute la question dès qu’elle c
 L’éditeur de quiz utilise un thème sombre. Le panneau média affiche une seule source à la fois : **Mes dossiers**, **Importer un MP3** ou **Lien direct**. Une fois le média choisi, son aperçu, le début et le volume restent accessibles ; **Changer le média** déplie le sélecteur. Les points et pénalités sont regroupés sous **Points et règles avancées**.
 
 La lecture est relancée explicitement lors du remontage du lecteur, notamment en mode développement React. Si le navigateur bloque le démarrage, le bouton **Lire l’extrait** permet de l’autoriser. Un fichier absent ou non pris en charge affiche une erreur au lieu de rester silencieux. Sur la projection, cliquer d’abord **Activer la projection et le son** ; la régie reste muette tant que sa case son est désactivée.
+
+## Préparer la question suivante depuis la régie
+
+Pendant la révélation des réponses et le classement, la régie affiche une carte **À suivre** : prochain énoncé, choix, bonnes réponses, type de média et temps de réponse. Elle sert de pense-bête pour l’animation, sans démarrer le média. La question suivante reste déclenchée par **Suivant**.
+
+L’aperçu est envoyé par un événement privé au seul socket de la régie, restauré après sa reconnexion et effacé au démarrage de la prochaine question. Les joueurs et la projection ne reçoivent ni cet événement ni le contenu de la question en avance. Aucune carte n’apparaît après la dernière question.
