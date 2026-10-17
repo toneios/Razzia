@@ -1,0 +1,201 @@
+{
+  "id": "as-event-soiree-04-dance-electro-v2",
+  "subject": "AS Event — Dance et électro — les mains en l’air",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Blind test 01 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Daft Punk", "Justice", "Stardust", "Modjo"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 02 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Calvin Harris et Rihanna",
+        "Zedd et Foxes",
+        "Avicii et Rita Ora",
+        "David Guetta et Sia"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 03 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Kygo", "Martin Garrix", "Avicii", "Calvin Harris"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Comment s’appelle votre DJ ce soir ?",
+      "answers": ["Kevin", "Sylvain", "David", "Julien"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 04 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Martin Garrix", "Hardwell", "Tiësto", "Afrojack"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 05 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Above & Beyond",
+        "Major Lazer",
+        "Daft Punk",
+        "Swedish House Mafia"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 06 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["David Guetta", "Avicii", "Calvin Harris", "Kygo"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "[À PERSONNALISER] Combien de projecteurs le DJ a-t-il installés ce soir ?",
+      "answers": [
+        "À renseigner : autre nombre 1",
+        "À renseigner : nombre exact",
+        "À renseigner : autre nombre 2",
+        "À renseigner : autre nombre 3"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 07 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Bob Sinclar",
+        "Martin Solveig",
+        "David Guetta",
+        "Benny Benassi"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 08 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Modjo", "Cassius", "Daft Punk", "Stardust"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 09 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Stardust", "Air", "Modjo", "Justice"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel est le nom de la marque de votre DJ ?",
+      "answers": ["AS Taxi", "AS Event", "AS Camping", "AS Tricot"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 10 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Darude", "Robert Miles", "ATB", "Tiësto"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 11 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Eric Prydz",
+        "Fedde Le Grand",
+        "David Guetta",
+        "Benny Benassi"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 12 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "The Prodigy",
+        "Underworld",
+        "Faithless",
+        "The Chemical Brothers"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "[À PERSONNALISER] Quel accessoire porte le DJ ce soir ?",
+      "answers": [
+        "À renseigner : autre accessoire 1",
+        "À renseigner : accessoire réel",
+        "À renseigner : autre accessoire 2",
+        "À renseigner : autre accessoire 3"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    }
+  ]
+}
