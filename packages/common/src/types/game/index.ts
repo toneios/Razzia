@@ -36,6 +36,7 @@ export type QuestionMediaType =
 export interface QuestionMedia {
   type?: QuestionMediaType
   url: string
+  volume?: number
   startAt?: number
 }
 

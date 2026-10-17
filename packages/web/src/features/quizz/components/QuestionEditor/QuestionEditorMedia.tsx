@@ -56,7 +56,7 @@ const QuestionEditorMedia = () => {
       <MusicLibrary />
       <BlindTestUpload />
 
-      {questionMedia?.type === "audio" && (
+      {(questionMedia?.type === "audio" || questionMedia?.type === "video") && (
         <label className="rounded-lg bg-white p-3 text-sm text-black">
           {t("quizz:blindTest.startAt")}
           <Input
@@ -78,6 +78,28 @@ const QuestionEditorMedia = () => {
             }
           />
           <p className="mt-2">{t("quizz:blindTest.duration")}</p>
+        </label>
+      )}
+      {(questionMedia?.type === "audio" || questionMedia?.type === "video") && (
+        <label className="w-full max-w-xl rounded-lg bg-white p-3 text-sm text-black">
+          {t("quizz:blindTest.volume")} :{" "}
+          {Math.round((questionMedia.volume ?? 1) * 100)} %
+          <input
+            className="mt-2 w-full"
+            type="range"
+            min="0"
+            max="100"
+            step="1"
+            value={Math.round((questionMedia.volume ?? 1) * 100)}
+            onChange={(event) =>
+              updateQuestion(currentIndex, {
+                media: {
+                  ...questionMedia,
+                  volume: Number(event.target.value) / 100,
+                },
+              })
+            }
+          />
         </label>
       )}
       {!questionMedia?.type && (

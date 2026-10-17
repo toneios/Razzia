@@ -211,7 +211,12 @@ test(
       const quiz = JSON.parse(
         await readFile(join(dir, "quizz/test.json"), "utf8"),
       )
-      quiz.questions[0].media = { type: "audio", url: track.url, startAt: 42 }
+      quiz.questions[0].media = {
+        type: "audio",
+        url: track.url,
+        startAt: 42,
+        volume: 0.35,
+      }
       const quizSaved = event(manager, "quizz:updateSuccess")
       manager.emit("quizz:update", { id: "test", ...quiz })
       await quizSaved
@@ -335,10 +340,13 @@ test(
       player.emit("player:login", { gameId, data: { username: "Alice" } })
       await joined
       assert.deepEqual(await names, ["Alice"])
+      const questionIntro = status(display, "SHOW_QUESTION")
       let answers = status(display, "SELECT_ANSWER")
       manager.emit("manager:startGame", { gameId })
       const question = await answers
       assert.equal(question.data.question, "First question")
+      assert.equal((await questionIntro).data.media.volume, 0.35)
+      assert.equal(question.data.media.volume, 0.35)
       assert.equal(question.data.media.startAt, 42)
       assert.match(question.data.media.url, /^\/branding\/track-/u)
       assert.equal("solutions" in question.data, false)

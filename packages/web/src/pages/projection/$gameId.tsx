@@ -136,7 +136,7 @@ const ProjectionPage = () => {
     if (Current && status) {
       return (
         <Current
-          key={`${revision}:${status.name}`}
+          key={`${revision}:${status.name === STATUS.SHOW_QUESTION || status.name === STATUS.SELECT_ANSWER ? "question" : status.name}`}
           data={status.data as never}
         />
       )

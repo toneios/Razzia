@@ -18,6 +18,7 @@ export const questionMediaValidator = z.object({
         "errors:quizz.invalidMediaUrl",
       ),
   ]),
+  volume: z.number().min(0).max(1).optional(),
   startAt: z.number().min(0).max(86400).optional(),
 })
 

@@ -99,7 +99,7 @@ La protection bloque les accès sans authentification, mais HTTP ne chiffre pas 
 2. Dans la régie, créer/modifier un quiz et ouvrir une question.
 3. Sous **Blind test · dossier music**, cliquer **Actualiser la liste**, choisir le morceau, puis **Utiliser pour cette question**.
 4. Régler **Début de l’extrait** en secondes, le temps de réponse, les choix et la bonne réponse. Enregistrer le quiz.
-5. Activer le son de la projection : l’extrait est lu pendant les réponses, sans musique d’ambiance superposée, puis coupé à la révélation. Les téléphones ne jouent pas l’extrait.
+5. Activer le son de la projection : l’extrait démarre dès l’énoncé, continue pendant les réponses, sans musique d’ambiance superposée, puis coupé à la révélation. Les téléphones ne jouent pas l’extrait.
 
 La liste est réservée au manager et ignore les sous-dossiers et liens symboliques. Chaque morceau importé (MP3, 100 Mo max) est copié avec un nom neutre dans `config/branding` : renommer/supprimer le MP3 source ne casse pas le quiz. Un import direct MP3/WAV de 15 Mo maximum est aussi possible depuis l’éditeur. Les MP3 du dossier `music` sont exclus de Git. Pour un autre chemin de bibliothèque, définir `MUSIC_PATH` dans l’environnement du serveur ; lors d’un futur déploiement Proxmox, transférer aussi les fichiers `branding` et définir un chemin persistant pour cette bibliothèque.
 
@@ -107,4 +107,4 @@ La liste est réservée au manager et ignore les sous-dossiers et liens symboliq
 
 Les dossiers `image` (PNG/JPG/WebP, 20 Mo max) et `video` (MP4/WebM, 200 Mo max) sont à la racine, à côté de `music`. Dans l’éditeur de question, choisir le type sous **Médias · dossiers music / image / video**, actualiser, sélectionner et cliquer **Utiliser pour cette question**, puis enregistrer le quiz. Les fichiers sont copiés dans `config/branding` et restent accessibles aux autres appareils. Les sources locales sont exclues de Git. Les chemins peuvent être remplacés par `IMAGE_PATH` et `VIDEO_PATH` dans l’environnement du serveur.
 
-La musique d’ambiance est désactivée pour toute la question dès qu’elle contient un média, y compris pendant l’affichage de l’énoncé avant les réponses. Les extraits audio/vidéo commencent au temps de réponse et s’arrêtent à la révélation. Les photos s’affichent dès l’énoncé.
+La musique d’ambiance est désactivée pour toute la question dès qu’elle contient un média, y compris pendant l’affichage de l’énoncé avant les réponses. Les extraits audio/vidéo démarrent dès l’énoncé, continuent sans redémarrer à l’apparition des choix et s’arrêtent à la révélation. Le volume de chaque extrait se règle de 0 à 100 % dans l’éditeur et est conservé dans le quiz. Les photos s’affichent dès l’énoncé.
