@@ -58,6 +58,7 @@ export class RoundManager {
     | "reveal"
     | "results"
     | "leaderboard"
+    | "awaiting-final"
     | "finished" = "lobby"
 
   getAnswerCount() {
@@ -77,6 +78,10 @@ export class RoundManager {
 
   constructor(opts: RoundManagerOptions) {
     this.opts = opts
+  }
+
+  isFinished(): boolean {
+    return this.phase === "finished"
   }
 
   isStarted(): boolean {
@@ -414,6 +419,29 @@ export class RoundManager {
     }
 
     this.phase = "leaderboard"
+
+    if (this.opts.quizz.hideScoresUntilEnd) {
+      this.pendingResults = []
+      const isLast =
+        this.currentQuestion + 1 === this.opts.quizz.questions.length
+
+      if (isLast) {
+        this.phase = "awaiting-final"
+      }
+
+      const status = isLast ? STATUS.AWAITING_FINAL : STATUS.ROUND_PAUSE
+      const data = {
+        text: isLast ? "game:finalReady" : "game:scoresHiddenPause",
+      }
+      this.opts.players.getAll().forEach((player) => {
+        this.opts.send(player.id, status, data)
+      })
+      this.opts.send(this.opts.getManagerId(), status, data)
+      this.tempOldLeaderboard = null
+
+      return
+    }
+
     // Resolve the current socket after a player reconnects during the reveal.
     const currentPlayers = this.opts.players.getAll()
     this.pendingResults.forEach((result) => {
@@ -430,35 +458,7 @@ export class RoundManager {
       this.currentQuestion + 1 === this.opts.quizz.questions.length
 
     if (isLastRound) {
-      this.started = false
-      this.phase = "finished"
-
-      const top = this.leaderboard.slice(0, 3)
-
-      this.opts.onGameFinished({
-        id: `${Date.now()}-${nanoid(8)}`,
-        subject: this.opts.quizz.subject,
-        date: new Date().toISOString(),
-        players: this.leaderboard.map((player, index) => ({
-          username: player.username,
-          points: player.points,
-          rank: index + 1,
-        })),
-        questions: this.questionsHistory,
-      })
-
-      this.opts.send(this.opts.getManagerId(), STATUS.FINISHED, {
-        subject: this.opts.quizz.subject,
-        top,
-      })
-
-      this.leaderboard.forEach((player, index) => {
-        this.opts.send(player.id, STATUS.FINISHED, {
-          subject: this.opts.quizz.subject,
-          top,
-          rank: index + 1,
-        })
-      })
+      this.finishGame()
 
       return
     }
@@ -471,5 +471,50 @@ export class RoundManager {
     })
 
     this.tempOldLeaderboard = null
+  }
+  revealFinal(socket: Socket): void {
+    if (
+      socket.id !== this.opts.getManagerId() ||
+      this.phase !== "awaiting-final"
+    ) {
+      return
+    }
+
+    this.finishGame()
+  }
+
+  private finishGame(): void {
+    this.started = false
+    this.phase = "finished"
+
+    const top = this.leaderboard
+      .slice(0, 3)
+      .map(({ username, points }) => ({ username, points }))
+
+    this.opts.onGameFinished({
+      id: `${Date.now()}-${nanoid(8)}`,
+      subject: this.opts.quizz.subject,
+      date: new Date().toISOString(),
+      players: this.leaderboard.map((player, index) => ({
+        username: player.username,
+        points: player.points,
+        rank: index + 1,
+      })),
+      questions: this.questionsHistory,
+    })
+
+    this.opts.send(this.opts.getManagerId(), STATUS.FINISHED, {
+      subject: this.opts.quizz.subject,
+      top,
+    })
+
+    this.leaderboard.forEach((player, index) => {
+      this.opts.send(player.id, STATUS.FINISHED, {
+        subject: this.opts.quizz.subject,
+        top,
+        rank: index + 1,
+        points: player.points,
+      })
+    })
   }
 }

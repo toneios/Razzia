@@ -102,6 +102,9 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
     game.joinProjection(socket)
   })
   socket.on(EVENTS.PROJECTION.LEAVE, leaveProjection)
+  socket.on(EVENTS.MANAGER.REVEAL_FINAL, ({ gameId }) =>
+    withGame(gameId, socket, (game) => game.revealFinal(socket)),
+  )
   socket.on(EVENTS.MANAGER.REVEAL, ({ gameId }) =>
     withGame(gameId, socket, (game) => game.reveal(socket)),
   )

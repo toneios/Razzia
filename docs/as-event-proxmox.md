@@ -81,7 +81,7 @@ pnpm install --frozen-lockfile
 pnpm build
 pnpm exec tsc --noEmit -p packages/socket/tsconfig.json
 pnpm exec tsc --noEmit -p packages/web/tsconfig.app.json
-node --test tests/projection.test.mjs tests/branding.test.mjs tests/media-playback.test.mjs
+node --test tests/projection.test.mjs tests/branding.test.mjs tests/media-playback.test.mjs tests/hidden-scores.test.mjs
 bash -n scripts/razzia-update.sh
 ```
 
@@ -120,3 +120,11 @@ La lecture est relancée explicitement lors du remontage du lecteur, notamment e
 Pendant la révélation des réponses et le classement, la régie affiche une carte **À suivre** : prochain énoncé, choix, bonnes réponses, type de média et temps de réponse. Elle sert de pense-bête pour l’animation, sans démarrer le média. La question suivante reste déclenchée par **Suivant**.
 
 L’aperçu est envoyé par un événement privé au seul socket de la régie, restauré après sa reconnexion et effacé au démarrage de la prochaine question. Les joueurs et la projection ne reçoivent ni cet événement ni le contenu de la question en avance. Aucune carte n’apparaît après la dernière question.
+
+## Garder les scores secrets et remettre les médailles
+
+Dans l’éditeur du quiz, cocher **Masquer les scores jusqu’à la fin**, puis enregistrer. Le réglage est propre à chaque quiz et suit son import/export JSON (`hideScoresUntilEnd`). Les quiz existants gardent le déroulement habituel tant que cette case n’est pas cochée.
+
+Avec cette option, les bonnes réponses sont toujours révélées pendant dix secondes, puis une pause remplace le classement. Les téléphones ne montrent ni points ni rang. La régie conserve son aperçu privé de la question suivante et déclenche la suite avec **Suivant**. Les scores restent calculés côté serveur, sans être envoyés aux joueurs ou à la projection, y compris lors d’une reconnexion.
+
+Après la dernière révélation, l’écran attend la remise des prix. Le bouton de régie **Révéler le podium** affiche le classement final et les médailles or/argent/bronze ; les téléphones reçoivent alors leur rang et leurs points. Les trois premiers reçoivent aussi une médaille sur leur écran. La révélation ne peut être déclenchée que par la régie et ne produit qu’un seul rapport de résultat.

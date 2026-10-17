@@ -33,6 +33,7 @@ class Game {
     return token === this.projectionToken
   }
 
+  private readonly hideScoresUntilEnd: boolean
   private readonly io: Server
   private readonly _manager: {
     id: string
@@ -58,6 +59,7 @@ class Game {
 
   constructor(io: Server, socket: Socket, quizz: Quizz) {
     const clientId = getClientId(socket)
+    this.hideScoresUntilEnd = quizz.hideScoresUntilEnd ?? false
 
     this.io = io
     this.gameId = uuid()
@@ -129,7 +131,13 @@ class Game {
 
   private broadcastStatus<T extends Status>(status: T, data: StatusDataMap[T]) {
     this.sendNextQuestionPreview()
-    const statusData = { name: status, data }
+    const statusData = {
+      name: status,
+      data: {
+        ...data,
+        hideScores: this.hideScoresUntilEnd && !this.round.isFinished(),
+      },
+    }
     this.lastBroadcastStatus = statusData
     this.managerStatus = null
     this.io.to(this.gameId).emit(EVENTS.GAME.STATUS, statusData)
@@ -140,7 +148,13 @@ class Game {
     status: T,
     data: StatusDataMap[T],
   ) {
-    const statusData = { name: status, data }
+    const statusData = {
+      name: status,
+      data: {
+        ...data,
+        hideScores: this.hideScoresUntilEnd && !this.round.isFinished(),
+      },
+    }
 
     if (this._manager.id === target) {
       this.managerStatus = statusData
@@ -278,7 +292,13 @@ class Game {
       gameId: this.gameId,
       currentQuestion: this.round.getReconnectInfo(),
       status,
-      player: { username: player.username, points: player.points },
+      player: {
+        username: player.username,
+        points:
+          this.hideScoresUntilEnd && !this.round.isFinished()
+            ? 0
+            : player.points,
+      },
     })
     socket.emit(EVENTS.GAME.TOTAL_PLAYERS, this.playerManager.count())
 
@@ -333,6 +353,10 @@ class Game {
 
   reveal(socket: Socket) {
     this.round.reveal(socket)
+  }
+
+  revealFinal(socket: Socket) {
+    this.round.revealFinal(socket)
   }
 
   showLeaderboard(socket: Socket) {

@@ -33,6 +33,8 @@ export const GAME_STATES = {
 }
 
 export const GAME_STATE_COMPONENTS = {
+  [STATUS.ROUND_PAUSE]: Wait,
+  [STATUS.AWAITING_FINAL]: Wait,
   [STATUS.SELECT_ANSWER]: QuestionStage,
   [STATUS.SHOW_RESPONSES]: Responses,
   [STATUS.SHOW_QUESTION]: QuestionStage,
@@ -69,6 +71,8 @@ export const SFX = {
 } as const
 
 export const MANAGER_SKIP_EVENTS = {
+  [STATUS.ROUND_PAUSE]: EVENTS.MANAGER.NEXT_QUESTION,
+  [STATUS.AWAITING_FINAL]: EVENTS.MANAGER.REVEAL_FINAL,
   [STATUS.SHOW_ROOM]: EVENTS.MANAGER.START_GAME,
   [STATUS.AWAITING_REVEAL]: EVENTS.MANAGER.REVEAL,
   [STATUS.SELECT_ANSWER]: EVENTS.MANAGER.ABORT_QUIZ,
@@ -86,6 +90,8 @@ export function isKeyOf<T extends object>(
 }
 
 export const MANAGER_SKIP_BTN = {
+  [STATUS.ROUND_PAUSE]: "common:next",
+  [STATUS.AWAITING_FINAL]: "game:revealFinal",
   [STATUS.SHOW_ROOM]: "game:startGame",
   [STATUS.AWAITING_REVEAL]: "game:revealAnswers",
   [STATUS.SHOW_START]: null,

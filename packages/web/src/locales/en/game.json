@@ -56,5 +56,9 @@
     "time": "{{count}} s to answer",
     "correct": "Correct answer",
     "hint": "Prepare your introduction. The projection keeps showing results until you click Next."
-  }
+  },
+  "revealFinal": "Reveal podium",
+  "scoresHiddenPause": "Scores stay secret… Ready for the next round?",
+  "finalReady": "Quiz complete! Get ready for the medal ceremony…",
+  "afterRevealIn": "Continue in {{count}} s"
 }

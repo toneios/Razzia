@@ -72,7 +72,12 @@ const PlayerGamePage = () => {
   }
 
   return (
-    <GameWrapper statusName={status.name}>
+    <GameWrapper
+      statusName={status.name}
+      hideScores={
+        "hideScores" in status.data && status.data.hideScores === true
+      }
+    >
       {CurrentComponent && <CurrentComponent data={status.data as never} />}
     </GameWrapper>
   )

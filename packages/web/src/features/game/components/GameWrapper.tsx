@@ -21,6 +21,7 @@ type Props = PropsWithChildren & {
   onNext?: () => void
   onBack?: () => void
   manager?: boolean
+  hideScores?: boolean
 }
 
 const GameWrapper = ({
@@ -29,6 +30,7 @@ const GameWrapper = ({
   onNext,
   onBack,
   manager,
+  hideScores,
 }: Props) => {
   const { isConnected } = useSocket()
   const { player } = usePlayerStore()
@@ -107,9 +109,11 @@ const GameWrapper = ({
             {!manager && (
               <div className="z-50 flex items-center justify-between border-t border-white/10 bg-black/50 px-4 py-2 text-lg font-bold text-white">
                 <p className="text-white">{player?.username}</p>
-                <div className="rounded-lg bg-gray-800 px-3 py-1 text-lg">
-                  {player?.points}
-                </div>
+                {!hideScores && (
+                  <div className="rounded-lg bg-gray-800 px-3 py-1 text-lg">
+                    {player?.points}
+                  </div>
+                )}
               </div>
             )}
           </>

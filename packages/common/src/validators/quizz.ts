@@ -62,6 +62,7 @@ const questionValidator = z.preprocess(
 )
 
 export const quizzValidator = z.object({
+  hideScoresUntilEnd: z.boolean().optional(),
   subject: z.string().min(1, "errors:quizz.subjectEmpty"),
   questions: z.array(questionValidator).min(1, "errors:quizz.noQuestions"),
 })

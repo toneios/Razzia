@@ -144,6 +144,7 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
+  [EVENTS.MANAGER.REVEAL_FINAL]: (_message: MessageGameId) => void
   [EVENTS.MEDIA_LIBRARY.LIST]: (_kind: "audio" | "image" | "video") => void
   [EVENTS.MEDIA_LIBRARY.IMPORT]: (_data: {
     kind: "audio" | "image" | "video"

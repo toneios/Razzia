@@ -155,7 +155,8 @@ const ManagerGamePage = () => {
             )}
           </div>
           {(status.name === STATUS.SHOW_RESPONSES ||
-            status.name === STATUS.SHOW_LEADERBOARD) &&
+            status.name === STATUS.SHOW_LEADERBOARD ||
+            status.name === STATUS.ROUND_PAUSE) &&
             nextQuestion && <NextQuestionCard data={nextQuestion} />}
         </div>
       </GameWrapper>

@@ -13,6 +13,8 @@ export type QuestionWithId = Question & {
 }
 
 interface QuizzEditorContextType {
+  hideScoresUntilEnd: boolean
+  setHideScoresUntilEnd: (_value: boolean) => void
   quizzId: string | null
   subject: string
   setSubject: (_subject: string) => void
@@ -54,6 +56,9 @@ export const QuizzEditorProvider = ({
   children,
   initialData,
 }: QuizzEditorProviderProps) => {
+  const [hideScoresUntilEnd, setHideScoresUntilEnd] = useState(
+    initialData?.hideScoresUntilEnd ?? false,
+  )
   const [subject, setSubject] = useState(
     initialData?.subject ?? "Untitled Quizz",
   )
@@ -107,6 +112,8 @@ export const QuizzEditorProvider = ({
   return (
     <QuizzEditorContext.Provider
       value={{
+        hideScoresUntilEnd,
+        setHideScoresUntilEnd,
         quizzId: initialData?.id ?? null,
         subject,
         setSubject,

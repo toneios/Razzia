@@ -56,5 +56,9 @@
     "time": "{{count}} s de réponse",
     "correct": "Bonne réponse",
     "hint": "Prépare ton annonce. La projection reste sur les résultats ; le bouton Suivant lance la question."
-  }
+  },
+  "revealFinal": "Révéler le podium",
+  "scoresHiddenPause": "Les scores restent secrets… Prêts pour la suite ?",
+  "finalReady": "Quiz terminé ! Place à la remise des médailles…",
+  "afterRevealIn": "Suite dans {{count}} s"
 }

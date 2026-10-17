@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Responses = ({
-  data: { question, answers, responses, solutions, revealEndsAt },
+  data: { question, answers, responses, solutions, revealEndsAt, hideScores },
 }: Props) => {
   const [percentages, setPercentages] = useState<Record<string, string>>({})
   const { t } = useTranslation()
@@ -47,7 +47,9 @@ const Responses = ({
         </h2>
 
         <p className="rounded-full bg-black/40 px-5 py-2 text-lg font-bold text-white">
-          {t("game:leaderboardIn", { count: remaining })}
+          {t(hideScores ? "game:afterRevealIn" : "game:leaderboardIn", {
+            count: remaining,
+          })}
         </p>
         <div
           className={`mt-8 grid h-40 w-full max-w-3xl gap-4 px-2`}

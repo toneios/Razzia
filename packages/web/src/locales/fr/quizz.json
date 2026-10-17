@@ -76,5 +76,6 @@
     "link": "Lien direct",
     "replace": "Changer le média",
     "advanced": "Points et règles avancées"
-  }
+  },
+  "hideScoresUntilEnd": "Masquer les scores jusqu’à la fin"
 }

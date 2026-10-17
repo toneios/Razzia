@@ -54,6 +54,7 @@ export interface Question {
 }
 
 export interface Quizz {
+  hideScoresUntilEnd?: boolean
   subject: string
   questions: Question[]
 }

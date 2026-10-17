@@ -76,5 +76,6 @@
     "link": "Direct link",
     "replace": "Change media",
     "advanced": "Points and advanced rules"
-  }
+  },
+  "hideScoresUntilEnd": "Hide scores until the end"
 }
