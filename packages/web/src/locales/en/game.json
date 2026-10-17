@@ -35,5 +35,12 @@
   "projectionCopied": "Projection link copied",
   "copyProjectionManually": "Open the projection and copy its address from the browser.",
   "controlSound": "Sound on control desk",
-  "beginProjection": "Enable projection and sound"
+  "beginProjection": "Enable projection and sound",
+  "projectionAccess": "Projection access",
+  "projectionAccessHelp": "Enter the host password and the PIN shown on the control desk.",
+  "projectionPassword": "Host password",
+  "projectionChecking": "Checking…",
+  "projectionInvalidForm": "Enter the password and a 6-digit PIN.",
+  "projectionStorageError": "Session storage is blocked. Enable it to open the projection.",
+  "projectionTimeout": "The server did not respond. Try again."
 }

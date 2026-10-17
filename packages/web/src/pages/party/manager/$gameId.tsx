@@ -106,7 +106,7 @@ const ManagerGamePage = () => {
         <strong>{t("game:controlDesk")}</strong>
         <a
           className="rounded-lg bg-white px-4 py-2 font-bold text-black"
-          href={`/projection/${gameIdParam}`}
+          href="/projection"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -117,7 +117,7 @@ const ManagerGamePage = () => {
           onClick={async () => {
             try {
               await navigator.clipboard.writeText(
-                `${window.location.origin}/projection/${gameIdParam}`,
+                `${window.location.origin}/projection`,
               )
               toast.success(t("game:projectionCopied"))
             } catch {

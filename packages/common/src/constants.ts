@@ -13,6 +13,10 @@ export const EVENTS = {
     CREATE: "game:create",
   },
   PROJECTION: {
+    OPEN: "projection:open",
+    AUTHORIZED: "projection:authorized",
+    AUTH_ERROR: "projection:authError",
+    UNAUTHORIZED: "projection:unauthorized",
     JOIN: "projection:join",
     LEAVE: "projection:leave",
     SNAPSHOT: "projection:snapshot",

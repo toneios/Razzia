@@ -35,5 +35,12 @@
   "projectionCopied": "Lien de projection copié",
   "copyProjectionManually": "Ouvre la projection et copie son adresse dans le navigateur.",
   "controlSound": "Son sur la régie",
-  "beginProjection": "Activer la projection et le son"
+  "beginProjection": "Activer la projection et le son",
+  "projectionAccess": "Accès à la projection",
+  "projectionAccessHelp": "Saisis le mot de passe animateur et le PIN affiché dans la régie.",
+  "projectionPassword": "Mot de passe animateur",
+  "projectionChecking": "Vérification…",
+  "projectionInvalidForm": "Saisis le mot de passe et un PIN de 6 chiffres.",
+  "projectionStorageError": "Le navigateur bloque le stockage de session. Autorise-le pour ouvrir la projection.",
+  "projectionTimeout": "Le serveur ne répond pas. Réessaie."
 }

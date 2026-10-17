@@ -13,13 +13,18 @@ import {
   GAME_STATE_COMPONENTS_MANAGER,
   isKeyOf,
 } from "@razzia/web/features/game/utils/constants"
-import { createFileRoute } from "@tanstack/react-router"
+import {
+  clearProjectionToken,
+  getProjectionToken,
+} from "@razzia/web/features/game/utils/projection-session"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { QRCodeSVG } from "qrcode.react"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 const ProjectionPage = () => {
   const { gameId } = Route.useParams()
+  const navigate = useNavigate()
   const { socket, isConnected } = useSocket()
   const { setQuestionStates } = useQuestionStore()
   const [snapshot, setSnapshot] = useState<ProjectionSnapshot | null>(null)
@@ -27,6 +32,13 @@ const ProjectionPage = () => {
   const [revision, setRevision] = useState(0)
   const [ready, setReady] = useState(false)
   const { t } = useTranslation()
+
+  useEvent(EVENTS.PROJECTION.UNAUTHORIZED, () => {
+    clearProjectionToken(gameId)
+    setSnapshot(null)
+    setQuestionStates(null)
+    navigate({ to: "/projection", replace: true })
+  })
 
   useEvent(EVENTS.PROJECTION.SNAPSHOT, (data) => {
     setRevision((value) => value + 1)
@@ -51,7 +63,10 @@ const ProjectionPage = () => {
 
   useEffect(() => {
     if (isConnected) {
-      socket.emit(EVENTS.PROJECTION.JOIN, { gameId })
+      socket.emit(EVENTS.PROJECTION.JOIN, {
+        gameId,
+        token: getProjectionToken(gameId),
+      })
     }
 
     return () => {

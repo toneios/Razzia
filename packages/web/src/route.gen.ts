@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './pages/__root'
 import { Route as authLayoutRouteImport } from './pages/(auth)/layout'
+import { Route as ProjectionIndexRouteImport } from './pages/projection/index'
 import { Route as authIndexRouteImport } from './pages/(auth)/index'
 import { Route as ProjectionGameIdRouteImport } from './pages/projection/$gameId'
 import { Route as PartyGameIdRouteImport } from './pages/party/$gameId'
@@ -22,6 +23,11 @@ import { Route as ManagerQuizzQuizzIdRouteImport } from './pages/manager/quizz/$
 
 const authLayoutRoute = authLayoutRouteImport.update({
   id: '/(auth)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectionIndexRoute = ProjectionIndexRouteImport.update({
+  id: '/projection/',
+  path: '/projection/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authIndexRoute = authIndexRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/party/$gameId': typeof PartyGameIdRoute
   '/projection/$gameId': typeof ProjectionGameIdRoute
   '/': typeof authIndexRoute
+  '/projection/': typeof ProjectionIndexRoute
   '/manager/quizz/$quizzId': typeof ManagerQuizzQuizzIdRoute
   '/party/manager/$gameId': typeof PartyManagerGameIdRoute
   '/manager/': typeof authManagerIndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/party/$gameId': typeof PartyGameIdRoute
   '/projection/$gameId': typeof ProjectionGameIdRoute
   '/': typeof authIndexRoute
+  '/projection': typeof ProjectionIndexRoute
   '/manager/quizz/$quizzId': typeof ManagerQuizzQuizzIdRoute
   '/party/manager/$gameId': typeof PartyManagerGameIdRoute
   '/manager': typeof authManagerIndexRoute
@@ -99,6 +107,7 @@ export interface FileRoutesById {
   '/party/$gameId': typeof PartyGameIdRoute
   '/projection/$gameId': typeof ProjectionGameIdRoute
   '/(auth)/': typeof authIndexRoute
+  '/projection/': typeof ProjectionIndexRoute
   '/manager/quizz/$quizzId': typeof ManagerQuizzQuizzIdRoute
   '/party/manager/$gameId': typeof PartyManagerGameIdRoute
   '/(auth)/manager/': typeof authManagerIndexRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
     | '/party/$gameId'
     | '/projection/$gameId'
     | '/'
+    | '/projection/'
     | '/manager/quizz/$quizzId'
     | '/party/manager/$gameId'
     | '/manager/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/party/$gameId'
     | '/projection/$gameId'
     | '/'
+    | '/projection'
     | '/manager/quizz/$quizzId'
     | '/party/manager/$gameId'
     | '/manager'
@@ -134,6 +145,7 @@ export interface FileRouteTypes {
     | '/party/$gameId'
     | '/projection/$gameId'
     | '/(auth)/'
+    | '/projection/'
     | '/manager/quizz/$quizzId'
     | '/party/manager/$gameId'
     | '/(auth)/manager/'
@@ -146,6 +158,7 @@ export interface RootRouteChildren {
   ManagerConfigRoute: typeof ManagerConfigRoute
   PartyGameIdRoute: typeof PartyGameIdRoute
   ProjectionGameIdRoute: typeof ProjectionGameIdRoute
+  ProjectionIndexRoute: typeof ProjectionIndexRoute
   PartyManagerGameIdRoute: typeof PartyManagerGameIdRoute
 }
 
@@ -156,6 +169,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof authLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projection/': {
+      id: '/projection/'
+      path: '/projection'
+      fullPath: '/projection/'
+      preLoaderRoute: typeof ProjectionIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(auth)/': {
@@ -257,6 +277,7 @@ const rootRouteChildren: RootRouteChildren = {
   ManagerConfigRoute: ManagerConfigRoute,
   PartyGameIdRoute: PartyGameIdRoute,
   ProjectionGameIdRoute: ProjectionGameIdRoute,
+  ProjectionIndexRoute: ProjectionIndexRoute,
   PartyManagerGameIdRoute: PartyManagerGameIdRoute,
 }
 export const routeTree = rootRouteImport

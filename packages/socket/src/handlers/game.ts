@@ -1,12 +1,22 @@
 import { EVENTS } from "@razzia/common/constants"
 import { inviteCodeValidator } from "@razzia/common/validators/auth"
 import type { SocketContext } from "@razzia/socket/handlers/types"
-import { getQuizz } from "@razzia/socket/services/config"
+import { z } from "zod"
+import { getGameConfig, getQuizz } from "@razzia/socket/services/config"
 import Game from "@razzia/socket/services/game"
 import manager from "@razzia/socket/services/manager"
 import Registry from "@razzia/socket/services/registry"
 import { withGame } from "@razzia/socket/utils/game"
 import { getClientId } from "@razzia/socket/utils/socket"
+
+const projectionOpenSchema = z.object({
+  password: z.string().min(1).max(4096),
+  inviteCode: inviteCodeValidator,
+})
+const projectionJoinSchema = z.object({
+  gameId: z.string().min(1).max(100),
+  token: z.string().length(64),
+})
 
 export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
   const registry = Registry.getInstance()
@@ -23,7 +33,48 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
     projectionGameId = null
   }
 
-  socket.on(EVENTS.PROJECTION.JOIN, ({ gameId }) => {
+  socket.on(EVENTS.PROJECTION.OPEN, (payload) => {
+    const parsed = projectionOpenSchema.safeParse(payload)
+
+    if (!parsed.success) {
+      socket.emit(EVENTS.PROJECTION.AUTH_ERROR, "game:projectionInvalidForm")
+
+      return
+    }
+
+    try {
+      const config = getGameConfig()
+
+      if (
+        config.managerPassword === "PASSWORD" ||
+        parsed.data.password !== config.managerPassword
+      ) {
+        socket.emit(
+          EVENTS.PROJECTION.AUTH_ERROR,
+          "errors:manager.invalidPassword",
+        )
+
+        return
+      }
+
+      const game = registry.getGameByInviteCode(parsed.data.inviteCode)
+
+      if (!game) {
+        socket.emit(EVENTS.PROJECTION.AUTH_ERROR, "errors:game.notFound")
+
+        return
+      }
+
+      socket.emit(EVENTS.PROJECTION.AUTHORIZED, {
+        gameId: game.gameId,
+        token: game.grantProjectionAccess(),
+      })
+    } catch {
+      socket.emit(EVENTS.PROJECTION.AUTH_ERROR, "errors:failedToReadConfig")
+    }
+  })
+
+  socket.on(EVENTS.PROJECTION.JOIN, (payload) => {
     if (
       registry.getGameByManagerSocketId(socket.id) ||
       registry.getGameByPlayerSocketId(socket.id)
@@ -32,16 +83,22 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
     }
 
     leaveProjection()
-    const game =
-      typeof gameId === "string" ? registry.getGameById(gameId) : undefined
+    const parsed = projectionJoinSchema.safeParse(payload)
+    const game = parsed.success
+      ? registry.getGameById(parsed.data.gameId)
+      : undefined
 
-    if (!game) {
-      socket.emit(EVENTS.GAME.RESET, "errors:game.notFound")
+    if (
+      !parsed.success ||
+      !game ||
+      !game.hasProjectionAccess(parsed.data.token)
+    ) {
+      socket.emit(EVENTS.PROJECTION.UNAUTHORIZED)
 
       return
     }
 
-    projectionGameId = gameId
+    projectionGameId = game.gameId
     game.joinProjection(socket)
   })
   socket.on(EVENTS.PROJECTION.LEAVE, leaveProjection)

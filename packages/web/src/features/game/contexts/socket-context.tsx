@@ -40,7 +40,7 @@ const getClientId = (): string => {
   }
 }
 
-const clientId = window.location.pathname.startsWith("/projection/")
+const clientId = /^\/projection(?:\/|$)/u.test(window.location.pathname)
   ? uuid()
   : getClientId()
 

@@ -13,6 +13,7 @@ import { RoundManager } from "@razzia/socket/services/game/round-manager"
 import Registry from "@razzia/socket/services/registry"
 import { createInviteCode } from "@razzia/socket/utils/game"
 import { getClientId } from "@razzia/socket/utils/socket"
+import { randomBytes } from "node:crypto"
 import { v7 as uuid } from "uuid"
 
 const registry = Registry.getInstance()
@@ -20,6 +21,17 @@ const registry = Registry.getInstance()
 class Game {
   readonly gameId: string
   readonly inviteCode: string
+
+  private readonly projectionToken = randomBytes(32).toString("hex")
+
+  // Only return this capability after verifying the projection password.
+  grantProjectionAccess() {
+    return this.projectionToken
+  }
+
+  hasProjectionAccess(token: string) {
+    return token === this.projectionToken
+  }
 
   private readonly io: Server
   private readonly _manager: {

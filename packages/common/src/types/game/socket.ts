@@ -38,6 +38,12 @@ export interface ProjectionSnapshot {
 }
 
 export interface ServerToClientEvents {
+  [EVENTS.PROJECTION.AUTHORIZED]: (_data: {
+    gameId: string
+    token: string
+  }) => void
+  [EVENTS.PROJECTION.AUTH_ERROR]: (_message: string) => void
+  [EVENTS.PROJECTION.UNAUTHORIZED]: () => void
   [EVENTS.PROJECTION.SNAPSHOT]: (_data: ProjectionSnapshot) => void
   [EVENTS.PROJECTION.PLAYERS]: (_players: string[]) => void
   connect: () => void
@@ -103,7 +109,14 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  [EVENTS.PROJECTION.JOIN]: (_message: { gameId: string }) => void
+  [EVENTS.PROJECTION.OPEN]: (_message: {
+    password: string
+    inviteCode: string
+  }) => void
+  [EVENTS.PROJECTION.JOIN]: (_message: {
+    gameId: string
+    token: string
+  }) => void
   [EVENTS.PROJECTION.LEAVE]: () => void
   [EVENTS.MANAGER.REVEAL]: (_message: MessageGameId) => void
   // Manager actions

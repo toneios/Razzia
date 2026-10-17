@@ -125,12 +125,52 @@ test(
       await config
       const created = event(manager, "manager:gameCreated")
       manager.emit("game:create", "test")
-      const { gameId } = await created
+      const { gameId, inviteCode } = await created
+      // Neither the public PIN nor a direct game URL grants projection access.
+      const intruder = await connect("intruder")
+      const leaked = []
+      intruder.onAny((name) => {
+        if (
+          ["projection:snapshot", "projection:players", "game:status"].includes(
+            name,
+          )
+        ) {
+          leaked.push(name)
+        }
+      })
+      let denied = event(intruder, "projection:unauthorized")
+      intruder.emit("projection:join", { gameId })
+      await denied
+      denied = event(intruder, "projection:unauthorized")
+      intruder.emit("projection:join", { gameId, token: "f".repeat(64) })
+      await denied
+      denied = event(intruder, "projection:unauthorized")
+      intruder.emit("projection:join", null)
+      await denied
+      const wrongPassword = event(intruder, "projection:authError")
+      intruder.emit("projection:open", { password: "incorrect", inviteCode })
+      assert.equal(await wrongPassword, "errors:manager.invalidPassword")
+      const noSuchPin = event(intruder, "projection:authError")
+      intruder.emit("projection:open", {
+        password: "test-only-password",
+        inviteCode: "------",
+      })
+      assert.equal(await noSuchPin, "errors:game.notFound")
+
       const display = await connect("display-id")
+      const access = event(display, "projection:authorized")
+      display.emit("projection:open", {
+        password: "test-only-password",
+        inviteCode,
+      })
+      const permission = await access
+      assert.equal(permission.gameId, gameId)
+      const { token } = permission
+      assert.equal(token.length, 64)
       const publicMessages = []
       display.onAny((name, data) => publicMessages.push({ name, data }))
       let snapshot = event(display, "projection:snapshot")
-      display.emit("projection:join", { gameId })
+      display.emit("projection:join", { gameId, token })
       assert.equal((await snapshot).status.name, "SHOW_ROOM")
       // Merely opening a public display cannot start a game or gain manager configuration.
       const unauthorized = event(display, "manager:unauthorized")
@@ -153,7 +193,7 @@ test(
       await delay(1100)
       const secondDisplay = await connect("display-two")
       snapshot = event(secondDisplay, "projection:snapshot")
-      secondDisplay.emit("projection:join", { gameId })
+      secondDisplay.emit("projection:join", { gameId, token })
       const active = await snapshot
       assert.equal(active.status.name, "SELECT_ANSWER")
       assert.ok(active.remaining < 10 && active.remaining > 0)
@@ -181,7 +221,7 @@ test(
       manager.emit("manager:showLeaderboard", { gameId })
       await board
       snapshot = event(display, "projection:snapshot")
-      display.emit("projection:join", { gameId })
+      display.emit("projection:join", { gameId, token })
       assert.equal((await snapshot).status.name, "SHOW_LEADERBOARD")
       answers = status(display, "SELECT_ANSWER")
       manager.emit("manager:nextQuestion", { gameId })
@@ -212,15 +252,16 @@ test(
         false,
       )
       snapshot = event(display, "projection:snapshot")
-      display.emit("projection:join", { gameId })
+      display.emit("projection:join", { gameId, token })
       assert.equal((await snapshot).status.name, "FINISHED")
       display.disconnect()
       assert.equal(manager.connected, true)
       // A missing/expired display URL clears the screen instead of becoming a player.
       const missing = await connect("missing-display")
-      const reset = event(missing, "game:reset")
-      missing.emit("projection:join", { gameId: "does-not-exist" })
-      assert.equal(await reset, "errors:game.notFound")
+      const reset = event(missing, "projection:unauthorized")
+      missing.emit("projection:join", { gameId: "does-not-exist", token })
+      await reset
+      assert.deepEqual(leaked, [])
     } catch (error) {
       error.message += `\nServer logs:\n${logs}`
       throw error
