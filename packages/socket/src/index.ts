@@ -1,4 +1,6 @@
+import { musicSocketHandlers } from "@razzia/socket/handlers/music"
 import type { Server } from "@razzia/common/types/game/socket"
+import { appearanceSocketHandlers } from "@razzia/socket/handlers/appearance"
 import { gameSocketHandlers } from "@razzia/socket/handlers/game"
 import { managerSocketHandlers } from "@razzia/socket/handlers/manager"
 import { quizzSocketHandlers } from "@razzia/socket/handlers/quizz"
@@ -8,10 +10,11 @@ import { initConfig } from "@razzia/socket/services/config"
 import Registry from "@razzia/socket/services/registry"
 import { Server as ServerIO } from "socket.io"
 
-const WS_PORT = 3001
+const WS_PORT = Number(process.env.SOCKET_PORT ?? 3001)
 
 const io: Server = new ServerIO({
   path: "/ws",
+  maxHttpBufferSize: 24 * 1024 * 1024,
 })
 initConfig()
 
@@ -20,6 +23,8 @@ io.listen(WS_PORT)
 
 const socketHandlers: SocketHandler[] = [
   managerSocketHandlers,
+  appearanceSocketHandlers,
+  musicSocketHandlers,
   quizzSocketHandlers,
   gameSocketHandlers,
   resultsSocketHandlers,

@@ -31,3 +31,17 @@ jobs:
 
       - name: Lint
         run: pnpm lint
+
+      - name: Build
+        run: pnpm build
+
+      - name: Type checks
+        run: |
+          pnpm exec tsc --noEmit -p packages/socket/tsconfig.json
+          pnpm exec tsc --noEmit -p packages/web/tsconfig.app.json
+
+      - name: Projection integration test
+        run: node --test tests/projection.test.mjs
+
+      - name: Deployment script syntax
+        run: bash -n scripts/razzia-update.sh

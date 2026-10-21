@@ -9,7 +9,17 @@ export const questionMediaValidator = z.object({
   type: z
     .enum([MEDIA_TYPES.IMAGE, MEDIA_TYPES.VIDEO, MEDIA_TYPES.AUDIO])
     .optional(),
-  url: z.url("errors:quizz.invalidMediaUrl"),
+  url: z.union([
+    z.url("errors:quizz.invalidMediaUrl"),
+    z
+      .string()
+      .regex(
+        /^\/branding\/[a-zA-Z0-9_-]+\.(?:mp3|wav|png|jpg|jpeg|webp|mp4|webm)$/u,
+        "errors:quizz.invalidMediaUrl",
+      ),
+  ]),
+  volume: z.number().min(0).max(1).optional(),
+  startAt: z.number().min(0).max(86400).optional(),
 })
 
 const multiOptionsValidator = z.object({
@@ -52,6 +62,7 @@ const questionValidator = z.preprocess(
 )
 
 export const quizzValidator = z.object({
+  hideScoresUntilEnd: z.boolean().optional(),
   subject: z.string().min(1, "errors:quizz.subjectEmpty"),
   questions: z.array(questionValidator).min(1, "errors:quizz.noQuestions"),
 })

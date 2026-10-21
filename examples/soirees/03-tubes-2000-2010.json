@@ -1,0 +1,196 @@
+{
+  "id": "as-event-soiree-03-tubes-2000-2010-v2",
+  "subject": "AS Event — Dancefloor années 2000–2010",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Blind test 01 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Willy Denzey", "Matt Houston", "Tragédie", "K.Maro"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 02 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["t.A.T.u.", "Aqua", "O-Zone", "Eiffel 65"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 03 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Christina Aguilera",
+        "Britney Spears",
+        "Avril Lavigne",
+        "P!nk"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Comment s’appelle votre DJ ce soir ?",
+      "answers": ["Sylvain", "Kevin", "David", "Julien"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 04 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "The Black Eyed Peas",
+        "Gnarls Barkley",
+        "N.E.R.D",
+        "OutKast"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 05 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Katy Perry", "Rihanna", "Lady Gaga", "Kesha"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 06 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Muse", "The White Stripes", "The Strokes", "Arctic Monkeys"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "[À PERSONNALISER] Combien de projecteurs le DJ a-t-il installés ce soir ?",
+      "answers": [
+        "À renseigner : nombre exact",
+        "À renseigner : autre nombre 1",
+        "À renseigner : autre nombre 2",
+        "À renseigner : autre nombre 3"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 07 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Alizée", "Priscilla", "Lorie", "Ilona Mitrecey"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 08 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Sum 41", "Green Day", "Linkin Park", "Blink-182"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 09 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Daft Punk",
+        "Gnarls Barkley",
+        "The Chemical Brothers",
+        "The Ting Tings"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel est le nom de la marque de votre DJ ?",
+      "answers": ["AS Event", "AS Taxi", "AS Camping", "AS Tricot"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 10 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Jennifer Lopez", "Beyoncé", "Christina Aguilera", "Shakira"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 11 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "The Black Eyed Peas",
+        "Far East Movement",
+        "LMFAO",
+        "OutKast"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 12 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Beyoncé", "Rihanna", "Katy Perry", "Lady Gaga"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "[À PERSONNALISER] Quel accessoire porte le DJ ce soir ?",
+      "answers": [
+        "À renseigner : accessoire réel",
+        "À renseigner : autre accessoire 1",
+        "À renseigner : autre accessoire 2",
+        "À renseigner : autre accessoire 3"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    }
+  ]
+}

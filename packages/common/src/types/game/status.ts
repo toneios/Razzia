@@ -7,10 +7,13 @@ import type {
 
 export const STATUS = {
   SHOW_ROOM: "SHOW_ROOM",
+  ROUND_PAUSE: "ROUND_PAUSE",
+  AWAITING_FINAL: "AWAITING_FINAL",
   SHOW_START: "SHOW_START",
   SHOW_PREPARED: "SHOW_PREPARED",
   SHOW_QUESTION: "SHOW_QUESTION",
   SELECT_ANSWER: "SELECT_ANSWER",
+  AWAITING_REVEAL: "AWAITING_REVEAL",
   SHOW_RESULT: "SHOW_RESULT",
   SHOW_RESPONSES: "SHOW_RESPONSES",
   SHOW_LEADERBOARD: "SHOW_LEADERBOARD",
@@ -21,6 +24,8 @@ export const STATUS = {
 export type Status = (typeof STATUS)[keyof typeof STATUS]
 
 export interface CommonStatusDataMap {
+  ROUND_PAUSE: { text: string }
+  AWAITING_FINAL: { text: string }
   SHOW_START: { time: number; subject: string }
   SHOW_PREPARED: { totalAnswers: number; questionNumber: number }
   SHOW_QUESTION: {
@@ -45,13 +50,21 @@ export interface CommonStatusDataMap {
     rank: number
     aheadOfMe: string | null
   }
+  AWAITING_REVEAL: { text: string }
   WAIT: { text: string }
-  FINISHED: { subject: string; top: Player[]; rank?: number }
+  FINISHED: {
+    subject: string
+    top: Array<Pick<Player, "username" | "points">>
+    rank?: number
+    points?: number
+  }
 }
 
 interface ManagerExtraStatus {
   SHOW_ROOM: { text: string; inviteCode?: string }
   SHOW_RESPONSES: {
+    hideScores?: boolean
+    revealEndsAt: number
     question: string
     responses: Record<number, number>
     solutions: number[]

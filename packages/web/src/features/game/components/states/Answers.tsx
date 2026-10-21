@@ -1,5 +1,4 @@
-import { EVENTS, MEDIA_TYPES, NO_TIME_LIMIT } from "@razzia/common/constants"
-import type { QuestionMediaType } from "@razzia/common/types/game"
+import { EVENTS, NO_TIME_LIMIT } from "@razzia/common/constants"
 import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
 import QuestionMedia from "@razzia/web/components/QuestionMedia"
 import {
@@ -9,36 +8,39 @@ import {
 import { usePlayerStore } from "@razzia/web/features/game/stores/player"
 import { SFX } from "@razzia/web/features/game/utils/constants"
 import { QUESTION_REGISTRY } from "@razzia/web/features/questions"
-import { useEffect, useState } from "react"
+import { useBackgroundMusic } from "@razzia/web/features/game/utils/useBackgroundMusic"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import useSound from "use-sound"
+import {
+  useGameView,
+  useGameSound as useSound,
+} from "@razzia/web/features/game/contexts/view-context"
 
 interface Props {
   data: CommonStatusDataMap["SELECT_ANSWER"]
+  hideIntro?: boolean
 }
 
 const Answers = ({
   data: { question, answers, media, time, totalPlayer, questionType, options },
+  hideIntro = false,
 }: Props) => {
   const { socket } = useSocket()
   const { player, gameId } = usePlayerStore()
 
-  const [cooldown, setCooldown] = useState(time)
-  const [totalAnswer, setTotalAnswer] = useState(0)
+  const view = useGameView()
+  const [cooldown, setCooldown] = useState(view.remaining ?? time)
+  const [totalAnswer, setTotalAnswer] = useState(view.answers ?? 0)
   const { t } = useTranslation()
 
   const [sfxPop] = useSound(SFX.ANSWERS.SOUND, {
     volume: 0.1,
   })
 
-  const [playMusic, { stop: stopMusic }] = useSound(SFX.ANSWERS.MUSIC, {
-    volume: 0.2,
-    interrupt: true,
-    loop: true,
-  })
+  useBackgroundMusic(Boolean(media?.type))
 
   const handleSubmit = (answerKeys: number[]) => {
-    if (!player || !gameId) {
+    if (view.role !== "player" || !player || !gameId) {
       return
     }
 
@@ -50,24 +52,6 @@ const Answers = ({
     })
     sfxPop()
   }
-
-  useEffect(() => {
-    const disabledMusicMedia: QuestionMediaType[] = [
-      MEDIA_TYPES.AUDIO,
-      MEDIA_TYPES.VIDEO,
-    ]
-
-    if (disabledMusicMedia.includes(media?.type)) {
-      return
-    }
-
-    playMusic()
-
-    return () => {
-      stopMusic()
-    }
-    // oxlint-disable-next-line
-  }, [playMusic])
 
   useEvent(EVENTS.GAME.COOLDOWN, (sec) => {
     setCooldown(sec)
@@ -82,13 +66,15 @@ const Answers = ({
 
   return (
     <div className="flex h-full flex-1 flex-col justify-between">
-      <div className="mx-auto inline-flex h-full w-full max-w-7xl flex-1 flex-col items-center justify-center gap-5">
-        <h2 className="text-center text-2xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
-          {question}
-        </h2>
+      {!hideIntro && (
+        <div className="mx-auto inline-flex h-full w-full max-w-7xl flex-1 flex-col items-center justify-center gap-5">
+          <h2 className="text-center text-2xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+            {question}
+          </h2>
 
-        <QuestionMedia media={media} alt={question} />
-      </div>
+          <QuestionMedia media={media} alt={question} />
+        </div>
+      )}
 
       <div>
         <div className="mx-auto mb-4 flex w-full max-w-7xl justify-between gap-1 px-2 text-lg font-bold text-white md:text-xl">
@@ -114,7 +100,7 @@ const Answers = ({
           answers={answers}
           options={options}
           onSubmit={handleSubmit}
-          readOnly={!player}
+          readOnly={view.role !== "player" || !player}
         />
       </div>
     </div>

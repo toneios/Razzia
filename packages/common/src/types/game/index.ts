@@ -36,6 +36,8 @@ export type QuestionMediaType =
 export interface QuestionMedia {
   type?: QuestionMediaType
   url: string
+  volume?: number
+  startAt?: number
 }
 
 export interface Question {
@@ -52,6 +54,7 @@ export interface Question {
 }
 
 export interface Quizz {
+  hideScoresUntilEnd?: boolean
   subject: string
   questions: Question[]
 }

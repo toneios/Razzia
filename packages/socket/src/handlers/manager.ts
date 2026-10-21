@@ -1,9 +1,21 @@
+import { getVersionStatus } from "@razzia/socket/services/version"
 import { EVENTS } from "@razzia/common/constants"
 import type { SocketContext } from "@razzia/socket/handlers/types"
 import { getGameConfig } from "@razzia/socket/services/config"
 import manager, { emitConfig } from "@razzia/socket/services/manager"
 
 export const managerSocketHandlers = ({ socket }: SocketContext) => {
+  socket.on(
+    EVENTS.MANAGER.GET_VERSION,
+    manager.withAuth(socket, () => {
+      void getVersionStatus().then((data) => {
+        if (socket.connected && manager.isLogged(socket)) {
+          socket.emit(EVENTS.MANAGER.VERSION, data)
+        }
+      })
+    }),
+  )
+
   socket.on(
     EVENTS.MANAGER.GET_CONFIG,
     manager.withAuth(socket, () => {

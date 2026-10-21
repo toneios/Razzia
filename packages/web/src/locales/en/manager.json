@@ -40,6 +40,29 @@
   "tabs": {
     "play": "Play",
     "quizz": "Quizz",
-    "results": "Results"
+    "results": "Results",
+    "appearance": "Appearance"
+  },
+  "appearance": {
+    "help": "Customize this installation. Save to apply changes to connected devices. Background music plays on the projection and optionally on the host desk.",
+    "primary": "Buttons",
+    "secondary": "Background",
+    "brand": "Accent",
+    "answers": "Answer colors",
+    "background": "Background image (PNG, JPG, WebP · max 4 MB)",
+    "defaultBackground": "Use the stage background",
+    "musicEnabled": "Enable background music",
+    "music": "Loop music (MP3, WAV · max 15 MB)",
+    "volume": "Music volume",
+    "defaultMusic": "Use the original music",
+    "reset": "Reset AS Event theme",
+    "save": "Save appearance",
+    "saved": "Appearance saved and applied.",
+    "uploaded": "File uploaded. Save to apply it.",
+    "sending": "Sending…",
+    "timeout": "Request timed out. Check your connection and try again.",
+    "readError": "Could not read the existing theme.",
+    "saveError": "Could not save. Check values and configuration folder permissions.",
+    "uploadError": "Upload failed. Check the file type and size."
   }
 }

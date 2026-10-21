@@ -1,0 +1,186 @@
+{
+  "id": "as-event-soiree-02-retro-80-90-v2",
+  "subject": "AS Event — Dancefloor années 80–90",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Blind test 01 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Images", "Gold", "Début de soirée", "Cock Robin"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 02 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Indochine", "Images", "Téléphone", "Partenaire Particulier"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 03 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Desireless", "Jeanne Mas", "Lio", "Kim Wilde"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Comment s’appelle votre DJ ce soir ?",
+      "answers": ["Kevin", "David", "Julien", "Sylvain"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 04 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Duran Duran", "Tears for Fears", "a-ha", "Depeche Mode"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 05 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "François Feldman",
+        "Jean-Pierre Mader",
+        "Thierry Hazard",
+        "Gilbert Montagné"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 06 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Partenaire Particulier",
+        "Indochine",
+        "Gold",
+        "Début de soirée"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "[À PERSONNALISER] Combien de projecteurs le DJ a-t-il installés ce soir ?",
+      "answers": [
+        "À renseigner : autre nombre 1",
+        "À renseigner : autre nombre 2",
+        "À renseigner : autre nombre 3",
+        "À renseigner : nombre exact"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 07 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["All Saints", "TLC", "Spice Girls", "Destiny’s Child"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 08 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Corona", "Gala", "Whigfield", "Rozalla"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 09 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Haddaway", "Dr. Alban", "Snap!", "La Bouche"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel est le nom de la marque de votre DJ ?",
+      "answers": ["AS Taxi", "AS Camping", "AS Tricot", "AS Event"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 10 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Gala", "2 Unlimited", "Corona", "Ace of Base"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 11 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["IAM", "Manau", "NTM", "Alliance Ethnik"],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 12 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Snap!", "Haddaway", "Dr. Alban", "Culture Beat"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "[À PERSONNALISER] Quel accessoire porte le DJ ce soir ?",
+      "answers": [
+        "À renseigner : autre accessoire 1",
+        "À renseigner : autre accessoire 2",
+        "À renseigner : autre accessoire 3",
+        "À renseigner : accessoire réel"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    }
+  ]
+}

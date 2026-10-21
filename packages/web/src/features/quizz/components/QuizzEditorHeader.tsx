@@ -12,7 +12,14 @@ import toast from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 
 const QuizzEditorHeader = () => {
-  const { quizzId, subject, setSubject, questions } = useQuizzEditor()
+  const {
+    quizzId,
+    subject,
+    setSubject,
+    questions,
+    hideScoresUntilEnd,
+    setHideScoresUntilEnd,
+  } = useQuizzEditor()
   const { socket } = useSocket()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -23,9 +30,14 @@ const QuizzEditorHeader = () => {
 
   const handleSave = () => {
     if (quizzId) {
-      socket.emit(EVENTS.QUIZZ.UPDATE, { id: quizzId, subject, questions })
+      socket.emit(EVENTS.QUIZZ.UPDATE, {
+        id: quizzId,
+        subject,
+        questions,
+        hideScoresUntilEnd,
+      })
     } else {
-      socket.emit(EVENTS.QUIZZ.SAVE, { subject, questions })
+      socket.emit(EVENTS.QUIZZ.SAVE, { subject, questions, hideScoresUntilEnd })
     }
   }
 
@@ -44,7 +56,7 @@ const QuizzEditorHeader = () => {
   })
 
   return (
-    <header className="bg-background z-20 flex h-14 items-center justify-between gap-4 px-4 shadow-sm">
+    <header className="bg-background z-20 flex min-h-14 flex-wrap items-center justify-between gap-4 px-4 py-2 shadow-sm">
       <div className="flex items-center gap-6">
         <Input
           variant="sm"
@@ -55,6 +67,14 @@ const QuizzEditorHeader = () => {
         />
       </div>
 
+      <label className="flex items-center gap-2 text-sm text-slate-300">
+        <input
+          type="checkbox"
+          checked={hideScoresUntilEnd}
+          onChange={(event) => setHideScoresUntilEnd(event.target.checked)}
+        />
+        {t("quizz:hideScoresUntilEnd")}
+      </label>
       <div className="flex gap-2">
         <Button
           className="text-md bg-accent text-accent-foreground px-4 py-2 font-semibold"

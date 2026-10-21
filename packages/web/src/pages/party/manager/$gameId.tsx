@@ -1,3 +1,6 @@
+import VersionBadge from "@razzia/web/features/manager/components/VersionBadge"
+import type { NextQuestionPreview } from "@razzia/common/types/game/socket"
+import NextQuestionCard from "@razzia/web/features/game/components/NextQuestionCard"
 import { EVENTS } from "@razzia/common/constants"
 import { STATUS } from "@razzia/common/types/game/status"
 import GameWrapper from "@razzia/web/features/game/components/GameWrapper"
@@ -14,6 +17,8 @@ import {
   isKeyOf,
 } from "@razzia/web/features/game/utils/constants"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
+import { GameViewContext } from "@razzia/web/features/game/contexts/view-context"
+import { useState } from "react"
 import toast from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 
@@ -25,6 +30,11 @@ const ManagerGamePage = () => {
     useManagerStore()
   const { setQuestionStates } = useQuestionStore()
   const { t } = useTranslation()
+  const [nextQuestion, setNextQuestion] = useState<NextQuestionPreview | null>(
+    null,
+  )
+  useEvent(EVENTS.MANAGER.NEXT_QUESTION_PREVIEW, setNextQuestion)
+  const [sound, setSound] = useState(false)
 
   useEvent(EVENTS.GAME.STATUS, ({ name, data }) => {
     if (name in GAME_STATE_COMPONENTS_MANAGER) {
@@ -98,14 +108,61 @@ const ManagerGamePage = () => {
   }
 
   return (
-    <GameWrapper
-      statusName={status.name}
-      onNext={handleSkip}
-      onBack={status.name === STATUS.SHOW_ROOM ? handleBack : undefined}
-      manager
-    >
-      {CurrentComponent && <CurrentComponent data={status.data as never} />}
-    </GameWrapper>
+    <GameViewContext.Provider value={{ role: "control", sound }}>
+      <div className="relative z-20 flex flex-wrap items-center gap-3 bg-slate-950 px-4 py-3 text-white">
+        <strong>{t("game:controlDesk")}</strong>
+        <VersionBadge />
+        <a
+          className="rounded-lg bg-white px-4 py-2 font-bold text-black"
+          href="/projection"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t("game:openProjection")}
+        </a>
+        <button
+          className="rounded-lg border border-white/40 px-4 py-2"
+          onClick={async () => {
+            try {
+              await navigator.clipboard.writeText(
+                `${window.location.origin}/projection`,
+              )
+              toast.success(t("game:projectionCopied"))
+            } catch {
+              toast.error(t("game:copyProjectionManually"))
+            }
+          }}
+        >
+          {t("game:copyProjection")}
+        </button>
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={sound}
+            onChange={(event) => setSound(event.target.checked)}
+          />
+          {t("game:controlSound")}
+        </label>
+      </div>
+      <GameWrapper
+        statusName={status.name}
+        onNext={handleSkip}
+        onBack={status.name === STATUS.SHOW_ROOM ? handleBack : undefined}
+        manager
+      >
+        <div className="flex w-full flex-1 flex-col gap-4 xl:flex-row">
+          <div className="flex min-w-0 flex-1 flex-col">
+            {CurrentComponent && (
+              <CurrentComponent data={status.data as never} />
+            )}
+          </div>
+          {(status.name === STATUS.SHOW_RESPONSES ||
+            status.name === STATUS.SHOW_LEADERBOARD ||
+            status.name === STATUS.ROUND_PAUSE) &&
+            nextQuestion && <NextQuestionCard data={nextQuestion} />}
+        </div>
+      </GameWrapper>
+    </GameViewContext.Provider>
   )
 }
 

@@ -13,6 +13,7 @@ import { RoundManager } from "@razzia/socket/services/game/round-manager"
 import Registry from "@razzia/socket/services/registry"
 import { createInviteCode } from "@razzia/socket/utils/game"
 import { getClientId } from "@razzia/socket/utils/socket"
+import { randomBytes } from "node:crypto"
 import { v7 as uuid } from "uuid"
 
 const registry = Registry.getInstance()
@@ -21,6 +22,18 @@ class Game {
   readonly gameId: string
   readonly inviteCode: string
 
+  private readonly projectionToken = randomBytes(32).toString("hex")
+
+  // Only return this capability after verifying the projection password.
+  grantProjectionAccess() {
+    return this.projectionToken
+  }
+
+  hasProjectionAccess(token: string) {
+    return token === this.projectionToken
+  }
+
+  private readonly hideScoresUntilEnd: boolean
   private readonly io: Server
   private readonly _manager: {
     id: string
@@ -46,6 +59,7 @@ class Game {
 
   constructor(io: Server, socket: Socket, quizz: Quizz) {
     const clientId = getClientId(socket)
+    this.hideScoresUntilEnd = quizz.hideScoresUntilEnd ?? false
 
     this.io = io
     this.gameId = uuid()
@@ -105,9 +119,27 @@ class Game {
 
   // ── Status broadcasting ──────────────────────────────────────────────────
 
+  // Dedicated socket event: future answers must never enter public status data.
+  private sendNextQuestionPreview() {
+    this.io
+      .to(this._manager.id)
+      .emit(
+        EVENTS.MANAGER.NEXT_QUESTION_PREVIEW,
+        this.round.getNextQuestionPreview(),
+      )
+  }
+
   private broadcastStatus<T extends Status>(status: T, data: StatusDataMap[T]) {
-    const statusData = { name: status, data }
+    this.sendNextQuestionPreview()
+    const statusData = {
+      name: status,
+      data: {
+        ...data,
+        hideScores: this.hideScoresUntilEnd && !this.round.isFinished(),
+      },
+    }
     this.lastBroadcastStatus = statusData
+    this.managerStatus = null
     this.io.to(this.gameId).emit(EVENTS.GAME.STATUS, statusData)
   }
 
@@ -116,15 +148,55 @@ class Game {
     status: T,
     data: StatusDataMap[T],
   ) {
-    const statusData = { name: status, data }
+    const statusData = {
+      name: status,
+      data: {
+        ...data,
+        hideScores: this.hideScoresUntilEnd && !this.round.isFinished(),
+      },
+    }
 
     if (this._manager.id === target) {
       this.managerStatus = statusData
+      this.sendNextQuestionPreview()
+      this.io
+        .to(`projection:${this.gameId}`)
+        .emit(EVENTS.GAME.STATUS, this.projectionStatus())
     } else {
       this.playerStatus.set(target, statusData)
     }
 
     this.io.to(target).emit(EVENTS.GAME.STATUS, statusData)
+  }
+
+  private projectionStatus() {
+    const status = this.managerStatus ??
+      this.lastBroadcastStatus ?? {
+        name: STATUS.SHOW_ROOM,
+        data: { text: "game:waitingForPlayers", inviteCode: this.inviteCode },
+      }
+
+    // Player client IDs are reconnection credentials. Never publish them.
+    return JSON.parse(
+      JSON.stringify(status, (key: string, value: unknown) =>
+        key === "clientId" ? undefined : value,
+      ),
+    ) as typeof status
+  }
+
+  joinProjection(socket: Socket) {
+    socket.join(this.gameId)
+    socket.join(`projection:${this.gameId}`)
+    socket.emit(EVENTS.PROJECTION.SNAPSHOT, {
+      inviteCode: this.inviteCode,
+      status: this.projectionStatus(),
+      currentQuestion: this.lastBroadcastStatus
+        ? this.round.getReconnectInfo()
+        : null,
+      players: this.players.map((p) => p.username),
+      remaining: this.cooldown.getRemaining(),
+      answers: this.round.getAnswerCount(),
+    })
   }
 
   // Player actions
@@ -166,8 +238,8 @@ class Game {
 
     const status = this.managerStatus ??
       this.lastBroadcastStatus ?? {
-        name: STATUS.WAIT,
-        data: { text: "game:waitingForPlayers" },
+        name: STATUS.SHOW_ROOM,
+        data: { text: "game:waitingForPlayers", inviteCode: this.inviteCode },
       }
 
     socket.emit(EVENTS.MANAGER.SUCCESS_RECONNECT, {
@@ -179,6 +251,7 @@ class Game {
     socket.emit(EVENTS.GAME.TOTAL_PLAYERS, this.playerManager.count())
 
     registry.reactivateGame(this.gameId)
+    this.sendNextQuestionPreview()
     console.log(`Manager reconnected to game ${this.inviteCode}`)
   }
 
@@ -219,7 +292,13 @@ class Game {
       gameId: this.gameId,
       currentQuestion: this.round.getReconnectInfo(),
       status,
-      player: { username: player.username, points: player.points },
+      player: {
+        username: player.username,
+        points:
+          this.hideScoresUntilEnd && !this.round.isFinished()
+            ? 0
+            : player.points,
+      },
     })
     socket.emit(EVENTS.GAME.TOTAL_PLAYERS, this.playerManager.count())
 
@@ -270,6 +349,14 @@ class Game {
 
   abortRound(socket: Socket) {
     this.round.abortQuestion(socket)
+  }
+
+  reveal(socket: Socket) {
+    this.round.reveal(socket)
+  }
+
+  revealFinal(socket: Socket) {
+    this.round.revealFinal(socket)
   }
 
   showLeaderboard(socket: Socket) {

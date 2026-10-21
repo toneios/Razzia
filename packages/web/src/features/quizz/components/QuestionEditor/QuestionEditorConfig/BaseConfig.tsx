@@ -54,72 +54,6 @@ const BaseConfig = () => {
 
   return (
     <>
-      <ConfigSection title={t("quizz:question.config.scoring")}>
-        <ConfigField>
-          <ConfigField.Label
-            icon={<Star className="size-4" />}
-            label={t("quizz:question.config.maxPoints")}
-            unit="pts"
-          />
-          <ConfigNumberInput
-            value={currentQuestion.maxPoints ?? MAX_POINTS}
-            min={0}
-            onChange={handleUpdateQuestion("maxPoints")}
-          />
-          <ConfigField.Description>
-            {t("quizz:question.config.maxPointsHint")}
-          </ConfigField.Description>
-        </ConfigField>
-
-        <ConfigField>
-          <ConfigField.Label
-            icon={<ArrowBigDownDash className="size-4" />}
-            label={t("quizz:question.config.penalty")}
-            unit={isPenaltyEnabled ? "pts" : undefined}
-            action={
-              <Switch
-                checked={isPenaltyEnabled}
-                onCheckedChange={handleTogglePenalty}
-              />
-            }
-          />
-          {isPenaltyEnabled && (
-            <ConfigNumberInput
-              value={currentQuestion.penalty ?? DEFAULT_PENALTY}
-              min={1}
-              onChange={handleUpdateQuestion("penalty")}
-            />
-          )}
-          <ConfigField.Description>
-            {t("quizz:question.config.penaltyHint")}
-          </ConfigField.Description>
-        </ConfigField>
-
-        {scoringModes && scoringMode && (
-          <ConfigField>
-            <ConfigField.Label
-              icon={<ListChecks className="size-4" />}
-              label={t("quizz:question.config.scoringMode")}
-            />
-            <Select value={scoringMode} onValueChange={handleScoringModeChange}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {scoringOptions?.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <ConfigField.Description>
-              {t(`quizz:question.config.scoringModeHint.${scoringMode}`)}
-            </ConfigField.Description>
-          </ConfigField>
-        )}
-      </ConfigSection>
-
       <ConfigSection title={t("quizz:question.config.timings")}>
         <ConfigField>
           <ConfigField.Label
@@ -163,6 +97,81 @@ const BaseConfig = () => {
           </ConfigField.Description>
         </ConfigField>
       </ConfigSection>
+      <details className="border-t border-slate-700 pt-3">
+        <summary className="cursor-pointer text-sm text-slate-400">
+          {t("quizz:mediaPanel.advanced")}
+        </summary>
+        <div className="pt-3">
+          <ConfigSection title={t("quizz:question.config.scoring")}>
+            <ConfigField>
+              <ConfigField.Label
+                icon={<Star className="size-4" />}
+                label={t("quizz:question.config.maxPoints")}
+                unit="pts"
+              />
+              <ConfigNumberInput
+                value={currentQuestion.maxPoints ?? MAX_POINTS}
+                min={0}
+                onChange={handleUpdateQuestion("maxPoints")}
+              />
+              <ConfigField.Description>
+                {t("quizz:question.config.maxPointsHint")}
+              </ConfigField.Description>
+            </ConfigField>
+
+            <ConfigField>
+              <ConfigField.Label
+                icon={<ArrowBigDownDash className="size-4" />}
+                label={t("quizz:question.config.penalty")}
+                unit={isPenaltyEnabled ? "pts" : undefined}
+                action={
+                  <Switch
+                    checked={isPenaltyEnabled}
+                    onCheckedChange={handleTogglePenalty}
+                  />
+                }
+              />
+              {isPenaltyEnabled && (
+                <ConfigNumberInput
+                  value={currentQuestion.penalty ?? DEFAULT_PENALTY}
+                  min={1}
+                  onChange={handleUpdateQuestion("penalty")}
+                />
+              )}
+              <ConfigField.Description>
+                {t("quizz:question.config.penaltyHint")}
+              </ConfigField.Description>
+            </ConfigField>
+
+            {scoringModes && scoringMode && (
+              <ConfigField>
+                <ConfigField.Label
+                  icon={<ListChecks className="size-4" />}
+                  label={t("quizz:question.config.scoringMode")}
+                />
+                <Select
+                  value={scoringMode}
+                  onValueChange={handleScoringModeChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {scoringOptions?.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <ConfigField.Description>
+                  {t(`quizz:question.config.scoringModeHint.${scoringMode}`)}
+                </ConfigField.Description>
+              </ConfigField>
+            )}
+          </ConfigSection>
+        </div>
+      </details>
     </>
   )
 }

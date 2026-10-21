@@ -1,0 +1,221 @@
+{
+  "id": "as-event-soiree-05-tous-en-choeur-v2",
+  "subject": "AS Event — Tous en chœur — les refrains français",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Blind test 01 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Daniel Balavoine",
+        "Jean-Jacques Goldman",
+        "Michel Berger",
+        "Florent Pagny"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 02 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Jean-Pierre Mader",
+        "François Feldman",
+        "Thierry Hazard",
+        "Gilbert Montagné"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 03 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Images", "Début de soirée", "Indochine", "Gold"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Comment s’appelle votre DJ ce soir ?",
+      "answers": ["Kevin", "David", "Sylvain", "Julien"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 04 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Partenaire Particulier",
+        "Cookie Dingler",
+        "Téléphone",
+        "Gold"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 05 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Gilbert Montagné",
+        "Patrick Hernandez",
+        "François Feldman",
+        "Michel Delpech"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 06 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Joe Dassin",
+        "Michel Delpech",
+        "Johnny Hallyday",
+        "Michel Sardou"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "[À PERSONNALISER] Combien de projecteurs le DJ a-t-il installés ce soir ?",
+      "answers": [
+        "À renseigner : autre nombre 1",
+        "À renseigner : autre nombre 2",
+        "À renseigner : nombre exact",
+        "À renseigner : autre nombre 3"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 07 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Joe Dassin",
+        "Claude François",
+        "Patrick Juvet",
+        "Michel Fugain"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 08 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Joe Dassin",
+        "Michel Delpech",
+        "Claude François",
+        "Michel Fugain"
+      ],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 09 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "La Compagnie Créole",
+        "Collectif Métissé",
+        "Carlos",
+        "Patrick Sébastien"
+      ],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Quel est le nom de la marque de votre DJ ?",
+      "answers": ["AS Taxi", "AS Camping", "AS Event", "AS Tricot"],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 10 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": [
+        "Florent Pagny",
+        "Patrick Bruel",
+        "Pascal Obispo",
+        "Marc Lavoine"
+      ],
+      "solutions": [1],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 11 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Zebda", "Tryo", "Manau", "Louise Attaque"],
+      "solutions": [0],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "Blind test 12 — Quel artiste ou groupe reconnaissez-vous ?",
+      "answers": ["Indochine", "Noir Désir", "Trust", "Téléphone"],
+      "solutions": [3],
+      "cooldown": 3,
+      "time": 25,
+      "maxPoints": 1000,
+      "penalty": 0
+    },
+    {
+      "type": "single",
+      "question": "[À PERSONNALISER] Quel accessoire porte le DJ ce soir ?",
+      "answers": [
+        "À renseigner : autre accessoire 1",
+        "À renseigner : autre accessoire 2",
+        "À renseigner : accessoire réel",
+        "À renseigner : autre accessoire 3"
+      ],
+      "solutions": [2],
+      "cooldown": 3,
+      "time": 15,
+      "maxPoints": 1000,
+      "penalty": 0
+    }
+  ]
+}

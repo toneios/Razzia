@@ -4,3 +4,11 @@
 .secrets
 release.json
 web2
+# Local blind-test source tracks
+/music/*
+!/music/.gitkeep
+
+/video/*
+!/video/.gitkeep
+/image/*
+!/image/.gitkeep

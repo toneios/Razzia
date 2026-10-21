@@ -1,9 +1,12 @@
+import type { VersionStatus } from "@razzia/common/types/version"
+import type { Appearance } from "@razzia/common/types/appearance"
 import { EVENTS } from "@razzia/common/constants"
 import type {
   GameResult,
   GameUpdateQuestion,
   Player,
   QuizzWithId,
+  QuestionMediaType,
 } from "@razzia/common/types/game"
 import type { Status, StatusDataMap } from "@razzia/common/types/game/status"
 import type { ManagerConfig } from "@razzia/common/types/manager"
@@ -28,7 +31,58 @@ export interface MessageGameId {
   gameId?: string
 }
 
+export interface ProjectionSnapshot {
+  inviteCode: string
+  status: { name: Status; data: StatusDataMap[Status] }
+  currentQuestion: GameUpdateQuestion | null
+  players: string[]
+  remaining: number | null
+  answers: number
+}
+
+export interface NextQuestionPreview {
+  number: number
+  total: number
+  question: string
+  answers: string[]
+  solutions: number[]
+  mediaType?: QuestionMediaType
+  time: number
+}
+
 export interface ServerToClientEvents {
+  [EVENTS.MANAGER.VERSION]: (_data: VersionStatus) => void
+  [EVENTS.MANAGER.NEXT_QUESTION_PREVIEW]: (
+    _preview: NextQuestionPreview | null,
+  ) => void
+  [EVENTS.MEDIA_LIBRARY.FILES]: (_data: {
+    kind: "audio" | "image" | "video"
+    files: string[]
+  }) => void
+  [EVENTS.MEDIA_LIBRARY.IMPORTED]: (_data: {
+    kind: "audio" | "image" | "video"
+    url: string
+  }) => void
+  [EVENTS.MEDIA_LIBRARY.ERROR]: (_message: string) => void
+  [EVENTS.MUSIC.FILES]: (_files: string[]) => void
+  [EVENTS.MUSIC.IMPORTED]: (_data: { url: string }) => void
+  [EVENTS.MUSIC.ERROR]: (_message: string) => void
+  [EVENTS.APPEARANCE.DATA]: (_data: Appearance) => void
+  [EVENTS.APPEARANCE.SAVED]: () => void
+  [EVENTS.APPEARANCE.CHANGED]: () => void
+  [EVENTS.APPEARANCE.ERROR]: (_message: string) => void
+  [EVENTS.APPEARANCE.UPLOADED]: (_data: {
+    kind: "background" | "music"
+    url: string
+  }) => void
+  [EVENTS.PROJECTION.AUTHORIZED]: (_data: {
+    gameId: string
+    token: string
+  }) => void
+  [EVENTS.PROJECTION.AUTH_ERROR]: (_message: string) => void
+  [EVENTS.PROJECTION.UNAUTHORIZED]: () => void
+  [EVENTS.PROJECTION.SNAPSHOT]: (_data: ProjectionSnapshot) => void
+  [EVENTS.PROJECTION.PLAYERS]: (_players: string[]) => void
   connect: () => void
 
   // Game events
@@ -92,6 +146,31 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
+  [EVENTS.MANAGER.GET_VERSION]: () => void
+  [EVENTS.MANAGER.REVEAL_FINAL]: (_message: MessageGameId) => void
+  [EVENTS.MEDIA_LIBRARY.LIST]: (_kind: "audio" | "image" | "video") => void
+  [EVENTS.MEDIA_LIBRARY.IMPORT]: (_data: {
+    kind: "audio" | "image" | "video"
+    name: string
+  }) => void
+  [EVENTS.MUSIC.LIST]: () => void
+  [EVENTS.MUSIC.IMPORT]: (_name: string) => void
+  [EVENTS.APPEARANCE.GET]: () => void
+  [EVENTS.APPEARANCE.SAVE]: (_data: Appearance) => void
+  [EVENTS.APPEARANCE.UPLOAD]: (_data: {
+    kind: "background" | "music"
+    base64: string
+  }) => void
+  [EVENTS.PROJECTION.OPEN]: (_message: {
+    password: string
+    inviteCode: string
+  }) => void
+  [EVENTS.PROJECTION.JOIN]: (_message: {
+    gameId: string
+    token: string
+  }) => void
+  [EVENTS.PROJECTION.LEAVE]: () => void
+  [EVENTS.MANAGER.REVEAL]: (_message: MessageGameId) => void
   // Manager actions
   [EVENTS.GAME.CREATE]: (_quizzId: string) => void
   [EVENTS.MANAGER.AUTH]: (_password: string) => void

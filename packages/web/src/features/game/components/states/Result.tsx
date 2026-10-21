@@ -5,7 +5,7 @@ import { usePlayerStore } from "@razzia/web/features/game/stores/player"
 import { SFX } from "@razzia/web/features/game/utils/constants"
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import useSound from "use-sound"
+import { useGameSound as useSound } from "@razzia/web/features/game/contexts/view-context"
 
 interface Props {
   data: CommonStatusDataMap["SHOW_RESULT"]

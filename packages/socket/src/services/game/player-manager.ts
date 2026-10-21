@@ -49,7 +49,7 @@ export class PlayerManager {
 
     this.players.push(player)
     this.io.to(this.getManagerId()).emit(EVENTS.MANAGER.NEW_PLAYER, player)
-    this.io.to(this.gameId).emit(EVENTS.GAME.TOTAL_PLAYERS, this.players.length)
+    this.broadcastCount()
     socket.emit(EVENTS.GAME.SUCCESS_JOIN, this.gameId)
   }
 
@@ -71,7 +71,7 @@ export class PlayerManager {
     this.io
       .to(this.getManagerId())
       .emit(EVENTS.MANAGER.PLAYER_KICKED, player.id)
-    this.io.to(this.gameId).emit(EVENTS.GAME.TOTAL_PLAYERS, this.players.length)
+    this.broadcastCount()
 
     return true
   }
@@ -126,5 +126,9 @@ export class PlayerManager {
 
   broadcastCount(): void {
     this.io.to(this.gameId).emit(EVENTS.GAME.TOTAL_PLAYERS, this.players.length)
+    this.io.to(`projection:${this.gameId}`).emit(
+      EVENTS.PROJECTION.PLAYERS,
+      this.players.map((p) => p.username),
+    )
   }
 }

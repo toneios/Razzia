@@ -1,5 +1,6 @@
 import { EVENTS } from "@razzia/common/constants"
 import type { Status } from "@razzia/common/types/game/status"
+import BrandSignature from "@razzia/web/components/BrandSignature"
 import Button from "@razzia/web/components/Button"
 import GameBackground from "@razzia/web/components/GameBackground"
 import Loader from "@razzia/web/components/Loader"
@@ -20,6 +21,7 @@ type Props = PropsWithChildren & {
   onNext?: () => void
   onBack?: () => void
   manager?: boolean
+  hideScores?: boolean
 }
 
 const GameWrapper = ({
@@ -28,6 +30,7 @@ const GameWrapper = ({
   onNext,
   onBack,
   manager,
+  hideScores,
 }: Props) => {
   const { isConnected } = useSocket()
   const { player } = usePlayerStore()
@@ -72,7 +75,8 @@ const GameWrapper = ({
           </div>
         ) : (
           <>
-            <div className="flex w-full justify-between p-4">
+            <div className="flex w-full flex-wrap items-center justify-between gap-3 p-4">
+              <BrandSignature />
               {questionStates && (
                 <div className="flex items-center rounded-md bg-white p-2 px-4 text-lg font-bold text-black">
                   {`${questionStates.current} / ${questionStates.total}`}
@@ -103,11 +107,13 @@ const GameWrapper = ({
             {children}
 
             {!manager && (
-              <div className="z-50 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
-                <p className="text-gray-800">{player?.username}</p>
-                <div className="rounded-lg bg-gray-800 px-3 py-1 text-lg">
-                  {player?.points}
-                </div>
+              <div className="z-50 flex items-center justify-between border-t border-white/10 bg-black/50 px-4 py-2 text-lg font-bold text-white">
+                <p className="text-white">{player?.username}</p>
+                {!hideScores && (
+                  <div className="rounded-lg bg-gray-800 px-3 py-1 text-lg">
+                    {player?.points}
+                  </div>
+                )}
               </div>
             )}
           </>

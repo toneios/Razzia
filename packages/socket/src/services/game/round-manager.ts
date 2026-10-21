@@ -1,5 +1,5 @@
 // oxlint-disable typescript/no-unnecessary-condition
-import { EVENTS, MEDIA_TYPES, NO_TIME_LIMIT } from "@razzia/common/constants"
+import { EVENTS, NO_TIME_LIMIT } from "@razzia/common/constants"
 import type {
   Answer,
   GameResult,
@@ -8,7 +8,11 @@ import type {
   QuestionResult,
   Quizz,
 } from "@razzia/common/types/game"
-import type { Server, Socket } from "@razzia/common/types/game/socket"
+import type {
+  Server,
+  Socket,
+  NextQuestionPreview,
+} from "@razzia/common/types/game/socket"
 import {
   type Status,
   STATUS,
@@ -47,6 +51,24 @@ export interface RoundManagerOptions {
 export class RoundManager {
   private readonly opts: RoundManagerOptions
   private started = false
+  private phase:
+    | "lobby"
+    | "preparing"
+    | "answering"
+    | "reveal"
+    | "results"
+    | "leaderboard"
+    | "awaiting-final"
+    | "finished" = "lobby"
+
+  getAnswerCount() {
+    return this.playersAnswers.length
+  }
+  private revealEndsAt = 0
+  private pendingResults: Array<{
+    clientId: string
+    data: StatusDataMap["SHOW_RESULT"]
+  }> = []
   private currentQuestion = 0
   private playersAnswers: Answer[] = []
   private startTime = 0
@@ -58,8 +80,34 @@ export class RoundManager {
     this.opts = opts
   }
 
+  isFinished(): boolean {
+    return this.phase === "finished"
+  }
+
   isStarted(): boolean {
     return this.started
+  }
+
+  getNextQuestionPreview(): NextQuestionPreview | null {
+    if (this.phase !== "results" && this.phase !== "leaderboard") {
+      return null
+    }
+
+    const next = this.opts.quizz.questions[this.currentQuestion + 1]
+
+    if (!next) {
+      return null
+    }
+
+    return {
+      number: this.currentQuestion + 2,
+      total: this.opts.quizz.questions.length,
+      question: next.question,
+      answers: next.answers,
+      solutions: next.solutions,
+      mediaType: next.media?.type,
+      time: next.time,
+    }
   }
 
   getReconnectInfo() {
@@ -74,7 +122,7 @@ export class RoundManager {
       return
     }
 
-    if (this.started) {
+    if (this.phase !== "lobby") {
       return
     }
 
@@ -85,6 +133,7 @@ export class RoundManager {
     }
 
     this.started = true
+    this.phase = "preparing"
 
     this.opts.broadcast(STATUS.SHOW_START, {
       time: 3,
@@ -105,6 +154,7 @@ export class RoundManager {
     }
 
     const question = this.opts.quizz.questions[this.currentQuestion]
+    this.phase = "preparing"
 
     this.opts.onNewQuestion()
 
@@ -124,12 +174,9 @@ export class RoundManager {
       return
     }
 
-    const imageMedia =
-      question.media?.type === MEDIA_TYPES.IMAGE ? question.media : undefined
-
     this.opts.broadcast(STATUS.SHOW_QUESTION, {
       question: question.question,
-      media: imageMedia,
+      media: question.media,
       cooldown: question.cooldown,
     })
 
@@ -140,6 +187,7 @@ export class RoundManager {
     }
 
     this.startTime = Date.now()
+    this.phase = "answering"
 
     this.opts.broadcast(STATUS.SELECT_ANSWER, {
       question: question.question,
@@ -157,7 +205,20 @@ export class RoundManager {
       return
     }
 
+    this.phase = "results"
+    this.revealEndsAt = Date.now() + 10000
     this.showResults(question)
+    await sleep(10)
+    this.advanceLeaderboard()
+  }
+
+  reveal(socket: Socket): void {
+    if (socket.id !== this.opts.getManagerId() || this.phase !== "reveal") {
+      return
+    }
+
+    this.phase = "results"
+    this.showResults(this.opts.quizz.questions[this.currentQuestion])
   }
 
   private showResults(question: Question): void {
@@ -212,23 +273,33 @@ export class RoundManager {
 
     this.opts.players.replace(sortedPlayers)
 
+    this.pendingResults = []
     sortedPlayers.forEach((player, index) => {
       const rank = index + 1
       const aheadPlayer = sortedPlayers[index - 1]
 
-      this.opts.send(player.id, STATUS.SHOW_RESULT, {
-        correct: player.lastCorrect,
-        message: player.lastCorrect ? "game:correct" : "game:wrong",
-        points: player.lastPoints,
-        myPoints: player.points,
-        rank,
-        aheadOfMe: aheadPlayer ? aheadPlayer.username : null,
+      this.pendingResults.push({
+        clientId: player.clientId,
+        data: {
+          correct: player.lastCorrect,
+          message: player.lastCorrect ? "game:correct" : "game:wrong",
+          points: player.lastPoints,
+          myPoints: player.points,
+          rank,
+          aheadOfMe: aheadPlayer ? aheadPlayer.username : null,
+        },
+      })
+      this.opts.send(player.id, STATUS.SHOW_RESPONSES, {
+        ...question,
+        responses: answerCounts,
+        revealEndsAt: this.revealEndsAt,
       })
     })
 
     this.opts.send(this.opts.getManagerId(), STATUS.SHOW_RESPONSES, {
       ...question,
       responses: answerCounts,
+      revealEndsAt: this.revealEndsAt,
     })
 
     this.questionsHistory.push({
@@ -250,7 +321,18 @@ export class RoundManager {
     const player = this.opts.players.findById(socket.id)
     const question = this.opts.quizz.questions[this.currentQuestion]
 
-    if (!player) {
+    if (
+      !player ||
+      this.phase !== "answering" ||
+      !Array.isArray(answerIds) ||
+      answerIds.length === 0 ||
+      new Set(answerIds).size !== answerIds.length ||
+      answerIds.some(
+        (id) =>
+          !Number.isInteger(id) || id < 0 || id >= question.answers.length,
+      ) ||
+      (question.type === "single" && answerIds.length !== 1)
+    ) {
       return
     }
 
@@ -291,7 +373,7 @@ export class RoundManager {
   }
 
   nextQuestion(socket: Socket): void {
-    if (!this.started) {
+    if (!this.started || this.phase !== "leaderboard") {
       return
     }
 
@@ -308,7 +390,7 @@ export class RoundManager {
   }
 
   abortQuestion(socket: Socket): void {
-    if (!this.started) {
+    if (!this.started || this.phase !== "answering") {
       return
     }
 
@@ -320,42 +402,63 @@ export class RoundManager {
   }
 
   showLeaderboard(socket: Socket): void {
-    if (socket.id !== this.opts.getManagerId()) {
+    if (socket.id !== this.opts.getManagerId() || this.phase !== "results") {
       return
     }
 
+    if (Date.now() < this.revealEndsAt) {
+      return
+    }
+
+    this.advanceLeaderboard()
+  }
+
+  private advanceLeaderboard(): void {
+    if (this.phase !== "results") {
+      return
+    }
+
+    this.phase = "leaderboard"
+
+    if (this.opts.quizz.hideScoresUntilEnd) {
+      this.pendingResults = []
+      const isLast =
+        this.currentQuestion + 1 === this.opts.quizz.questions.length
+
+      if (isLast) {
+        this.phase = "awaiting-final"
+      }
+
+      const status = isLast ? STATUS.AWAITING_FINAL : STATUS.ROUND_PAUSE
+      const data = {
+        text: isLast ? "game:finalReady" : "game:scoresHiddenPause",
+      }
+      this.opts.players.getAll().forEach((player) => {
+        this.opts.send(player.id, status, data)
+      })
+      this.opts.send(this.opts.getManagerId(), status, data)
+      this.tempOldLeaderboard = null
+
+      return
+    }
+
+    // Resolve the current socket after a player reconnects during the reveal.
+    const currentPlayers = this.opts.players.getAll()
+    this.pendingResults.forEach((result) => {
+      const player = currentPlayers.find(
+        (candidate) => candidate.clientId === result.clientId,
+      )
+
+      if (player) {
+        this.opts.send(player.id, STATUS.SHOW_RESULT, result.data)
+      }
+    })
+    this.pendingResults = []
     const isLastRound =
       this.currentQuestion + 1 === this.opts.quizz.questions.length
 
     if (isLastRound) {
-      this.started = false
-
-      const top = this.leaderboard.slice(0, 3)
-
-      this.opts.onGameFinished({
-        id: `${Date.now()}-${nanoid(8)}`,
-        subject: this.opts.quizz.subject,
-        date: new Date().toISOString(),
-        players: this.leaderboard.map((player, index) => ({
-          username: player.username,
-          points: player.points,
-          rank: index + 1,
-        })),
-        questions: this.questionsHistory,
-      })
-
-      this.opts.send(this.opts.getManagerId(), STATUS.FINISHED, {
-        subject: this.opts.quizz.subject,
-        top,
-      })
-
-      this.leaderboard.forEach((player, index) => {
-        this.opts.send(player.id, STATUS.FINISHED, {
-          subject: this.opts.quizz.subject,
-          top,
-          rank: index + 1,
-        })
-      })
+      this.finishGame()
 
       return
     }
@@ -368,5 +471,50 @@ export class RoundManager {
     })
 
     this.tempOldLeaderboard = null
+  }
+  revealFinal(socket: Socket): void {
+    if (
+      socket.id !== this.opts.getManagerId() ||
+      this.phase !== "awaiting-final"
+    ) {
+      return
+    }
+
+    this.finishGame()
+  }
+
+  private finishGame(): void {
+    this.started = false
+    this.phase = "finished"
+
+    const top = this.leaderboard
+      .slice(0, 3)
+      .map(({ username, points }) => ({ username, points }))
+
+    this.opts.onGameFinished({
+      id: `${Date.now()}-${nanoid(8)}`,
+      subject: this.opts.quizz.subject,
+      date: new Date().toISOString(),
+      players: this.leaderboard.map((player, index) => ({
+        username: player.username,
+        points: player.points,
+        rank: index + 1,
+      })),
+      questions: this.questionsHistory,
+    })
+
+    this.opts.send(this.opts.getManagerId(), STATUS.FINISHED, {
+      subject: this.opts.quizz.subject,
+      top,
+    })
+
+    this.leaderboard.forEach((player, index) => {
+      this.opts.send(player.id, STATUS.FINISHED, {
+        subject: this.opts.quizz.subject,
+        top,
+        rank: index + 1,
+        points: player.points,
+      })
+    })
   }
 }
