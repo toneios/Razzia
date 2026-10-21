@@ -128,3 +128,13 @@ Dans l’éditeur du quiz, cocher **Masquer les scores jusqu’à la fin**, puis
 Avec cette option, les bonnes réponses sont toujours révélées pendant dix secondes, puis une pause remplace le classement. Les téléphones ne montrent ni points ni rang. La régie conserve son aperçu privé de la question suivante et déclenche la suite avec **Suivant**. Les scores restent calculés côté serveur, sans être envoyés aux joueurs ou à la projection, y compris lors d’une reconnexion.
 
 Après la dernière révélation, l’écran attend la remise des prix. Le bouton de régie **Révéler le podium** affiche le classement final et les médailles or/argent/bronze ; les téléphones reçoivent alors leur rang et leurs points. Les trois premiers reçoivent aussi une médaille sur leur écran. La révélation ne peut être déclenchée que par la régie et ne produit qu’un seul rapport de résultat.
+
+## Version et mises à jour dans la régie
+
+Le manager et la barre de régie affichent le commit du serveur en cours : blanc avec « À jour » si ce commit correspond à la tête de `toneios/Razzia`, branche `as-event/three-interfaces`, orange avec « Mise à jour disponible » sinon. La vérification est réservée aux managers authentifiés et passe par le serveur, sans jeton GitHub dans le navigateur.
+
+Le serveur conserve le résultat cinq minutes et partage la requête entre les onglets. Les écrans consultent ce résultat toutes les minutes ; un changement GitHub apparaît habituellement sous cinq minutes. En cas d’erreur réseau, de quota GitHub ou de version locale inconnue, le badge devient gris et indique « Vérification indisponible ». Une nouvelle tentative est possible après une minute.
+
+Le commit est intégré au serveur lors de sa compilation. Un simple `git pull` sans reconstruction et redémarrage ne change donc pas la version annoncée. L’indicateur ne déclenche aucune installation : utiliser `razzia-update --activate` dans la console du conteneur entre deux parties, puis actualiser les navigateurs.
+
+Vérification : `node --test tests/version.test.mjs tests/version-integration.test.mjs tests/version-badge.test.mjs` après `pnpm build` (Node.js 24+).

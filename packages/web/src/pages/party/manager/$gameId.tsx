@@ -1,3 +1,4 @@
+import VersionBadge from "@razzia/web/features/manager/components/VersionBadge"
 import type { NextQuestionPreview } from "@razzia/common/types/game/socket"
 import NextQuestionCard from "@razzia/web/features/game/components/NextQuestionCard"
 import { EVENTS } from "@razzia/common/constants"
@@ -110,6 +111,7 @@ const ManagerGamePage = () => {
     <GameViewContext.Provider value={{ role: "control", sound }}>
       <div className="relative z-20 flex flex-wrap items-center gap-3 bg-slate-950 px-4 py-3 text-white">
         <strong>{t("game:controlDesk")}</strong>
+        <VersionBadge />
         <a
           className="rounded-lg bg-white px-4 py-2 font-bold text-black"
           href="/projection"

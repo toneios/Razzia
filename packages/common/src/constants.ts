@@ -58,6 +58,8 @@ export const EVENTS = {
     CHECK_PIN_RESULT: "player:checkPinResult",
   },
   MANAGER: {
+    GET_VERSION: "manager:getVersion",
+    VERSION: "manager:version",
     REVEAL_FINAL: "manager:revealFinal",
     NEXT_QUESTION_PREVIEW: "manager:nextQuestionPreview",
     SUCCESS_RECONNECT: "manager:successReconnect",

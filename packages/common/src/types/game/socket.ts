@@ -1,3 +1,4 @@
+import type { VersionStatus } from "@razzia/common/types/version"
 import type { Appearance } from "@razzia/common/types/appearance"
 import { EVENTS } from "@razzia/common/constants"
 import type {
@@ -50,6 +51,7 @@ export interface NextQuestionPreview {
 }
 
 export interface ServerToClientEvents {
+  [EVENTS.MANAGER.VERSION]: (_data: VersionStatus) => void
   [EVENTS.MANAGER.NEXT_QUESTION_PREVIEW]: (
     _preview: NextQuestionPreview | null,
   ) => void
@@ -144,6 +146,7 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
+  [EVENTS.MANAGER.GET_VERSION]: () => void
   [EVENTS.MANAGER.REVEAL_FINAL]: (_message: MessageGameId) => void
   [EVENTS.MEDIA_LIBRARY.LIST]: (_kind: "audio" | "image" | "video") => void
   [EVENTS.MEDIA_LIBRARY.IMPORT]: (_data: {

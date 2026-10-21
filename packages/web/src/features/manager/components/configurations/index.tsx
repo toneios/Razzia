@@ -1,3 +1,4 @@
+import VersionBadge from "@razzia/web/features/manager/components/VersionBadge"
 import { EVENTS } from "@razzia/common/constants"
 import type { ManagerConfig } from "@razzia/common/types/manager"
 import Card from "@razzia/web/components/Card"
@@ -54,9 +55,12 @@ const Configurations = ({ data }: Props) => {
     <ConfigProvider data={data}>
       <Card className="max-h-[80svh] w-full max-w-xl">
         <div className="mb-4 flex items-center justify-between">
-          <p className="text-lg font-semibold">
-            {t("manager:configurationsTitle")}
-          </p>
+          <div className="flex min-w-0 flex-col items-start gap-1">
+            <p className="text-lg font-semibold">
+              {t("manager:configurationsTitle")}
+            </p>
+            <VersionBadge />
+          </div>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <button
